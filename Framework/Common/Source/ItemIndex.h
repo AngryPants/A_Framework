@@ -52,8 +52,8 @@ public:
 		}
 		return *(items[index]);
 	}
-	//Retrieves the item from the specified index and returns a pointer to it. The item is removed from ItemIndex.
-	Type* RemoveItem(const unsigned int index) {
+	//Retrieves the item from the specified index and returns it. The item is removed from ItemIndex.
+	Type& RemoveItem(const unsigned int index) {
 		Type* itemPtr = nullptr;
 		//Ensure that the index is legit.
 		if (index >= items.size()) {
@@ -77,7 +77,7 @@ public:
 			items.pop_back();
 		}
 		//Return the item.
-		return itemPtr;
+		return *itemPtr;
 	}
 	//Delete the item in the specified index.
 	void DeleteItem(const unsigned int index) {

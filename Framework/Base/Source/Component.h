@@ -6,6 +6,8 @@
 
 using std::string;
 
+//NOTE: Any subclasses MUST have a constructor that only takes in an EntityIndex;
+
 class Component {
 
 private:

@@ -44,6 +44,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CollisionSystem.h" />
     <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentManager.h" />
     <ClInclude Include="Source\ComponentTypeID.h" />
     <ClInclude Include="Source\Controller_Gamepad.h" />
     <ClInclude Include="Source\Controller_Keyboard.h" />
