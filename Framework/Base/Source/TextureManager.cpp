@@ -48,6 +48,8 @@ TextureID TextureManager::AddTexture(const string& textureName, const string& fi
 	Texture* texture = new Texture(filePath);
 	textureMap.insert(pair<string, Texture*>(textureName, texture));
 
+	return texture->GetTextureID();
+
 }
 
 bool TextureManager::RemoveTexture(const string& textureName) {

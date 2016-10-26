@@ -31,11 +31,13 @@ void SceneManager::Update(double deltaTime) {
 	//Check if we need to switch scenes.
 	if (nextScene != nullptr) {
 		if (activeScene != nullptr) {
+			activeScene->Save();
 			activeScene->Exit();			
 		}
 		activeScene = nextScene;
 		nextScene = nullptr;
-		activeScene->Init();		
+		activeScene->Init();
+		activeScene->Load();
 	}
 
 	//Now let's remove all of the scenes we need to remove.
@@ -78,7 +80,7 @@ void SceneManager::RemoveScene(const string& sceneName) {
 }
 
 void SceneManager::SetActiveScene(const string& sceneName) {
-	if (sceneName == activeScene->name) {
+	if (activeScene != nullptr && sceneName == activeScene->name) {
 		Error::PrintToConsole("Unable to SetActive(" + sceneName + ") as the scene is already active.");
 		return;
 	}

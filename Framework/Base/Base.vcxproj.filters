@@ -79,6 +79,12 @@
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneTest.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityTest.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GraphicsManager.h">
@@ -183,6 +189,12 @@
     <ClInclude Include="Source\EntityManager.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneTest.h">
+      <Filter>Header Files\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityTest.h">
+      <Filter>Header Files\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -262,6 +274,12 @@
     </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{175e7cc8-e485-4eb0-b794-667b3592f3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Test">
+      <UniqueIdentifier>{014a089d-33f8-4b70-8128-6e5935379ba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Test">
+      <UniqueIdentifier>{e886510d-257a-42da-8f8e-c15eccfdca98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

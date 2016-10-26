@@ -54,7 +54,7 @@ public:
 	ShaderProgram* GetActiveShader();
 
 	//Others
-	void Update();
+	void ClearColor();
 	void SetBackgroundColor(float red, float green, float blue, float alpha);
 	
 	//Enable Modes

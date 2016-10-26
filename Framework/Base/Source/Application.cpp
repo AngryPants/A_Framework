@@ -16,10 +16,13 @@
 #include "TextureManager.h"
 #include "MeshBuilder.h"
 
-//Include Controllers
+//Include Controller(s)
 #include "Controller_Keyboard.h"
 #include "Controller_Mouse.h"
 #include "Controller_Gamepad.h"
+
+//Include Scene(s)
+#include "SceneTest.h"
 
 GLFWwindow* m_window;
 const unsigned char maxFPS = 60; //Maximum FPS of this game.
@@ -120,6 +123,8 @@ void Application::Init() {
 
 void Application::InitScenes() {
 	//Add Scenes Here!
+	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
+	SceneManager::GetInstance().SetActiveScene("Test Scene");
 }
 
 void Application::ExitSystems() {
@@ -167,11 +172,11 @@ void Application::Run() {
         m_timer.waitUntil(frameTime); // Frame rate limiter. Limits each frame to a specified time in ms.   
 
 	} //Check if the ESC key had been pressed or if the window had been closed
+	//Delete all our systems(Managers etc.)
+	ExitSystems();
 }
 
 void Application::Exit() {
-	//Delete all our systems(Managers etc.)
-	ExitSystems();
 	//Close OpenGL window and terminate GLFW
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW

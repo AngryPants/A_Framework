@@ -161,7 +161,7 @@ ShaderProgram* GraphicsManager::GetActiveShader() {
 }
 
 //Others
-void GraphicsManager::Update() {
+void GraphicsManager::ClearColor() {
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
