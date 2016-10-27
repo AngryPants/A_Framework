@@ -1,6 +1,7 @@
 #include "SceneTest.h"
 #include "GraphicsManager.h"
 #include "RenderHelper.h"
+#include "Application.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -25,7 +26,10 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 
-	entityTest = new EntityTest("Entity A");
+	entityManager = new EntityManager();
+	//entityTest = new EntityTest("Entity A");
+	EntityTest* entity = new EntityTest("Entity A");
+	entityManager->AddEntity(*entity);
 	camera = new Camera("Coolest camera in da world.");
 
 	camera->SetPosition(Vector3(0, 0, 1));
@@ -35,6 +39,9 @@ void SceneTest::Init() {
 }
 
 void SceneTest::Update(double deltaTime) {
+
+	camera->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
+
 }
 
 void SceneTest::Render() {
@@ -44,13 +51,13 @@ void SceneTest::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	
 	//Render Entities
-	entityTest->Render();
+	entityManager->Render();
 
+	//Render Entities UI
+	entityManager->RenderUI();
 }
 
 void SceneTest::Exit() {
 
-	delete entityTest;
 	delete camera;
-
 }

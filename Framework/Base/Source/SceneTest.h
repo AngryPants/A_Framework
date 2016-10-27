@@ -4,11 +4,12 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "EntityTest.h"
+#include "EntityManager.h"
 
 class SceneTest : public Scene {
 
 private:
-	EntityTest* entityTest;
+	EntityManager* entityManager;
 	Camera* camera;
 
 public:
