@@ -2,16 +2,21 @@
 #define ENTITY_MANAGER_H
 
 class EntityBase;
-//#include "EntityBase.h"
+#include "SingletonTemplate.h"
 #include <vector>
 #include <set>
 
 using std::vector;
 using std::set;
 
-class EntityManager {
+class EntityManager : public Singleton<EntityManager>{
 
+	friend Singleton <EntityManager> ;
 private:
+	//Constructor(s) & Destructor
+	EntityManager();
+	virtual ~EntityManager();
+
 	//Variable(s)
 	vector<EntityBase*> entities;
 
@@ -19,18 +24,18 @@ private:
 	set<EntityBase*> addQueue;
 	set<EntityBase*> removeQueue;
 
-public:
-	//Constructor(s) & Destructor
-	EntityManager();
-	virtual ~EntityManager();
+	// Private Add/Remove entities
+	void AddEntities();
+	void RemoveEntities();
 
+public:
 	//Function(s)
 	void Update(const double& deltaTime);
 	void Render();
 	void RenderUI();
 
 	void AddEntity(EntityBase& entity);
-	bool RemoveEntity(EntityBase& entity);
+	void RemoveEntity(EntityBase& entity);
 	void Clear();
 
 };

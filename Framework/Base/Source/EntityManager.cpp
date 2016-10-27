@@ -6,10 +6,18 @@ EntityManager::EntityManager() {
 }
 
 EntityManager::~EntityManager() {
+	Clear();
 }
 
 // Update all Entities
 void EntityManager::Update(const double& deltaTime) {
+	
+
+	//Add new Entities 
+	AddEntities();
+
+	//Remove Entities
+	RemoveEntities();
 
 	// Update all entities
 	std::vector<EntityBase*>::iterator it, end;
@@ -62,27 +70,58 @@ void EntityManager::RenderUI() {
 	}
 }
 
+// Add an entity to the AddQueue
+void EntityManager::AddEntity(EntityBase& entity)
+{
+	// Add entities into AddQueue
+	addQueue.insert(&entity);
+}
+
+// Add an entity to the RemoveQueue
+void EntityManager::RemoveEntity(EntityBase& entity)
+{
+	// Add entities to remove into removeQueue
+	removeQueue.insert(&entity);
+}
+
 //Add an entity to this EntityManager
-void EntityManager::AddEntity(EntityBase& entity) {
-	entities.push_back(&entity);
+void EntityManager::AddEntities() {
+	
+	if (addQueue.empty())
+		return; 
+
+	// Add Queue here
+	for (std::set<EntityBase*>::iterator it = addQueue.begin(); it != addQueue.end(); it++)
+	{
+		entities.push_back(*it);
+	}
+
+	// Clear AddQueue here
+	addQueue.clear();
 }
 
 // Remove an entity from this EntityManager
-bool EntityManager::RemoveEntity(EntityBase& entity) {
+void EntityManager::RemoveEntities() {
 	
-	//Find the entity to remove
-	std::vector<EntityBase*>::iterator findIter = std::find(entities.begin(), entities.end(), &entity);
-	
-	//Delete the entity if found
-	if (findIter != entities.end())
+	if (removeQueue.empty())
+		return;
+
+	// RemoveQueue here
+	for (std::set<EntityBase*>::iterator it = removeQueue.begin(); it != removeQueue.end(); it++)
 	{
-		delete *findIter;
-		findIter = entities.erase(findIter);
-		return true;
+		//Find the entity to remove
+		std::vector<EntityBase*>::iterator findIter = std::find(entities.begin(), entities.end(), *it);
+
+		//Delete the entity if found
+		if (findIter != entities.end())
+		{
+			delete *findIter;
+			findIter = entities.erase(findIter);
+		}
 	}
 
-	// If entity is not found
-	return false;
+	// Clear RemoveQueue here
+	removeQueue.clear();
 }
 
 // Clear All entities
