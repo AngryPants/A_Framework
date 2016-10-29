@@ -50,14 +50,18 @@ protected:
 
 	//Orthographic
 	bool isOrtho;
-
+	
+	//Transform
 	Vector3 position;
 	Vector3 target;
 	Vector3 up;
+	Vector3 left;
+	Vector3 rotation;
 
-public:
+	void CalculateVectors();
+	
+public:	
 	float orthoSize;
-
 	AspectRatio aspectRatio;
 
 	//Constructor(s) & Destructor
@@ -79,27 +83,16 @@ public:
 	void SetFarClippingPlane(const float& nearClippingPlane);
 	float GetNearClippingPlane() const;
 	float GetFarClippingPlane() const;
+	void SetPosition(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+	void LookAt(Vector3 target, Vector3 up);
+	void SetRotation(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+
+	const Vector3& GetPosition() const;
+	const Vector3& GetTarget() const;
+	const Vector3& GetUp() const;
+	const Vector3& GetLeft() const;
+	const Vector3& GetRotation() const;
 	
-	virtual void SetPosition(const Vector3& position) {
-		this->position = position;
-	}
-	virtual void SetTarget(const Vector3& target) {
-		this->target = target;
-	}
-	virtual void SetUp(const Vector3& up) {
-		this->up = up;
-	}
-
-	const Vector3& GetPosition() const {
-		return this->position;
-	}
-	const Vector3& GetTarget() const {
-		return this->target;
-	}
-	const Vector3& GetUp() const {
-		return this->up;
-	}
-
 	//Virtual Function(s)
 	virtual void Update(const double& deltaTime);
 
