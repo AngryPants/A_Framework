@@ -64,46 +64,44 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 
 	//Quit Button
 	switch (input.GetKey()) {
-		case KEYS::ENTER: {	
-			SetInput(inputInfo, INPUT_SELECT, input.GetState());
-			break;	
-		}	
 		case KEYS::ESCAPE: {
-			SetInput(inputInfo, INPUT_BACK, input.GetState());
+			SetInput(inputInfo, INPUT_QUIT, input.GetState());
 			break;
 		}		
 		case KEYS::LEFT: {
-			SetInput(inputInfo, INPUT_MOVE_LEFT, input.GetState());
-			SetInput(inputInfo, INPUT_MENU_LEFT, input.GetState());
+			SetInput(inputInfo, INPUT_LEFT, input.GetState());
 			break;
 		}
 		case KEYS::RIGHT: {
-			SetInput(inputInfo, INPUT_MOVE_RIGHT, input.GetState());
-			SetInput(inputInfo, INPUT_MENU_RIGHT, input.GetState());
+			SetInput(inputInfo, INPUT_RIGHT, input.GetState());
 			break;
 		}
 		case KEYS::UP: {
-			SetInput(inputInfo, INPUT_MENU_UP, input.GetState());
+			SetInput(inputInfo, INPUT_UP, input.GetState());
 			break;
 		}
 		case KEYS::DOWN: {
-			SetInput(inputInfo, INPUT_MENU_DOWN, input.GetState());
+			SetInput(inputInfo, INPUT_DOWN, input.GetState());
 			break;
 		}
-		case KEYS::SPACE: {
-			SetInput(inputInfo, INPUT_JUMP, input.GetState());
+		case KEYS::Q:{
+			SetInput(inputInfo, INPUT_ROLL_LEFT, input.GetState());
 			break;
 		}
-		case KEYS::C: {
-			SetInput(inputInfo, INPUT_SHOOT, input.GetState());
+		case KEYS::E:{
+			SetInput(inputInfo, INPUT_ROLL_RIGHT, input.GetState());
 			break;
 		}
-		case KEYS::Z: {
-			SetInput(inputInfo, INPUT_ABILITY, input.GetState());
+		case KEYS::R:{
+			SetInput(inputInfo, INPUT_RESET, input.GetState());
 			break;
 		}
-		case KEYS::P: {
-			SetInput(inputInfo, INPUT_PAUSE, input.GetState());
+		case KEYS::K:{
+			SetInput(inputInfo, INPUT_SWAP_DOWN, input.GetState());
+			break;
+		}
+		case KEYS::P:{
+			SetInput(inputInfo, INPUT_SWAP_UP, input.GetState());
 			break;
 		}
 	}
@@ -118,6 +116,7 @@ void ProcessInput(InputInfo& inputInfo, const Gamepad& input) {
 	//the screen all the way to the edge of the screen will be considered 1.0f.
 	/****************************************/
 
+	/*
 	float left_horizontal_axis = input.axes[0]; //Left Thumb Stick
 	//Check if the stick was moved.
 	if (std::abs(left_horizontal_axis) > GamepadManager::GetInstance().GetDeadzone()) {
@@ -180,6 +179,7 @@ void ProcessInput(InputInfo& inputInfo, const Gamepad& input) {
 		//SetInput(inputInfo, INPUT_MOVE_LEFT, KEY_STATE::PRESS);
 		SetInput(inputInfo, INPUT_MENU_LEFT, KEY_STATE::PRESS);
 	}
+	*/
 
 }
 

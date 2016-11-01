@@ -394,9 +394,9 @@ Vector3& Vector3::Normalize( void ) throw( DivideByZero )
 	return *this;
 }
 
-std::ostream& operator<< (std::ostream& os, Vector3& rhs)
+std::ostream& operator<< (std::ostream& os, const Vector3& rhs)
 {
-	os << "[" << rhs.x << ", " << rhs.y << ", " << rhs.z << "]";
+	os << "[X: " << rhs.x << ", Y: " << rhs.y << ", Z: " << rhs.z << "]";
 	return os;
 }
 

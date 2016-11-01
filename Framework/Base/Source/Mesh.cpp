@@ -7,10 +7,10 @@ Mesh::Mesh(const std::string &meshName) : name(meshName), mode(DRAW_TRIANGLES) {
 	glGenBuffers(1, &vertexBuffer);
 	glGenBuffers(1, &indexBuffer);
 	
-	textureOffset[0] = 0.0f;
+	/*textureOffset[0] = 0.0f;
 	textureOffset[1] = 0.0f;
 	textureScale[0] = 1.0f;
-	textureScale[1] = 1.0f;
+	textureScale[1] = 1.0f;*/
 
 }
 
@@ -32,7 +32,7 @@ void Mesh::Render() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Position));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color)));
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Vector3)));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Normal)));
 
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -64,7 +64,7 @@ void Mesh::Render(unsigned offset, unsigned count) {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Position));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color)));
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Vector3)));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Normal)));
 
 	//glDrawArrays(GL_TRIANGLES, offset, count);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -89,17 +89,6 @@ void Mesh::SetTextureOffset(const float& u, const float& v) {
 	textureOffset[0] = u;
 	textureOffset[1] = v;
 
-	/*//Bind our mesh's vertex buffer so that we can modify it.
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	//Replace the texture coordinates' data.
-	for (size_t i = 0; i < vertexSize && i < texCoords.size(); ++i) {
-		TexCoord texCoord(texCoords[i].u + u, texCoords[i].v + v);
-		glBufferSubData(GL_ARRAY_BUFFER, (sizeof(Vertex) - sizeof(TexCoord)) + (i * sizeof(Vertex)),
-		sizeof(TexCoord), &texCoord);
-	}
-	//Unbind our mesh.
-	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-
 }
 
 void Mesh::GetTextureOffset(float& u, float& v) const {
@@ -114,17 +103,6 @@ void Mesh::SetTextureScale(const float& u, const float& v) {
 	textureScale[0] = u;
 	textureScale[1] = v;
 
-	/*//Bind our mesh's vertex buffer so that we can modify it.
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	//Replace the texture coordinates' data.
-	for (size_t i = 0; i < vertexSize && i < texCoords.size(); ++i) {
-		TexCoord texCoord(texCoords[i].u * u, texCoords[i].v * v);
-		glBufferSubData(GL_ARRAY_BUFFER, (sizeof(Vertex) - sizeof(TexCoord)) + (i * sizeof(Vertex)),
-		sizeof(TexCoord), &texCoord);
-	}
-	//Unbind our mesh.
-	glBindBuffer(GL_ARRAY_BUFFER, 0);*/
-
 }
 
 void Mesh::GetTextureScale(float& u, float& v) const {
@@ -133,25 +111,3 @@ void Mesh::GetTextureScale(float& u, float& v) const {
 	v = textureOffset[1];
 
 }
-
-//void Mesh::UpdateTexCoords() {
-
-	////Bind our mesh's vertex buffer so that we can modify it.
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	////Replace the texture coordinates' data.
-	//TexCoord texCoord;
-	//for (size_t i = 0; i < vertexSize && i < texCoords.size(); ++i) {
-	//	texCoord = texCoords[i];
-	//	texCoord.u *= textureScaleU; //Scale
-	//	texCoord.v *= textureScaleV; //Scale
-	//	texCoord.u += textureOffsetU;
-	//	texCoord.v += textureOffsetV;
-	//	glBufferSubData(GL_ARRAY_BUFFER, (sizeof(Vertex) - sizeof(TexCoord)) + (i * sizeof(Vertex)),
-	//	sizeof(TexCoord), &texCoord);
-	//}
-	////Unbind our mesh.
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//
-	//texCoordUpdated = true;
-
-//}

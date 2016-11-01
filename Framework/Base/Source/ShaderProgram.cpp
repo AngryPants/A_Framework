@@ -39,7 +39,15 @@ string ShaderProgram::GetFragmentShaderFile() const {
 
 UniformID ShaderProgram::GetUniformID(const string& uniformName) {
 
-	return glGetUniformLocation(programID, uniformName.c_str());
+	map<string, UniformID>::iterator mapIter = uniformIDs.find(uniformName);
+	if (mapIter != uniformIDs.end()) {
+		return mapIter->second;
+	}
+
+	UniformID id = glGetUniformLocation(programID, uniformName.c_str());
+	uniformIDs.insert(std::pair<string, UniformID>(uniformName, id));
+
+	return id;
 
 }
 

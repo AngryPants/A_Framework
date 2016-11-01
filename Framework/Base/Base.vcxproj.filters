@@ -85,6 +85,9 @@
     <ClCompile Include="Source\EntityTest.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GraphicsManager.h">
@@ -195,6 +198,9 @@
     <ClInclude Include="Source\EntityTest.h">
       <Filter>Header Files\Test</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Transform.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -269,9 +275,6 @@
     <Filter Include="Header Files\Mesh">
       <UniqueIdentifier>{3ffd7100-0ab6-43c4-91f6-bf54be3317ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Mesh">
-      <UniqueIdentifier>{825a4534-62cc-4912-9c4b-92598af7c23d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{175e7cc8-e485-4eb0-b794-667b3592f3bf}</UniqueIdentifier>
     </Filter>
@@ -280,6 +283,9 @@
     </Filter>
     <Filter Include="Header Files\Test">
       <UniqueIdentifier>{e886510d-257a-42da-8f8e-c15eccfdca98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{825a4534-62cc-4912-9c4b-92598af7c23d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

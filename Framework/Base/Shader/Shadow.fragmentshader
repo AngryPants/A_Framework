@@ -170,14 +170,12 @@ void main(){
 				// Light direction
 				float spotlightEffect = 1;
 				vec3 lightDirection_cameraspace;
-				if(lights[i].type == 1) {
+				if(lights[i].type == 1) { //Directional Light
 					lightDirection_cameraspace = lights[i].position_cameraspace;
-				}
-				else if(lights[i].type == 2) {
+				} else if(lights[i].type == 2) { //Spotlight
 					lightDirection_cameraspace = lights[i].position_cameraspace - vertexPosition_cameraspace;
 					spotlightEffect = getSpotlightEffect(lights[i], lightDirection_cameraspace);
-				}
-				else {
+				} else { //Point Light
 					lightDirection_cameraspace = lights[i].position_cameraspace - vertexPosition_cameraspace;
 				}
 				// Distance to the light
@@ -196,10 +194,14 @@ void main(){
 			
 				color +=
 					// Diffuse : "color" of the object
-					materialColor * visibility * vec4(material.kDiffuse, 1) * vec4(lights[i].color, 1) * lights[i].power * cosTheta * attenuationFactor * spotlightEffect +
-					
+					materialColor * visibility * vec4(material.kDiffuse, 1) * vec4(lights[i].color, 1) * lights[i].power * cosTheta * attenuationFactor * spotlightEffect +					
 					// Specular : reflective highlight, like a mirror
 					visibility * vec4(material.kSpecular, 1) * vec4(lights[i].color, 1) * lights[i].power * pow(cosAlpha, material.kShininess) * attenuationFactor * spotlightEffect;
+				
+				//Debug Code
+				//color = vec4(lights[i].position_cameraspace.x, lights[i].position_cameraspace.y, lights[i].position_cameraspace.z, 1);
+				//color = vec4(lightDirection_cameraspace.x, lightDirection_cameraspace.y, lightDirection_cameraspace.z, 1);
+				//color = vec4(vertexNormal_cameraspace.x * 0.5f + 0.5f, vertexNormal_cameraspace.y * 0.5f + 0.5f, vertexNormal_cameraspace.z * 0.5f + 0.5f, 1);
 			}		
 		}
 	} else { //Light is NOT enabled.

@@ -84,7 +84,7 @@ public:
 	float GetNearClippingPlane() const;
 	float GetFarClippingPlane() const;
 	void SetPosition(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-	void LookAt(Vector3 target, Vector3 up);
+	void LookAt(Vector3 target, Vector3 up = Vector3(0, 1, 0));
 	void SetRotation(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 
 	const Vector3& GetPosition() const;

@@ -175,7 +175,7 @@ void Camera::LookAt(Vector3 target, Vector3 up) {
 	} catch (DivideByZero) {
 		cout << "LookAt(Vector3 target, Vector3 up) Error" << endl;
 		return;
-	}	
+	}
 
 	rotation.Set(x, y, z);
 	

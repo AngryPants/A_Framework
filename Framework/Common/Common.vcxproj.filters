@@ -5,15 +5,14 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Vector">
-      <UniqueIdentifier>{757175da-aba5-47f9-90ae-592d49ea6ed1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Vector">
       <UniqueIdentifier>{e69915ce-dbd2-48be-a6e4-5303092977ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{afe9118a-6edd-4264-89c6-23d9f160df84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Vector">
+      <UniqueIdentifier>{77290028-ba3f-4ebb-b379-0473243f927a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +45,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ItemIndex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Source\MatrixStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,16 +63,13 @@
     <ClInclude Include="Source\MyMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\SingletonTemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Vector.h">
@@ -75,12 +80,6 @@
     </ClInclude>
     <ClInclude Include="Source\Vector3.h">
       <Filter>Header Files\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Error.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ItemIndex.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -592,7 +592,7 @@ Mesh* MeshBuilder::GenerateText(const std::string &meshName, unsigned numRow, un
 
 }
 
-Vector3 CalculateTerrainNormal(float heightLeft, float heightRight, float heightUp, float heightDown) {
+Normal CalculateTerrainNormal(float heightLeft, float heightRight, float heightUp, float heightDown) {
 
 	//	0--------------------------->X
 	//	|
@@ -605,7 +605,9 @@ Vector3 CalculateTerrainNormal(float heightLeft, float heightRight, float height
 	//	v
 	//	Z
 
-	return Vector3(heightLeft - heightRight, 2.0f, heightUp - heightDown).Normalize();
+	Vector3 normal(heightLeft - heightRight, 2.0f, heightUp - heightDown);
+	normal.Normalize();
+	return Normal(normal.x, normal.y, normal.z);
 
 }
 

@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 using std::string;
+using std::map;
 
 typedef unsigned int ProgramID;
 typedef unsigned int UniformID;
@@ -38,7 +40,6 @@ private:
 	\brief
 	The id of the shader program that OpenGL will use to identify different shader
 	programs in the same context.
-
 	*/
 	/******************************************************************************/
 	ProgramID programID;
@@ -51,10 +52,23 @@ private:
 	lifespan. They are a way for the CPU to vary the rendering of different objects
 	by changing the uniforms like transparency, color etc. Note that the vector
 	includes ids of uniforms from both shaders.
-
 	*/
 	/******************************************************************************/
-	UniformVec uniformID;
+	//UniformVec uniformID;
+
+	/******************************************************************************/
+	/*!
+	\brief
+	A map of ids for the different uniforms in the shader.
+
+	Uniforms are variables in the shader that will exist throughout the shader's
+	lifespan. They are a way for the CPU to vary the rendering of different objects
+	by changing the uniforms like transparency, color etc. Note that the map
+	includes ids of uniforms from both shaders.
+	*/
+	/******************************************************************************/
+	map<string, UniformID> uniformIDs;
+
 	/******************************************************************************/
 	/*!
 	\brief
@@ -62,7 +76,6 @@ private:
 
 	Shaders in OpenGL are defined through files with text. These files contain the
 	code for the shader and OpenGL loads both of them in at shader initialisation.
-
 	*/
 	/******************************************************************************/
 	string vertexShader, fragmentShader;
@@ -135,6 +148,7 @@ public:
 	*/
 	/******************************************************************************/
 	string GetVertexShaderFile() const;
+
 	/******************************************************************************/
 	/*!
 	\brief
@@ -164,6 +178,7 @@ public:
 	*/
 	/******************************************************************************/
 	bool SetShader(const string& vertexShader, const string& fragmentShader);
+
 	/******************************************************************************/
 	/*!
 	\brief
@@ -175,6 +190,7 @@ public:
 	*/
 	/******************************************************************************/
 	bool DeleteShader();
+
 	/******************************************************************************/
 	/*!
 	\brief
@@ -186,6 +202,7 @@ public:
 	*/
 	/******************************************************************************/
 	ProgramID GetProgramID();
+	
 	/******************************************************************************/
 	/*!
 	\brief

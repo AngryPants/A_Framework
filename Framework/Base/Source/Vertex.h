@@ -26,11 +26,34 @@ struct TexCoord
 	TexCoord& operator=(const TexCoord& rhs) {this->u = rhs.u; this->v = rhs.v; return *this;}
 };
 
+struct Normal
+{
+	float x, y, z;
+	Normal(const float& x = 0, const float& y = 0, const float& z = 1) {
+		Set(x, y, z);
+	}
+	Normal(const Normal& rhs) {
+		Set(rhs.x, rhs.y, rhs.z);
+	}
+	void Set(const float& x, const float& y, const float& z) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
+	Normal& operator=(const Normal& rhs) {
+		this->x = rhs.x;
+		this->y = rhs.y;
+		this->z = rhs.z;
+
+		return *this;
+	}
+};
+
 struct Vertex 
 {
 	Position pos;
 	Color color;
-	Vector3 normal;
+	Normal normal;
 	TexCoord texCoord;
 	Vertex(){}
 	~Vertex(){}

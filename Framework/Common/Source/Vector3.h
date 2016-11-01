@@ -67,7 +67,7 @@ struct Vector3 : public Vector {
 	//Throw a divide by zero exception if normalizing a zero vector
 	Vector3& Normalize(void) throw(DivideByZero);
 
-	friend std::ostream& operator<<( std::ostream& os, Vector3& rhs); //print to ostream
+	friend std::ostream& operator<<( std::ostream& os, const Vector3& rhs); //print to ostream
 
 	friend Vector3 operator*(float scalar, const Vector3& rhs); //what is this for?
 

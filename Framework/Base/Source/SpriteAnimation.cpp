@@ -20,34 +20,6 @@ void SpriteAnimation::Update(double deltaTime) {
 
 	animation->Update(deltaTime);
 
-	/*if (!animation->animActive || animation->animTime < Math::EPSILON || row == 0 || column == 0) {
-		return;
-	}
-	
-	this->currentTime += deltaTime;
-	
-	unsigned int numFrame = 0;
-	if (animation->endFrame > animation->startFrame) {
-		numFrame = animation->endFrame - animation->startFrame + 1;
-	} else {
-		numFrame = (row * column) - (animation->startFrame - animation->endFrame) + 1;
-	}
-	
-	double frameTime = animation->animTime / static_cast<float>(numFrame);
-	currentFrame = static_cast<unsigned int>(currentTime / frameTime) + animation->startFrame;
-	currentFrame %= (row * column);
-
-	if (currentTime > animation->animTime) {
-		if (currentFrame != animation->endFrame) {
-			currentFrame = animation->endFrame;
-		}
-		if (animation->loop == false) {
-			animation->animActive = false;
-		} else {
-			Reset(true);
-		}
-	}*/
-
 }
 
 void SpriteAnimation::Reset(bool animActive) {
@@ -72,7 +44,7 @@ void SpriteAnimation::Render() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Position));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color)));
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Vector3)));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Position) + sizeof(Color) + sizeof(Normal)));
 
 	//glDrawArrays(GL_TRIANGLES, offset, count);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);

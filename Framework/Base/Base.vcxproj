@@ -38,6 +38,7 @@
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
+    <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +75,7 @@
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureList.h" />
     <ClInclude Include="Source\TextureManager.h" />
+    <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\Typedef.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />

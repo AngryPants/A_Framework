@@ -7,6 +7,7 @@
 #include "TextureList.h"
 #include "Vertex.h"
 #include "ShaderProgram.h"
+#include "Light.h"
 
 enum class SHADERS {
 	SHADOW
@@ -29,12 +30,27 @@ public:
 		UniformID colorTexture;
 		UniformID textColor;
 		UniformID textEnabled;
-		UniformID numLights;
-		UniformID lightEnabled;
 		UniformID fogEnabled;
 		UniformID alphaDiscardValue;
 		UniformID textureOffset;
 		UniformID textureScale;
+
+		//Lights
+		UniformID lightEnabled;
+		UniformID numLights;
+		static const unsigned int MAX_LIGHTS = 8;
+		UniformID lightOn[MAX_LIGHTS];
+		UniformID lightType[MAX_LIGHTS];
+		UniformID lightPosition[MAX_LIGHTS];
+		UniformID lightColor[MAX_LIGHTS];
+		UniformID lightPower[MAX_LIGHTS];
+		UniformID lightKC[MAX_LIGHTS];
+		UniformID lightKL[MAX_LIGHTS];
+		UniformID lightKQ[MAX_LIGHTS];
+		UniformID lightSpotDirection[MAX_LIGHTS];
+		UniformID lightCosCutoff[MAX_LIGHTS];
+		UniformID lightCosInner[MAX_LIGHTS];
+		UniformID lightExponent[MAX_LIGHTS];
 	};
 
 private:
@@ -53,9 +69,7 @@ private:
 public:
 	template<SHADERS>
 	void LoadShader() {
-
 		throw std::exception("Unrecognisable shader!");
-
 	}
 
 	template<>
@@ -63,9 +77,9 @@ public:
 		LoadShadowShader();
 	}
 
-
 	void Update();
 	void SetNumLights(const unsigned num);
+	void UpdateLight(Light& light, unsigned int lightIndex);
 	void SetAlphaDiscardValue(const float alphaValue);
 	void EnableLight(const bool boolean);
 	void EnableFog(const bool boolean);
