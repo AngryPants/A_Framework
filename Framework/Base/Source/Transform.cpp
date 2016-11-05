@@ -23,7 +23,7 @@ using std::endl;
 The constructor of Transform.
 */
 /*******************************************************************************/
-Transform::Transform() {
+Transform::Transform(GameObject& gameObject) : Component("Transform", gameObject) {
 
 	SetPosition(0, 0, 0);
 	SetRotation(0, 0, 0);
@@ -426,8 +426,7 @@ void Transform::LookAt(Vector3 target, Vector3 up) {
 	} catch (DivideByZero) {
 		cout << "[Transform::LookAt(Vector3 target, Vector3 up) Error]" << endl;
 		return;
-	}
-	
+	}	
 	if (view.IsZero() || left.IsZero() || up.IsZero()) {
 		cout << "[Transform::LookAt(Vector3 target, Vector3 up) Error]" << endl;
 		return;

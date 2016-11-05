@@ -10,11 +10,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//#include Systems
 #include "AudioManager.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "TextureManager.h"
 #include "MeshBuilder.h"
+#include "GraphicsManager.h"
 
 //Include Controller(s)
 #include "Controller_Keyboard.h"
@@ -23,6 +25,7 @@
 
 //Include Scene(s)
 #include "SceneTest.h"
+#include "SceneEmpty.h"
 
 GLFWwindow* m_window;
 const unsigned char maxFPS = 60; //Maximum FPS of this game.
@@ -123,16 +126,28 @@ void Application::Init() {
 
 void Application::InitScenes() {
 	//Add Scenes Here!
+	SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
+	SceneManager::GetInstance().SetActiveScene("Empty Scene");
 	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
 	SceneManager::GetInstance().SetActiveScene("Test Scene");
 }
 
 void Application::ExitSystems() {
-
+	//Close the systems, starting from the highest level to the lowest level.
 	SceneManager::Destroy();
-	TextureManager::Destroy();
-	MeshBuilder::Destroy();
+	
+	//GameObjectManager MUST be destroyed BEFORE ComponentManager.
+	GameObjectManager::Destroy();
+	ComponentManager::Destroy();
 
+	MeshBuilder::Destroy();
+	TextureManager::Destroy();
+	
+	RenderHelper::Destroy();
+	GraphicsManager::Destroy();
+
+	AudioManager::Destroy();
+	InputManager::GetInstance().Destroy();
 }
 
 void Application::RunThreads() {
@@ -156,6 +171,8 @@ void Application::Run() {
 		//Update
 		InputManager::GetInstance().Update();
 		SceneManager::GetInstance().Update(elapsedTime);
+		GameObjectManager::GetInstance().Update();
+		ComponentManager::GetInstance().Update();
 		AudioManager::GetInstance().Update();
 
 		//Render
@@ -172,13 +189,12 @@ void Application::Run() {
 		glfwPollEvents();
         m_timer.waitUntil(frameTime); // Frame rate limiter. Limits each frame to a specified time in ms.   
 
-	} //Check if the ESC key had been pressed or if the window had been closed
-
-	//Delete all our systems(Managers etc.)
-	ExitSystems();
+	} //Check if the ESC key had been pressed or if the window had been closed		
 }
 
 void Application::Exit() {
+	//Delete all our systems(Managers etc.)
+	ExitSystems();
 	//Close OpenGL window and terminate GLFW
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW

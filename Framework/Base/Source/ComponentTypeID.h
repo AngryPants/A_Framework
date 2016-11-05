@@ -10,14 +10,14 @@ typedef unsigned int ComponentTypeID; //The ID of the component TYPE.
 
 static const unsigned int MAX_COMPONENTS = 64;
 
-ComponentTypeID GenerateComponentTypeID() {
+static ComponentTypeID GenerateComponentTypeID() {
     static ComponentTypeID currentID = 0;
     return currentID++;
 }
 
 //Calling this function will return an ID for each component type.
 template <class Type>
-ComponentTypeID GetComponentTypeID() {
+static ComponentTypeID GetComponentTypeID() {
     if (!std::is_base_of<Component, Type>::value) {
         Error::ThrowException("Cannot use GetComponentTypeID() on non-components.");
     }

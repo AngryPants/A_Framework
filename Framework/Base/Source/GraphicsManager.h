@@ -10,6 +10,7 @@
 using std::map;
 
 class Camera;
+class Transform;
 
 typedef map<string, ShaderProgram*> ShaderMap;
 
@@ -43,8 +44,9 @@ public:
 
 	//MVP
 	MS modelStack, viewStack, projectionStack;
-	void SetToCameraView(Camera& camera);
-	void SetToHUD(float left, float right, float down, float up, float near, float far);
+	void SetToCameraView(Camera& camera, Transform& transform);
+	//void SetToUI(float left, float right, float down, float up, float near, float far);
+	void SetToUI();
 
 	//Shader
 	bool HasShader(const string& shaderName) const;

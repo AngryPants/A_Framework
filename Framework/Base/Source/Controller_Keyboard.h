@@ -206,7 +206,7 @@ namespace controller {
 
 		//Constructor(s) & Destructor
 		Keyboard();
-		virtual ~Keyboard() = default;
+		virtual ~Keyboard() {}
 
 		std::queue<Key> key_queue;
 		std::queue<int> unicode_queue;

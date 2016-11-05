@@ -6,31 +6,37 @@
 
 using std::string;
 
-//NOTE: Any subclasses MUST have a constructor that only takes in an EntityIndex;
+class GameObject;
+
+//NOTE: Any subclasses MUST have a constructor that only takes in an GameObject reference;
 
 class Component {
-
+	
 private:
 	//Variable(s)
-	EntityIndex ownerIndex;
+	GameObject* gameObject; //The GameObject that owns this Component.
+	string space;
 
 public:
 	//Variable(s)
 	const string name;
-
+	bool isActive;
+	
 	//Destructor
-	virtual ~Component() {}
-
+	virtual ~Component();
+	
 	//Interface Function(s)
-	EntityIndex GetOwnerIndex() {
-		return ownerIndex;
+	GameObject& GetGameObject() {
+		return *gameObject;
+	}
+
+	const string& GetSpace() const {
+		return space;
 	}
 
 protected:
 	//Constructor(s)
-	Component(const string& name, EntityIndex ownerIndex) : name(name) {
-		this->ownerIndex = ownerIndex;
-	}
+	Component(const string& name, GameObject& gameObject);
 
 };
 

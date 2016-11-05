@@ -20,14 +20,6 @@ AudioManager::~AudioManager() {
 
 }
 
-AudioManager& AudioManager::GetInstance() {
-
-	static AudioManager audio;
-
-	return audio;
-
-}
-
 void AudioManager::Update() {
 
 	audioEngine->update();

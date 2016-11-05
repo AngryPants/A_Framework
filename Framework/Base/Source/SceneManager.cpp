@@ -27,7 +27,7 @@ Scene* SceneManager::GetScene(const string& sceneName) {
 }
 
 //Interface Function(s)
-void SceneManager::Update(double deltaTime) {
+void SceneManager::Update(const double deltaTime) {
 	//Check if we need to switch scenes.
 	if (nextScene != nullptr) {
 		if (activeScene != nullptr) {
@@ -45,6 +45,7 @@ void SceneManager::Update(double deltaTime) {
 		//We need to make sure that the activeScene is not going to be removed as well.
 		//If it is, then we'll set activeScene to nullptr.
 		if (*setIter == activeScene->name) {
+			activeScene->Save();
 			activeScene->Exit();
 			activeScene = nullptr;
 		}
@@ -92,7 +93,16 @@ Scene* SceneManager::GetActiveScene() {
 }
 
 void SceneManager::RemoveAllScenes() {
-	for (map<string, Scene*>::iterator mapIter = sceneMap.begin(); mapIter != sceneMap.end(); ++mapIter) {
-		removeQueue.insert(mapIter->first);
+	removeQueue.clear();
+	if (activeScene != nullptr) {
+		activeScene->Save();
+		activeScene->Exit();
+		activeScene = nullptr;
 	}
+	nextScene = nullptr;
+
+	for (map<string, Scene*>::iterator mapIter = sceneMap.begin(); mapIter != sceneMap.end(); ++mapIter) {
+		delete mapIter->second;
+	}
+	sceneMap.clear();
 }

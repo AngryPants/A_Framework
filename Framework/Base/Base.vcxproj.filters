@@ -40,17 +40,11 @@
     <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Source Files\SpriteAnimation</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source Files\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Source\shader.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utility.cpp">
       <Filter>Source Files\Others</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\main.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\CollisionSystem.cpp">
       <Filter>Source Files\Others</Filter>
@@ -67,9 +61,6 @@
     <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Texture</Filter>
     </ClCompile>
@@ -82,11 +73,32 @@
     <ClCompile Include="Source\SceneTest.cpp">
       <Filter>Source Files\Test</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityTest.cpp">
-      <Filter>Source Files\Test</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObjectManager.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GraphicsUtility.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhongShader.cpp">
+      <Filter>Source Files\Graphics\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentManager.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,14 +153,8 @@
     <ClInclude Include="Source\Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Header Files\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\shader.hpp">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Header Files\Others</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utility.h">
       <Filter>Header Files\Others</Filter>
@@ -171,9 +177,6 @@
     <ClInclude Include="Source\ComponentTypeID.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Texture.h">
       <Filter>Header Files\Texture</Filter>
     </ClInclude>
@@ -186,20 +189,56 @@
     <ClInclude Include="Source\Typedef.h">
       <Filter>Header Files\Others</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentManager.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\EntityManager.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneTest.h">
       <Filter>Header Files\Test</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityTest.h">
-      <Filter>Header Files\Test</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Transform.h">
       <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rigidbody.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjectManager.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentManager.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObjectFactory.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RenderSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicsSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhongShader.h">
+      <Filter>Header Files\Graphics\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GraphicsUtility.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script.h">
+      <Filter>Header Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneEmpty.h">
+      <Filter>Header Files\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,12 +278,6 @@
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Camera">
-      <UniqueIdentifier>{0a3f3942-0b0c-48f7-aff1-376adf725962}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entity">
-      <UniqueIdentifier>{0fb46dd4-e31e-4239-acd1-f85e3010a866}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Entity">
       <UniqueIdentifier>{f2c21d18-4475-4dd7-8753-d528f2d07f3d}</UniqueIdentifier>
     </Filter>
@@ -260,14 +293,8 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{664cd4e5-7738-4b43-bf83-5743bbff58f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Component">
-      <UniqueIdentifier>{022b604c-8ded-4a7d-9dfc-3ff7b3819027}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Component">
       <UniqueIdentifier>{f879f05b-76a0-4a35-bc88-c28cf6c8c68c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Camera">
-      <UniqueIdentifier>{5e3fa7a6-014e-4c5a-9129-a5d53f8804bb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{f3f6ba48-634b-4673-a140-723b24bdc1c5}</UniqueIdentifier>
@@ -286,6 +313,33 @@
     </Filter>
     <Filter Include="Source Files\Mesh">
       <UniqueIdentifier>{825a4534-62cc-4912-9c4b-92598af7c23d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{0fb46dd4-e31e-4239-acd1-f85e3010a866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObject">
+      <UniqueIdentifier>{bd427273-2103-4505-b44d-1b6b8e35a64d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject">
+      <UniqueIdentifier>{5ad01aee-6b9e-49c6-b58b-914e9017f409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Shaders">
+      <UniqueIdentifier>{7851e0d6-5cc0-4ffe-b478-0e7e248ad61b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Shaders">
+      <UniqueIdentifier>{1ac3c15e-6205-4b9e-a372-db7436d34b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Script">
+      <UniqueIdentifier>{c0232fd4-3352-4261-9b99-e82763e152d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Component">
+      <UniqueIdentifier>{022b604c-8ded-4a7d-9dfc-3ff7b3819027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{d7c57e84-e099-4e77-a4e4-d60f33f6d336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{8544d2f8-e8a5-44b5-a043-91d5cb8ed395}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

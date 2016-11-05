@@ -20,12 +20,13 @@ Contains the implementation of the input manager.
 using namespace controller;
 
 InputManager::InputManager() {
-
 	inputInfo.Reset();
-
 }
 
 InputManager::~InputManager() {
+	Mouse::Destroy();
+	Keyboard::Destroy();
+	GamepadManager::Destroy();
 }
 
 const InputInfo& InputManager::GetInputInfo() const {
@@ -35,7 +36,6 @@ const InputInfo& InputManager::GetInputInfo() const {
 }
 
 void SetInput(InputInfo& inputInfo, const std::size_t index, KEY_STATE state = KEY_STATE::PRESS, float value = 1.0f) {
-
 	switch (state) {
 		case KEY_STATE::RELEASE: {		
 			inputInfo.keyDown[index] = false;
@@ -50,11 +50,9 @@ void SetInput(InputInfo& inputInfo, const std::size_t index, KEY_STATE state = K
 		}
 		break;
 	}
-
 }
 
 void ProcessInput(InputInfo& inputInfo, const Key& input) {
-
 	/*********************************************************************************************************/
 	//This is where we start customising the controls for our game. It might get a little tedious.
 	//For the sake of standardisation, ensure that keyValue is between 0.0f to 1.0f.
@@ -67,43 +65,36 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 		case KEYS::ESCAPE: {
 			SetInput(inputInfo, INPUT_QUIT, input.GetState());
 			break;
-		}		
-		case KEYS::LEFT: {
-			SetInput(inputInfo, INPUT_LEFT, input.GetState());
-			break;
-		}
-		case KEYS::RIGHT: {
-			SetInput(inputInfo, INPUT_RIGHT, input.GetState());
-			break;
-		}
-		case KEYS::UP: {
-			SetInput(inputInfo, INPUT_UP, input.GetState());
-			break;
-		}
-		case KEYS::DOWN: {
-			SetInput(inputInfo, INPUT_DOWN, input.GetState());
-			break;
-		}
-		case KEYS::Q:{
-			SetInput(inputInfo, INPUT_ROLL_LEFT, input.GetState());
-			break;
-		}
-		case KEYS::E:{
-			SetInput(inputInfo, INPUT_ROLL_RIGHT, input.GetState());
-			break;
 		}
 		case KEYS::R:{
 			SetInput(inputInfo, INPUT_RESET, input.GetState());
 			break;
 		}
-		case KEYS::K:{
-			SetInput(inputInfo, INPUT_SWAP_DOWN, input.GetState());
+
+		case KEYS::A: {
+			SetInput(inputInfo, INPUT_LEFT, input.GetState());
 			break;
 		}
-		case KEYS::P:{
-			SetInput(inputInfo, INPUT_SWAP_UP, input.GetState());
+		case KEYS::D: {
+			SetInput(inputInfo, INPUT_RIGHT, input.GetState());
 			break;
 		}
+		case KEYS::W: {
+			SetInput(inputInfo, INPUT_FORWARD, input.GetState());
+			break;
+		}
+		case KEYS::S: {
+			SetInput(inputInfo, INPUT_BACKWARD, input.GetState());
+			break;
+		}
+		case KEYS::Q: {
+			SetInput(inputInfo, INPUT_UP, input.GetState());
+			break;
+		}
+		case KEYS::E: {
+			SetInput(inputInfo, INPUT_DOWN, input.GetState());
+			break;
+		}		
 	}
 }
 

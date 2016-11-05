@@ -1,41 +1,100 @@
 #ifndef COMPONENT_MANAGER_H
 #define COMPONENT_MANAGER_H
 
-#include "ItemIndex.h"
+#include "SingletonTemplate.h"
 #include "ComponentTypeID.h"
-#include "Typedef.h"
+#include <set>
+#include <map>
+#include <string>
+#include <array>
 
-class ComponentManager {
+//Temporary
+#include "Transform.h"
+
+using namespace std;
+
+//Fuck me, so many templates. I hope this thing runs.
+
+class GameObject;
+
+typedef map<string, array<set<Component*>, MAX_COMPONENTS> > ComponentMap;
+
+class ComponentManager : public Singleton<ComponentManager> {
+
+	friend class Singleton<ComponentManager>;
 
 private:
-	ItemIndex<Component*> components[MAX_COMPONENTS];
+	//Variable(s)
+	//Welp, this looks complicated. I'm using std::array as a work around.
+	ComponentMap componentMap;
+	set<Component*> addQueue;
+	set<Component*> removeQueue;
 
-public:
+	//Constructor(s) & Destructor
+	ComponentManager();
+	virtual ~ComponentManager();
+
+	//Private Function(s)
+	void AddComponents();
+	void RemoveComponents();
+	
+public:	
+	//Interface Function(s)
+	void Update();
+	void Clear(const string& space);
+	void ClearAll();
+
 	template <class Type>
-	ComponentIndex CreateComponent(EntityIndex ownerID) {
-		Component* componentPtr = new Type(ownerID);
-		return components[GetComponentTypeID<Type>()].AddItem(componentPtr);
+	Type& CreateComponent(GameObject& gameObject) {
+		//Create the component.
+		Type* componentPtr = new Type(gameObject);
+		addQueue.insert(componentPtr);
+		return *componentPtr;
 	}
 
 	template <class Type>
-	Type& GetComponent(ComponentIndex index) {
-		return *(components[GetComponentTypeID<Type>()].GetItem(index));
+	void RemoveComponent(Type& component) {
+		if (std::is_base_of<Component, Type>::value == false) {
+			throw exception("Cannot remove non-component using RemoveComponent().");
+		}
+		removeQueue.insert(&component);
 	}
 
 	template <class Type>
-	void RemoveComponent(ComponentIndex index) {
-		components[GetComponentTypeID<Type>()].DeleteItem(index);
+	set<Component*>& GetComponents(const string& space) {
+		if (componentMap.count(space) == 0) {
+			array<set<Component*>, MAX_COMPONENTS> componentArray;
+			componentMap.insert(std::pair<string, array<set<Component*>, MAX_COMPONENTS> >(space, componentArray));			
+		}
+		return componentMap.find(space)->second[GetComponentTypeID<Type>()];
 	}
 
-	template <class Type>
-	unsigned int GetNumComponents() const {
-		return components[GetComponentTypeID<Type>()].GetNumValid();
-	}
+	/*template <class Type>
+	Type& CreateComponent(GameObject& gameObject) {
+		//Create the component.
+		Type* componentPtr = new Type(gameObject);
+		//Get the TypeID of the Component.
+		ComponentTypeID id = GetComponentTypeID<Type>();
+		//Check if the space exist.
+		map<string, array<set<Component*>, MAX_COMPONENTS> >::iterator mapIter = componentMap.find(gameObject.GetSpace());
+		if (mapIter != componentMap.end()) {
+			mapIter->second[id].insert(componentPtr); //Insert the component pointer.
+		} else {
+			array<set<Component*>, MAX_COMPONENTS> componentArray;
+			componentArray[id].insert(componentPtr);
+			componentMap.insert(std::pair<string, array<set<Component*>, MAX_COMPONENTS> >(gameObject.GetSpace(), componentArray));
+		}
 
-	template <class Type>
-	const set<ComponentIndex>& GetValidIndexes() const {
-		return components[GetComponentTypeID<Type>()].GetValidIndexes();
-	}
+		return *componentPtr;
+	}*/
+	
+	/*template <class Type>
+	void RemoveComponent(Type& component) {
+		Type* componentPtr = &component;
+		ComponentTypeID id = GetComponentTypeID<Type>();
+		componentMap.find(component.GetGameObject().GetSpace())->second[id].erase(componentPtr);
+		delete componentPtr;
+	}*/	
 
 };
 

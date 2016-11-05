@@ -31,7 +31,7 @@ namespace controller {
 		friend class Singleton<GamepadManager>;
 
 		GamepadManager();
-		virtual ~GamepadManager() = default;
+		virtual ~GamepadManager() {}
 
 		GLFWwindow* window;
 		std::vector<Gamepad> gamepads;

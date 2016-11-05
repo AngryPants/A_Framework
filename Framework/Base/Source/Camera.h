@@ -3,7 +3,7 @@
 
 #include "Vector3.h"
 #include "MyMath.h"
-#include "EntityBase.h"
+#include "Component.h"
 
 struct AspectRatio {
 
@@ -40,7 +40,7 @@ public:
 
 };
 
-class Camera : public EntityBase {
+class Camera : public Component {
 
 protected:
 	//Perspective
@@ -50,22 +50,13 @@ protected:
 
 	//Orthographic
 	bool isOrtho;
-	
-	//Transform
-	Vector3 position;
-	Vector3 target;
-	Vector3 up;
-	Vector3 left;
-	Vector3 rotation;
-
-	void CalculateVectors();
-	
+		
 public:	
 	float orthoSize;
 	AspectRatio aspectRatio;
-
+	
 	//Constructor(s) & Destructor
-	Camera(const string& name);
+	Camera(GameObject& gameObject);
 	virtual ~Camera();
 
 	void SetFOV(const float& FOV);
@@ -86,15 +77,6 @@ public:
 	void SetPosition(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 	void LookAt(Vector3 target, Vector3 up = Vector3(0, 1, 0));
 	void SetRotation(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-
-	const Vector3& GetPosition() const;
-	const Vector3& GetTarget() const;
-	const Vector3& GetUp() const;
-	const Vector3& GetLeft() const;
-	const Vector3& GetRotation() const;
-	
-	//Virtual Function(s)
-	virtual void Update(const double& deltaTime);
 
 };
 

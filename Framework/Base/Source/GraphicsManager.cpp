@@ -1,5 +1,6 @@
 #include "GraphicsManager.h"
 #include "Camera.h"
+#include "Transform.h"
 #include <iostream>
 #include <map>
 
@@ -59,22 +60,23 @@ bool GraphicsManager::ClearShaders() {
 }
 
 //MVP
-void GraphicsManager::SetToCameraView(Camera& camera) {
+void GraphicsManager::SetToCameraView(Camera& camera, Transform& transform) {
 
 	modelStack.LoadIdentity();
 	viewStack.LoadIdentity();
-	viewStack.LookAt(camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z,
-					 camera.GetTarget().x,
-					 camera.GetTarget().y,
-					 camera.GetTarget().z,
-					 camera.GetUp().x, camera.GetUp().y, camera.GetUp().z);
+
+	Vector3 position = transform.GetPosition();
+	Vector3 target = transform.GetPosition() + transform.GetForward();
+	Vector3 up = transform.GetUp();
+	viewStack.LookAt(position.x, position.y, position.z,
+					 target.x, target.y, target.z,
+					 up.x, up.y, up.z);
 
 	if (camera.IsOrtho()) {
 		Mtx44 orthoMatrix;
 		orthoMatrix.SetToOrtho(-camera.GetOrthoWidth(), camera.GetOrthoWidth(),
 							   -camera.GetOrthoSize(), camera.GetOrthoSize(),
-							   camera.GetNearClippingPlane(), camera.GetFarClippingPlane());
-		
+							   camera.GetNearClippingPlane(), camera.GetFarClippingPlane());		
 		projectionStack.LoadMatrix(orthoMatrix);
 	} else {
 		Mtx44 perspMatrix;
@@ -82,18 +84,27 @@ void GraphicsManager::SetToCameraView(Camera& camera) {
 									 camera.aspectRatio.GetRatio(),
 									 camera.GetNearClippingPlane(),
 									 camera.GetFarClippingPlane());
-
 		projectionStack.LoadMatrix(perspMatrix);
 	}
 
 }
 
-void GraphicsManager::SetToHUD(float left, float right, float down, float up, float near, float far) {
+/*void GraphicsManager::SetToUI(float left, float right, float down, float up, float near, float far) {
 
 	modelStack.LoadIdentity();
 	viewStack.LoadIdentity();
 	Mtx44 orthoMatrix;
 	orthoMatrix.SetToOrtho(left, right, down, up, near, far);
+	projectionStack.LoadMatrix(orthoMatrix);
+
+}*/
+
+void GraphicsManager::SetToUI() {
+
+	modelStack.LoadIdentity();
+	viewStack.LoadIdentity();
+	Mtx44 orthoMatrix;
+	orthoMatrix.SetToOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
 	projectionStack.LoadMatrix(orthoMatrix);
 
 }

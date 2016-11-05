@@ -23,7 +23,7 @@ Class Transform
 Defines Transform, a Component which stores the transformation of an object.
 */
 /*******************************************************************************/
-class Transform {
+class Transform : public Component {
 
 private:
 	//Variable(s)
@@ -33,7 +33,7 @@ private:
 
 public:
 	//Constructor(s)
-	Transform();
+	Transform(GameObject& gameObject);
 
 	//Destructor
 	virtual ~Transform();

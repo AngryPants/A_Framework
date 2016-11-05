@@ -1,10 +1,10 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
+#include "Component.h"
 #include "Vertex.h"
-#include "Transform.h"
 
-struct Light {
+struct Light : public Component {
 
 public:
 	//Enum(s)
@@ -25,12 +25,9 @@ public:
 	float cosInner;
 	float exponent;
 	bool on;
-	Transform transform;
-	//Position position;
-	//Vector3 spotDirection;
 
 	//Constructor(s) & Destructor
-	Light() {
+	Light(GameObject& gameObject) : Component("Light", gameObject) {
 		type = LIGHT_TYPE::LIGHT_POINT;
 		color.Set(1, 1, 1);
 		power = 1.0f;
@@ -42,7 +39,7 @@ public:
 		exponent = 0.1f;
 		on = true;
 	}
-	~Light() {}
+	virtual ~Light() {}
 
 };
 

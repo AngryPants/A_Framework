@@ -2,22 +2,18 @@
 #define SCENE_TEST_H
 
 #include "Scene.h"
-#include "Camera.h"
-#include "EntityTest.h"
-#include "EntityManager.h"
-#include "Light.h"
 #include "RenderHelper.h"
+#include "GameObjectFactory.h"
+#include "Mesh.h"
+#include "TextureList.h"
 
 class SceneTest : public Scene {
 
 private:
-	EntityManager* entityManager;
-	Camera* camera;
-	EntityTest* entity;
-	Mesh* backgroundMesh;
-	Mesh* lightBall;
-	TextureList backgroundTexture;
-	Light lights[RenderHelper::ShadowUniforms::MAX_LIGHTS];
+	GameObject* camera;
+	GameObject* light;
+	Mesh* mesh;
+	TextureList textureList;
 
 public:
 	//Constructor(s) & Destructor

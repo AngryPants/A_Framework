@@ -22,7 +22,7 @@ namespace controller {
 		CursorPosition(double x = 0.0, double y = 0.0) {
 			Set(x, y);
 		}
-		~CursorPosition() {}
+		virtual ~CursorPosition() {}
 
 		//Setter(s)
 		void Set(double x, double y) {

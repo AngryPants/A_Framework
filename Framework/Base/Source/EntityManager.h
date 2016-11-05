@@ -5,9 +5,12 @@ class EntityBase;
 #include "SingletonTemplate.h"
 #include <vector>
 #include <set>
+#include <map>
 
 using std::vector;
 using std::set;
+using std::map;
+using std::pair;
 
 class EntityManager : public Singleton<EntityManager>{
 
