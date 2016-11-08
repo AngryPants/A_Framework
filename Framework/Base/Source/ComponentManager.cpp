@@ -1,12 +1,16 @@
 #include "ComponentManager.h"
 #include "GameObject.h"
 
+#include "Camera.h"
+#include "MeshRenderer.h"
+#include "Transform.h"
+#include "Light.h"
+
 //Helper Functions. I can't put them in the header since they are templates, and including GameObject.h in header will
 //cause an include loop of non-compiling death.
-template <class Type>
-void InsertComponent(Type& component, ComponentMap& componentMap) {
+void InsertComponent(Component& component, ComponentMap& componentMap, ComponentTypeID id) {
 	//Get the TypeID of the Component.
-	ComponentTypeID id = GetComponentTypeID<Type>();
+	//cout << "Inserting Component of Type: " << typeid(component).name() << " ID: " << to_string(id) << endl;
 	//Check if the space exist.
 	ComponentMap::iterator mapIter = componentMap.find(component.GetSpace());
 	if (mapIter != componentMap.end()) {
@@ -18,10 +22,7 @@ void InsertComponent(Type& component, ComponentMap& componentMap) {
 	}
 }
 
-template <class Type>
-void DeleteComponent(Type& component, ComponentMap& componentMap) {
-	//Get the TypeID of the Component.
-	ComponentTypeID id = GetComponentTypeID<Type>();
+void DeleteComponent(Component& component, ComponentMap& componentMap, ComponentTypeID id) {
 	//Remove the component from the componentMap.
 	string space = component.GetSpace();
 	componentMap.find(space)->second[id].erase(&component);
@@ -38,19 +39,23 @@ ComponentManager::~ComponentManager() {
 
 //Private Function(s)
 void ComponentManager::AddComponents() {
-	for (set<Component*>::iterator setIter = addQueue.begin(); setIter != addQueue.end(); ++setIter) {
-		Component* componentPtr = *setIter;
-		InsertComponent(*componentPtr, componentMap);
-	}
-	addQueue.clear();
+	for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
+		for (set<Component*>::iterator setIter = addQueue[i].begin(); setIter != addQueue[i].end(); ++setIter) {
+			Component* componentPtr = *setIter;
+			InsertComponent(*componentPtr, componentMap, i);
+		}
+		addQueue[i].clear();
+	}	
 }
 
 void ComponentManager::RemoveComponents() {
-	for (set<Component*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ++setIter) {
-		Component* componentPtr = *setIter;
-		DeleteComponent(*componentPtr, componentMap);
+	for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
+		for (set<Component*>::iterator setIter = removeQueue[i].begin(); setIter != removeQueue[i].end(); ++setIter) {
+			Component* componentPtr = *setIter;
+			DeleteComponent(*componentPtr, componentMap, i);
+		}
+		removeQueue[i].clear();
 	}
-	removeQueue.clear();
 }
 
 //Interface Function(s)
@@ -61,25 +66,29 @@ void ComponentManager::Update() {
 
 void ComponentManager::Clear(const string& space) {
 	//Clear the removeQueue.
-	for (set<Component*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end();) {
-		Component* componentPtr = *setIter;
-		if (componentPtr->GetSpace() != space) {
-			++setIter;
-		} else {
-			setIter = removeQueue.erase(setIter);
+	for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
+		for (set<Component*>::iterator setIter = removeQueue[i].begin(); setIter != removeQueue[i].end();) {
+			Component* componentPtr = *setIter;
+			if (componentPtr->GetSpace() != space) {
+				++setIter;
+			} else {
+				setIter = removeQueue[i].erase(setIter);
+			}
 		}
 	}
-	
+
 	//Clear the addQueue.
-	for (set<Component*>::iterator setIter = addQueue.begin(); setIter != addQueue.end();) {
-		Component* componentPtr = *setIter;
-		if (componentPtr->GetSpace() != space) {
-			++setIter;
-		} else {
-			setIter = addQueue.erase(setIter);
-			delete componentPtr;
-		}
-	}	
+	for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
+		for (set<Component*>::iterator setIter = addQueue[i].begin(); setIter != addQueue[i].end();) {
+			Component* componentPtr = *setIter;
+			if (componentPtr->GetSpace() != space) {
+				++setIter;
+			} else {
+				setIter = addQueue[i].erase(setIter);
+				delete componentPtr;
+			}
+		}	
+	}
 
 	//Clear the main ComponentMap.
 	ComponentMap::iterator mapIter = componentMap.find(space);

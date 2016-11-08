@@ -30,9 +30,7 @@ InputManager::~InputManager() {
 }
 
 const InputInfo& InputManager::GetInputInfo() const {
-
 	return this->inputInfo;
-
 }
 
 void SetInput(InputInfo& inputInfo, const std::size_t index, KEY_STATE state = KEY_STATE::PRESS, float value = 1.0f) {

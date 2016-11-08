@@ -4,16 +4,12 @@
 #include "Scene.h"
 #include "RenderHelper.h"
 #include "GameObjectFactory.h"
-#include "Mesh.h"
-#include "TextureList.h"
 
 class SceneTest : public Scene {
 
 private:
 	GameObject* camera;
 	GameObject* light;
-	Mesh* mesh;
-	TextureList textureList;
 
 public:
 	//Constructor(s) & Destructor

@@ -186,7 +186,7 @@ Sets the position of the GameObject.
 The position of the GameObject.
 */
 /*******************************************************************************/
-void Transform::SetPosition(Vector3 position) {
+void Transform::SetPosition(const Vector3& position) {
 
 	this->position = position;
 
@@ -220,7 +220,7 @@ Sets the rotation of the GameObject.
 The rotation of the GameObject.
 */
 /*******************************************************************************/
-void Transform::SetRotation(Vector3 rotation) {
+void Transform::SetRotation(const Vector3& rotation) {
 
 	this->rotation = rotation;
 
@@ -254,7 +254,7 @@ Sets the scale of the GameObject.
 The scale of the GameObject.
 */
 /*******************************************************************************/
-void Transform::SetScale(Vector3 scale) {
+void Transform::SetScale(const Vector3& scale) {
 
 	this->scale = scale;
 
@@ -290,7 +290,7 @@ Translate the GameObject.
 The amount to translate the GameObject by.
 */
 /*******************************************************************************/
-void Transform::Translate(Vector3 translation) {
+void Transform::Translate(const Vector3& translation) {
 
 	this->position += translation;
 
@@ -324,7 +324,7 @@ Rotate the GameObject.
 The amount to rotate the GameObject by.
 */
 /*******************************************************************************/
-void Transform::Rotate(Vector3 rotation) {
+void Transform::Rotate(const Vector3& rotation) {
 
 	this->rotation += rotation;
 
@@ -358,7 +358,7 @@ Scale the GameObject on its 3 axis.
 The amount to scale the GameObject by.
 */
 /*******************************************************************************/
-void Transform::Scale(Vector3 scale) {
+void Transform::Scale(const Vector3& scale) {
 
 	this->scale.x *= scale.x;
 	this->scale.y *= scale.y;

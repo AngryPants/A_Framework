@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "Light.h"
+#include "MeshRenderer.h"
 
 class GameObjectFactory {
 

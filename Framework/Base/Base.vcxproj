@@ -35,6 +35,7 @@
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\PhongShader.cpp" />
     <ClCompile Include="Source\RenderHelper.cpp" />
+    <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\SceneTest.cpp" />
     <ClCompile Include="Source\shader.cpp" />
@@ -53,7 +54,7 @@
     <ClInclude Include="Source\CollisionSystem.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentManager.h" />
-    <ClInclude Include="Source\ComponentTypeID.h" />
+    <ClInclude Include="Source\IDGenerator.h" />
     <ClInclude Include="Source\Controller_Gamepad.h" />
     <ClInclude Include="Source\Controller_Keyboard.h" />
     <ClInclude Include="Source\Controller_Mouse.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\Material.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
+    <ClInclude Include="Source\MeshRenderer.h" />
     <ClInclude Include="Source\PhongShader.h" />
     <ClInclude Include="Source\PhysicsSystem.h" />
     <ClInclude Include="Source\RenderHelper.h" />

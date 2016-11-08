@@ -4,7 +4,7 @@
 #include "Component.h"
 #include "Vertex.h"
 
-struct Light : public Component {
+class Light : public Component {
 
 public:
 	//Enum(s)
@@ -40,7 +40,7 @@ public:
 		on = true;
 	}
 	virtual ~Light() {}
-
+	
 };
 
 #endif

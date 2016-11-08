@@ -2,7 +2,7 @@
 #define COMPONENT_MANAGER_H
 
 #include "SingletonTemplate.h"
-#include "ComponentTypeID.h"
+#include "IDGenerator.h"
 #include <set>
 #include <map>
 #include <string>
@@ -17,6 +17,7 @@ using namespace std;
 
 class GameObject;
 
+//Welp, this looks complicated. I'm using std::array as a work around.
 typedef map<string, array<set<Component*>, MAX_COMPONENTS> > ComponentMap;
 
 class ComponentManager : public Singleton<ComponentManager> {
@@ -24,11 +25,10 @@ class ComponentManager : public Singleton<ComponentManager> {
 	friend class Singleton<ComponentManager>;
 
 private:
-	//Variable(s)
-	//Welp, this looks complicated. I'm using std::array as a work around.
+	//Variable(s)	
 	ComponentMap componentMap;
-	set<Component*> addQueue;
-	set<Component*> removeQueue;
+	set<Component*> addQueue[MAX_COMPONENTS];
+	set<Component*> removeQueue[MAX_COMPONENTS];
 
 	//Constructor(s) & Destructor
 	ComponentManager();
@@ -48,7 +48,7 @@ public:
 	Type& CreateComponent(GameObject& gameObject) {
 		//Create the component.
 		Type* componentPtr = new Type(gameObject);
-		addQueue.insert(componentPtr);
+		addQueue[IDGenerator::GetInstance().GetComponentTypeID<Type>()].insert(componentPtr);
 		return *componentPtr;
 	}
 
@@ -57,7 +57,7 @@ public:
 		if (std::is_base_of<Component, Type>::value == false) {
 			throw exception("Cannot remove non-component using RemoveComponent().");
 		}
-		removeQueue.insert(&component);
+		removeQueue[IDGenerator::GetInstance().GetComponentTypeID<Type>()].insert(&component);
 	}
 
 	template <class Type>
@@ -66,35 +66,8 @@ public:
 			array<set<Component*>, MAX_COMPONENTS> componentArray;
 			componentMap.insert(std::pair<string, array<set<Component*>, MAX_COMPONENTS> >(space, componentArray));			
 		}
-		return componentMap.find(space)->second[GetComponentTypeID<Type>()];
+		return componentMap.find(space)->second[IDGenerator::GetInstance().GetComponentTypeID<Type>()];
 	}
-
-	/*template <class Type>
-	Type& CreateComponent(GameObject& gameObject) {
-		//Create the component.
-		Type* componentPtr = new Type(gameObject);
-		//Get the TypeID of the Component.
-		ComponentTypeID id = GetComponentTypeID<Type>();
-		//Check if the space exist.
-		map<string, array<set<Component*>, MAX_COMPONENTS> >::iterator mapIter = componentMap.find(gameObject.GetSpace());
-		if (mapIter != componentMap.end()) {
-			mapIter->second[id].insert(componentPtr); //Insert the component pointer.
-		} else {
-			array<set<Component*>, MAX_COMPONENTS> componentArray;
-			componentArray[id].insert(componentPtr);
-			componentMap.insert(std::pair<string, array<set<Component*>, MAX_COMPONENTS> >(gameObject.GetSpace(), componentArray));
-		}
-
-		return *componentPtr;
-	}*/
-	
-	/*template <class Type>
-	void RemoveComponent(Type& component) {
-		Type* componentPtr = &component;
-		ComponentTypeID id = GetComponentTypeID<Type>();
-		componentMap.find(component.GetGameObject().GetSpace())->second[id].erase(componentPtr);
-		delete componentPtr;
-	}*/	
 
 };
 

@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "ComponentTypeID.h"
+#include "IDGenerator.h"
 #include <string>
 #include <bitset>
 #include <exception>
@@ -31,7 +31,7 @@ public:
 	GameObject(const string& space, const string& name = "GameObject") : space(space), name(name) {
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
 			this->components[i] = nullptr;
-		}		
+		}
 		for (unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
 			scripts[i] = nullptr;
 		}
@@ -63,17 +63,18 @@ public:
 	//Components
 	template <class Type>
 	bool HasComponent() const {
-		return componentBitset[GetComponentTypeID<Type>()];
+		return componentBitset[IDGenerator::GetInstance().GetComponentTypeID<Type>()];
 	}
 
 	template <class Type>
 	Type& AddComponent() {
 		if (HasComponent<Type>()) {
+			cout << "This GameObject already has this component." << endl;
 			throw std::exception("This GameObject already has this component.");
 		}
 
-		ComponentTypeID id = GetComponentTypeID<Type>();
-		componentBitset[id] = true;
+		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
+		componentBitset[id] = 1;
 		Component* componentPtr = &ComponentManager::GetInstance().CreateComponent<Type>(*this);
 		components[id] = componentPtr;
 		
@@ -83,11 +84,12 @@ public:
 	template <class Type>
 	void RemoveComponent() {
 		if (!HasComponent<Type>) {
+			cout << "This GameObject does not have this component." << endl;
 			throw std::exception("This GameObject does not have this component.");
 			return;
 		}
 
-		ComponentTypeID id = GetComponentTypeID<Type>();
+		ComponentTypeID id = IDGenerator::GetComponentTypeID<Type>();
 		componentBitset[id] = 0;
 		ComponentManager::GetInstance().RemoveComponent(*components[id]);
 		components[id] = nullptr;
@@ -96,10 +98,11 @@ public:
 	template <class Type>
 	Type& GetComponent() {
 		if (!HasComponent<Type>()) {
+			cout << "This GameObject does not have this component." << endl;
 			throw std::exception("This GameObject does not have this component.");
 		}
 
-		Component* componentPtr = components[GetComponentTypeID<Type>()];
+		Component* componentPtr = components[IDGenerator::GetInstance().GetComponentTypeID<Type>()];
 		return *(static_cast<Type*>(componentPtr));
 	}
 	

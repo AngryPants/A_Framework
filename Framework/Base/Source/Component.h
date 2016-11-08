@@ -3,8 +3,11 @@
 
 #include "Typedef.h"
 #include <string>
+#include <iostream>
 
 using std::string;
+using std::cout;
+using std::endl;
 
 class GameObject;
 
@@ -33,7 +36,7 @@ public:
 	const string& GetSpace() const {
 		return space;
 	}
-
+		
 protected:
 	//Constructor(s)
 	Component(const string& name, GameObject& gameObject);

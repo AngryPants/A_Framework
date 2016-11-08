@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "MeshBuilder.h"
 #include "TextureManager.h"
+#include "RenderSystem.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -27,22 +28,22 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().SetNumLights(1);
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
-	
-	mesh = MeshBuilder::GetInstance().GenerateOBJ("Cube", "OBJ//Default//Cube.obj");
-	textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-	
+
 	camera = &GameObjectFactory::CreateCamera(name);
 	light = &GameObjectFactory::CreateLight(name);
-	light->GetComponent<Light>().type = Light::LIGHT_TYPE::LIGHT_POINT;
+	light->GetComponent<Light>().type = Light::LIGHT_TYPE::LIGHT_DIRECTIONAL;
+	light->GetComponent<Transform>().SetPosition(0, 0, 5);
+
+	light->AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Cube", "OBJ//Default//Cube.obj");
+	light->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
 
 }
 
 void SceneTest::Update(double deltaTime) {
 	
-	GameObjectManager::GetInstance().Update();
-
 	camera->GetComponent<Camera>().aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
-	
+	camera->GetComponent<Transform>().LookAt(light->GetComponent<Transform>().GetPosition(), Vector3(0, 1, 0));
+
 	float speed = 3.0f;
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_BACKWARD]) {
 		light->GetComponent<Transform>().Translate(0, 0, -speed * deltaTime);
@@ -80,13 +81,7 @@ void SceneTest::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	RenderHelper::GetInstance().UpdateLight(light->GetComponent<Light>(), light->GetComponent<Transform>(), 0);
 	
-	MS& modelStack = GraphicsManager::GetInstance().modelStack;
-	modelStack.PushMatrix();
-		modelStack.Translate(0, 0, 3);
-		modelStack.Rotate(45, 0, 1, 0);
-		modelStack.Rotate(45, 1, 0, 0);
-		RenderHelper::GetInstance().RenderMesh(*mesh, textureList, true);
-	modelStack.PopMatrix();
+	RenderSystem::GetInstance().Render(name);
 	
 	//Render Entities UI
 	GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::DEPTH_TEST>();

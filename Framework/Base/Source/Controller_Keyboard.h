@@ -193,6 +193,18 @@ namespace controller {
 
 	public:
 		//Function(s)
+		/*
+		Returns a key from a buffer of keys typed at that frame. Will throw an exception once buffer is completely empty.
+		To use, type out:
+		try {
+			while(true) {
+				const Key the_key = GetKey();
+				//Do something
+			}
+		} catch(std::exception d) {
+			//no more keys left. Do nothing.
+		}
+		*/
 		Key GetKey();
 		int GetUnicode();
 		std::string GetClipboard();

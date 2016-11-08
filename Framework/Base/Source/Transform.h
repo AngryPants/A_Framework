@@ -50,19 +50,19 @@ public:
 	Mtx44 GetRotationMatrix() const;
 
 	//Setters(s)
-	void SetPosition(Vector3 position);
+	void SetPosition(const Vector3& position);
 	void SetPosition(float x, float y, float z);
-	void SetRotation(Vector3 rotation);
+	void SetRotation(const Vector3& rotation);
 	void SetRotation(float x, float y, float z);
-	void SetScale(Vector3 scale);
+	void SetScale(const Vector3& scale);
 	void SetScale(float x, float y, float z);
 	
 	//Function(s)
-	void Translate(Vector3 translation);
+	void Translate(const Vector3& translation);
 	void Translate(float x, float y, float z);
-	void Rotate(Vector3 rotation);
+	void Rotate(const Vector3& rotation);
 	void Rotate(float x, float y, float z);
-	void Scale(Vector3 scale);
+	void Scale(const Vector3& scale);
 	void Scale(float x, float y, float z);
 	void Scale(float scale);
 	void LookAt(Vector3 target, Vector3 up = Vector3(0, 1, 0));

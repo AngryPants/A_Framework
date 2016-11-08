@@ -70,9 +70,6 @@
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneTest.cpp">
-      <Filter>Source Files\Test</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
@@ -99,6 +96,12 @@
     </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneTest.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RenderSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,9 +177,6 @@
     <ClInclude Include="Source\Component.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentTypeID.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Texture.h">
       <Filter>Header Files\Texture</Filter>
     </ClInclude>
@@ -240,6 +240,12 @@
     <ClInclude Include="Source\SceneEmpty.h">
       <Filter>Header Files\Test</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MeshRenderer.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IDGenerator.h">
+      <Filter>Header Files\Others</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -265,9 +271,6 @@
     </Filter>
     <Filter Include="Source Files\SpriteAnimation">
       <UniqueIdentifier>{2903984b-5578-4ef6-b3a0-12a6d8f851df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Texture">
-      <UniqueIdentifier>{abf2717b-5eb9-4515-8ca3-f2f6af130b18}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
@@ -340,6 +343,9 @@
     </Filter>
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{8544d2f8-e8a5-44b5-a043-91d5cb8ed395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Texture">
+      <UniqueIdentifier>{abf2717b-5eb9-4515-8ca3-f2f6af130b18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
