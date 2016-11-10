@@ -72,10 +72,10 @@ namespace PhongShader {
 		GetShader()->Update(uniforms.numLights, numLight);
 	}
 
-	void UpdateLight(Light& light, Transform& transform, unsigned int lightIndex, const PhongShader::Uniforms& uniforms) {
+	void UpdateLight(Light& light, Transform& transform, const unsigned int lightIndex, const PhongShader::Uniforms& uniforms) {
 		ShaderProgram* shader = GetShader();
-		shader->Update(uniforms.lightOn[lightIndex], light.on);
-		if (light.on == false) {
+		shader->Update(uniforms.lightOn[lightIndex], light.isActive);
+		if (light.isActive == false) {
 			return;
 		}
 		shader->Update(uniforms.lightType[lightIndex], static_cast<int>(light.type));
@@ -102,6 +102,11 @@ namespace PhongShader {
 		}
 	}
 			
+	void TurnOffLight(const unsigned int lightIndex, const PhongShader::Uniforms& uniforms) {
+		ShaderProgram* shader = GetShader();
+		shader->Update(uniforms.lightOn[lightIndex], false);
+	}
+
 	void RenderText(Mesh& mesh, TextureList& textureList, const string& text, Color color, const PhongShader::Uniforms& uniforms) {
 		ShaderProgram* shaderProgram = GetShader();
 		shaderProgram->Update(uniforms.textEnabled, true);

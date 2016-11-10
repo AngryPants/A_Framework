@@ -24,8 +24,7 @@ public:
 	float cosCutoff;
 	float cosInner;
 	float exponent;
-	bool on;
-
+	
 	//Constructor(s) & Destructor
 	Light(GameObject& gameObject) : Component("Light", gameObject) {
 		type = LIGHT_TYPE::LIGHT_POINT;
@@ -37,7 +36,6 @@ public:
 		cosInner = 0.8f;
 		cosCutoff = 1.0f;
 		exponent = 0.1f;
-		on = true;
 	}
 	virtual ~Light() {}
 	

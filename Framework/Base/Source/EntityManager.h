@@ -12,9 +12,9 @@ using std::set;
 using std::map;
 using std::pair;
 
-class EntityManager : public Singleton<EntityManager>{
+class EntityManager : public Singleton<EntityManager> {
 
-	friend Singleton <EntityManager> ;
+	friend class Singleton <EntityManager>;
 private:
 	//Constructor(s) & Destructor
 	EntityManager();

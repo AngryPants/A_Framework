@@ -31,6 +31,10 @@ public:
 		return go;
 	}
 
+	static GameObject& CreateEmpty(const string& space, const string& name = "GameObject") {
+		return GameObjectManager::GetInstance().CreateGameObject(space, name);
+	}
+
 };
 
 #endif

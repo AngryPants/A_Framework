@@ -25,6 +25,7 @@ private:
 public:
 	//Variable(s)
 	string name;
+	string tag;
 	Script* scripts[8];
 
 	//Constructor(s) & Destructor
@@ -35,6 +36,7 @@ public:
 		for (unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
 			scripts[i] = nullptr;
 		}
+		tag = "Default";
 	}
 	virtual ~GameObject() {
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {

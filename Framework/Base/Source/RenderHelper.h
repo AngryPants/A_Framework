@@ -27,6 +27,7 @@ private:
 	
 	//Variable(s)
 	SHADERS currentShader;
+	unsigned int numLights;
 
 	//Constructor(s) & Destructor
 	RenderHelper();
@@ -39,7 +40,9 @@ public:
 	void EnableFog(const bool boolean);	
 	void EnableLight(const bool boolean);	
 	void SetNumLights(const unsigned numLights);
-	void UpdateLight(Light& light, Transform& transform, unsigned int lightIndex);		
+	void UpdateLight(Light& light, Transform& transform, const unsigned int lightIndex);
+	void TurnOffLight(const unsigned int lightIndex);
+	unsigned int GetNumLights();
 
 	//Rendering
 	void RenderMesh(Mesh& mesh, const bool enableLight = false);

@@ -52,6 +52,7 @@ protected:
 	bool isOrtho;
 		
 public:	
+	float depth;
 	float orthoSize;
 	AspectRatio aspectRatio;
 	

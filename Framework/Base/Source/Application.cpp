@@ -130,7 +130,6 @@ void Application::Init() {
 void Application::InitScenes() {
 	//Add Scenes Here!
 	SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
-	SceneManager::GetInstance().SetActiveScene("Empty Scene");
 	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
 	SceneManager::GetInstance().SetActiveScene("Test Scene");
 }
@@ -173,15 +172,18 @@ void Application::Run() {
 
 	//Main Loop
 	InitScenes();
+	//Update anything created in the scene's Init();
+	GameObjectManager::GetInstance().Update();
+	ComponentManager::GetInstance().Update();
 	m_timer.startTimer(); //Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && !quit) {
 		elapsedTime = m_timer.getElapsedTime();
 		
 		//Update
 		InputManager::GetInstance().Update();
-		GameObjectManager::GetInstance().Update();
-		ComponentManager::GetInstance().Update();
 		SceneManager::GetInstance().Update(elapsedTime);
+		GameObjectManager::GetInstance().Update();
+		ComponentManager::GetInstance().Update();		
 		AudioManager::GetInstance().Update();
 
 		//Render

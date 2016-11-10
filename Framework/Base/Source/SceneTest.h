@@ -10,6 +10,7 @@ class SceneTest : public Scene {
 private:
 	GameObject* camera;
 	GameObject* light;
+	GameObject* cube;
 
 public:
 	//Constructor(s) & Destructor

@@ -9,10 +9,10 @@
       <UniqueIdentifier>{e69915ce-dbd2-48be-a6e4-5303092977ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{afe9118a-6edd-4264-89c6-23d9f160df84}</UniqueIdentifier>
+      <UniqueIdentifier>{d766b814-f82a-4083-a6ba-b390713db91f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Vector">
-      <UniqueIdentifier>{77290028-ba3f-4ebb-b379-0473243f927a}</UniqueIdentifier>
+      <UniqueIdentifier>{80abaf57-76ff-4253-bb44-2bd4a25cbe9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

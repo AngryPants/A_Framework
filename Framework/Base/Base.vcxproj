@@ -40,6 +40,7 @@
     <ClCompile Include="Source\SceneTest.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\ShaderProgram.cpp" />
+    <ClCompile Include="Source\SphereCollider.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
@@ -51,9 +52,12 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\AudioManager.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\Collider.h" />
     <ClInclude Include="Source\CollisionSystem.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentManager.h" />
+    <ClInclude Include="Source\CubeScript.h" />
+    <ClInclude Include="Source\HealthComponent.h" />
     <ClInclude Include="Source\IDGenerator.h" />
     <ClInclude Include="Source\Controller_Gamepad.h" />
     <ClInclude Include="Source\Controller_Keyboard.h" />
@@ -66,6 +70,7 @@
     <ClInclude Include="Source\GraphicsManager.h" />
     <ClInclude Include="Source\InputManager.h" />
     <ClInclude Include="Source\Light.h" />
+    <ClInclude Include="Source\LivesComponent.h" />
     <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
@@ -86,6 +91,7 @@
     <ClInclude Include="Source\Script.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\ShaderProgram.h" />
+    <ClInclude Include="Source\SphereCollider.h" />
     <ClInclude Include="Source\SpriteAnimation.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureList.h" />

@@ -46,9 +46,6 @@
     <ClCompile Include="Source\Utility.cpp">
       <Filter>Source Files\Others</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CollisionSystem.cpp">
-      <Filter>Source Files\Others</Filter>
-    </ClCompile>
     <ClCompile Include="Source\InputManager.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
@@ -101,6 +98,12 @@
       <Filter>Source Files\Test</Filter>
     </ClCompile>
     <ClCompile Include="Source\RenderSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SphereCollider.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="Source\ShaderProgram.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CollisionSystem.h">
-      <Filter>Header Files\Others</Filter>
     </ClInclude>
     <ClInclude Include="Source\Controller_Gamepad.h">
       <Filter>Header Files\Input</Filter>
@@ -246,6 +246,24 @@
     <ClInclude Include="Source\IDGenerator.h">
       <Filter>Header Files\Others</Filter>
     </ClInclude>
+    <ClInclude Include="Source\CubeScript.h">
+      <Filter>Header Files\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SphereCollider.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CollisionSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HealthComponent.h">
+      <Filter>Header Files\Component\Custom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LivesComponent.h">
+      <Filter>Header Files\Component\Custom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -305,9 +323,6 @@
     <Filter Include="Header Files\Mesh">
       <UniqueIdentifier>{3ffd7100-0ab6-43c4-91f6-bf54be3317ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems">
-      <UniqueIdentifier>{175e7cc8-e485-4eb0-b794-667b3592f3bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Test">
       <UniqueIdentifier>{014a089d-33f8-4b70-8128-6e5935379ba4}</UniqueIdentifier>
     </Filter>
@@ -346,6 +361,12 @@
     </Filter>
     <Filter Include="Source Files\Texture">
       <UniqueIdentifier>{abf2717b-5eb9-4515-8ca3-f2f6af130b18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{175e7cc8-e485-4eb0-b794-667b3592f3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Component\Custom">
+      <UniqueIdentifier>{9bcdd8fb-7b59-4ca2-8ef5-b1585ccccd23}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

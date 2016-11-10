@@ -51,8 +51,9 @@ namespace PhongShader {
 	void EnableFog(const bool boolean, const PhongShader::Uniforms& uniforms);
 	void EnableLight(const bool boolean, const PhongShader::Uniforms& uniforms);
 	void SetNumLights(const int numLight, const PhongShader::Uniforms& uniforms);
-	void UpdateLight(Light& light, Transform& transform, unsigned int lightIndex, const PhongShader::Uniforms& uniforms);
-		
+	void UpdateLight(Light& light, Transform& transform, const unsigned int lightIndex, const PhongShader::Uniforms& uniforms);
+	void TurnOffLight(const unsigned int lightIndex, const PhongShader::Uniforms& uniforms);
+
 	void RenderText(Mesh& mesh, TextureList& textureList, const string& text, Color color, const PhongShader::Uniforms& uniforms);
 	void RenderMesh(Mesh& mesh, TextureList& textureList, const bool& enableLight, const PhongShader::Uniforms& shadowUniforms);
 

@@ -12,6 +12,7 @@ using namespace std;
 
 //Constructor(s) & Destructor
 RenderHelper::RenderHelper() {
+	numLights = 0;
 }
 
 RenderHelper::~RenderHelper() {
@@ -62,17 +63,35 @@ void RenderHelper::EnableLight(const bool boolean) {
 void RenderHelper::SetNumLights(const unsigned int numLights) {
 	switch (currentShader) {
 		case SHADERS::PHONG:
-			PhongShader::SetNumLights(numLights, phongUniforms);
+			if (numLights <= PhongShader::Uniforms::MAX_LIGHTS) {
+				PhongShader::SetNumLights(numLights, phongUniforms);
+				this->numLights = numLights;
+			} else {
+				PhongShader::SetNumLights(PhongShader::Uniforms::MAX_LIGHTS, phongUniforms);
+				this->numLights = PhongShader::Uniforms::MAX_LIGHTS;
+			}
 			break;
 	}
 }
 
-void RenderHelper::UpdateLight(Light& light, Transform& transform, unsigned int lightIndex) {
+void RenderHelper::UpdateLight(Light& light, Transform& transform, const unsigned int lightIndex) {
 	switch (currentShader) {
 		case SHADERS::PHONG:
 			PhongShader::UpdateLight(light, transform, lightIndex, phongUniforms);
 			break;
 	}
+}
+
+void RenderHelper::TurnOffLight(const unsigned int lightIndex) {
+	switch (currentShader) {
+		case SHADERS::PHONG:
+			PhongShader::TurnOffLight(lightIndex, phongUniforms);
+			break;
+	}
+}
+
+unsigned int RenderHelper::GetNumLights() {
+	return numLights;
 }
 
 //Rendering

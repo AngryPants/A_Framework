@@ -20,6 +20,7 @@ using std::endl;
 
 Camera::Camera(GameObject& gameObject) : Component("Camera", gameObject) {
 
+	depth = 0.0f;
 	isOrtho = false;
 	this->nearClippingPlane = 0.3f;
 	this->farClippingPlane = 1000.0f;
