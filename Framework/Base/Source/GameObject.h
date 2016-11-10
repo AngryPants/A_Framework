@@ -8,6 +8,7 @@
 #include <set>
 #include <map>
 #include "ComponentManager.h"
+#include "GameObjectManager.h"
 #include "Script.h"
 
 using namespace std;
@@ -21,7 +22,8 @@ private:
 	string space;
 	ComponentBitset componentBitset;
 	Component* components[MAX_COMPONENTS];
-	
+	bool destroyed;
+
 public:
 	//Variable(s)
 	string name;
@@ -30,6 +32,7 @@ public:
 
 	//Constructor(s) & Destructor
 	GameObject(const string& space, const string& name = "GameObject") : space(space), name(name) {
+		destroyed = false;
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
 			this->components[i] = nullptr;
 		}
@@ -110,6 +113,15 @@ public:
 	
 	const ComponentBitset& GetComponentBitset() const {
 		return this->componentBitset;
+	}
+
+	//Destruction
+	void Destroy() {
+		destroyed = true;
+		GameObjectManager::GetInstance().RemoveGameObject(*this);
+	}
+	bool IsDestroyed() const {
+		return destroyed;
 	}
 
 };

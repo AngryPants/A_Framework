@@ -183,7 +183,7 @@ void Application::Run() {
 		InputManager::GetInstance().Update();
 		SceneManager::GetInstance().Update(elapsedTime);
 		GameObjectManager::GetInstance().Update();
-		ComponentManager::GetInstance().Update();		
+		ComponentManager::GetInstance().Update();
 		AudioManager::GetInstance().Update();
 
 		//Render

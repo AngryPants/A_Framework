@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_FACTORY_H
 #define GAMEOBJECT_FACTORY_H
 
-#include "GameObjectManager.h"
+#include "GameObject.h"
 
 //Include Components
 #include "Camera.h"

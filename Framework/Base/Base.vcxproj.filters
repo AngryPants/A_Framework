@@ -100,11 +100,14 @@
     <ClCompile Include="Source\RenderSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SphereCollider.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\CollisionSystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SphereCollider.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider.cpp">
+      <Filter>Source Files\Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,12 +252,6 @@
     <ClInclude Include="Source\CubeScript.h">
       <Filter>Header Files\Script</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SphereCollider.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collider.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\CollisionSystem.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
@@ -263,6 +260,12 @@
     </ClInclude>
     <ClInclude Include="Source\LivesComponent.h">
       <Filter>Header Files\Component\Custom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider.h">
+      <Filter>Header Files\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SphereCollider.h">
+      <Filter>Header Files\Component\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +370,12 @@
     </Filter>
     <Filter Include="Header Files\Component\Custom">
       <UniqueIdentifier>{9bcdd8fb-7b59-4ca2-8ef5-b1585ccccd23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Component\Collision">
+      <UniqueIdentifier>{0d993572-6cbe-45de-be21-44dfd5044dc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Collision">
+      <UniqueIdentifier>{046d8ed2-4f37-4738-af9e-54afffbdbe2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

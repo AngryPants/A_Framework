@@ -5,9 +5,10 @@
 #include <map>
 #include <set>
 #include <string>
-#include "GameObject.h"
 
 using namespace std;
+
+class GameObject;
 
 //A space is simply a string that is used to identity which "bucket" the entity belongs to.
 
