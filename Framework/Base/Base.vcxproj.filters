@@ -61,12 +61,6 @@
     <ClCompile Include="Source\Texture.cpp">
       <Filter>Source Files\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EntityBase.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EntityManager.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
@@ -108,6 +102,9 @@
     </ClCompile>
     <ClCompile Include="Source\Collider.cpp">
       <Filter>Source Files\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneNode.cpp">
+      <Filter>Source Files\SceneGraph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,14 +183,8 @@
     <ClInclude Include="Source\TextureList.h">
       <Filter>Header Files\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityBase.h">
-      <Filter>Header Files\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Typedef.h">
       <Filter>Header Files\Others</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EntityManager.h">
-      <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneTest.h">
       <Filter>Header Files\Test</Filter>
@@ -267,6 +258,12 @@
     <ClInclude Include="Source\SphereCollider.h">
       <Filter>Header Files\Component\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneNode.h">
+      <Filter>Header Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGraph.h">
+      <Filter>Header Files\SceneGraph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -302,9 +299,6 @@
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Entity">
-      <UniqueIdentifier>{f2c21d18-4475-4dd7-8753-d528f2d07f3d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Texture">
       <UniqueIdentifier>{02e80f52-fb51-4f50-9119-7a1155c63cad}</UniqueIdentifier>
     </Filter>
@@ -334,9 +328,6 @@
     </Filter>
     <Filter Include="Source Files\Mesh">
       <UniqueIdentifier>{825a4534-62cc-4912-9c4b-92598af7c23d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entity">
-      <UniqueIdentifier>{0fb46dd4-e31e-4239-acd1-f85e3010a866}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\GameObject">
       <UniqueIdentifier>{bd427273-2103-4505-b44d-1b6b8e35a64d}</UniqueIdentifier>
@@ -376,6 +367,12 @@
     </Filter>
     <Filter Include="Source Files\Component\Collision">
       <UniqueIdentifier>{046d8ed2-4f37-4738-af9e-54afffbdbe2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SceneGraph">
+      <UniqueIdentifier>{358efa3c-0ef5-4b44-879a-4335a308f5fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneGraph">
+      <UniqueIdentifier>{f2832a79-c23d-453f-a846-b7a52101f785}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

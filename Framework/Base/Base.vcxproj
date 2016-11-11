@@ -22,8 +22,6 @@
     <ClCompile Include="Source\Controller_Gamepad.cpp" />
     <ClCompile Include="Source\Controller_Keyboard.cpp" />
     <ClCompile Include="Source\Controller_Mouse.cpp" />
-    <ClCompile Include="Source\EntityBase.cpp" />
-    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\GameObjectManager.cpp" />
     <ClCompile Include="Source\GraphicsManager.cpp" />
     <ClCompile Include="Source\GraphicsUtility.cpp" />
@@ -38,6 +36,7 @@
     <ClCompile Include="Source\RenderHelper.cpp" />
     <ClCompile Include="Source\RenderSystem.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
+    <ClCompile Include="Source\SceneNode.cpp" />
     <ClCompile Include="Source\SceneTest.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\ShaderProgram.cpp" />
@@ -64,8 +63,6 @@
     <ClInclude Include="Source\Controller_Keyboard.h" />
     <ClInclude Include="Source\Controller_Mouse.h" />
     <ClInclude Include="Source\GameObject.h" />
-    <ClInclude Include="Source\EntityBase.h" />
-    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\GameObjectFactory.h" />
     <ClInclude Include="Source\GameObjectManager.h" />
     <ClInclude Include="Source\GraphicsManager.h" />
@@ -87,7 +84,9 @@
     <ClInclude Include="Source\Rigidbody.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneEmpty.h" />
+    <ClInclude Include="Source\SceneGraph.h" />
     <ClInclude Include="Source\SceneManager.h" />
+    <ClInclude Include="Source\SceneNode.h" />
     <ClInclude Include="Source\SceneTest.h" />
     <ClInclude Include="Source\Script.h" />
     <ClInclude Include="Source\shader.hpp" />
