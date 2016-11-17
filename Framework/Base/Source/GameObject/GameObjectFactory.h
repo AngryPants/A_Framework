@@ -27,7 +27,6 @@ public:
 	static GameObject& CreateCamera(const string& space, const string& name = "Camera") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<Camera>();
-		go.AddComponent<Transform>();
 
 		return go;
 	}
@@ -35,7 +34,6 @@ public:
 	static GameObject& CreateLight(const string& space, const string& name = "Light") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<Light>();
-		go.AddComponent<Transform>();
 
 		return go;
 	}
@@ -46,7 +44,6 @@ public:
 
 	static GameObject& CreateCube(const string& space, const string& name = "Cube") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<Transform>();
 		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Cube", "OBJ//Default//Cube.obj");
 
 		return go;

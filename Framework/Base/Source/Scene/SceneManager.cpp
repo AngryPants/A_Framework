@@ -27,12 +27,12 @@ Scene* SceneManager::GetScene(const string& sceneName) {
 }
 
 //Interface Function(s)
-void SceneManager::Update(const double deltaTime) {
+void SceneManager::Update(double deltaTime) {
 	//Check if we need to switch scenes.
 	if (nextScene != nullptr) {
 		if (activeScene != nullptr) {
 			activeScene->Save();
-			activeScene->Exit();			
+			activeScene->Exit();
 		}
 		activeScene = nextScene;
 		nextScene = nullptr;

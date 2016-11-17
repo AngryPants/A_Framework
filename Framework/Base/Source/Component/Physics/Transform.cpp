@@ -11,6 +11,7 @@ CPP file for Transform.
 
 #include "Transform.h"
 #include <iostream>
+#include "../../GameObject/GameObject.h"
 
 using std::cout;
 using std::endl;
@@ -24,11 +25,9 @@ The constructor of Transform.
 */
 /*******************************************************************************/
 Transform::Transform(GameObject& gameObject) : Component("Transform", gameObject) {
-
 	SetPosition(0, 0, 0);
 	SetRotation(0, 0, 0);
 	SetScale(1, 1, 1);
-
 }
 
 /*******************************************************************************/
@@ -52,9 +51,7 @@ The position of the GameObject.
 */
 /*******************************************************************************/
 const Vector3& Transform::GetPosition() const {
-
 	return this->position;
-
 }
 
 /*******************************************************************************/
@@ -67,9 +64,7 @@ The rotation of the GameObject.
 */
 /*******************************************************************************/
 const Vector3& Transform::GetRotation() const {
-
 	return this->rotation;
-
 }
 
 /*******************************************************************************/
@@ -82,9 +77,7 @@ The scale of the GameObject.
 */
 /*******************************************************************************/
 const Vector3& Transform::GetScale() const {
-
 	return this->scale;
-
 }
 
 /*******************************************************************************/
@@ -97,13 +90,10 @@ The forward vector of the GameObject.
 */
 /*******************************************************************************/
 Vector3 Transform::GetForward() const {
-
 	Mtx44 transformationMatrix;
 	transformationMatrix.SetToTranslation(0, 0, 1);
-	transformationMatrix = GetRotationMatrix() * transformationMatrix;
-	
+	transformationMatrix = GetRotationMatrix() * transformationMatrix;	
 	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
-
 }
 
 /*******************************************************************************/
@@ -116,13 +106,10 @@ The up vector of the GameObject.
 */
 /*******************************************************************************/
 Vector3 Transform::GetUp() const {
-
 	Mtx44 transformationMatrix;
 	transformationMatrix.SetToTranslation(0, 1, 0);
 	transformationMatrix = GetRotationMatrix() * transformationMatrix;
-
 	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
-
 }
 
 /*******************************************************************************/
@@ -135,13 +122,10 @@ The left vector of the GameObject.
 */
 /*******************************************************************************/
 Vector3 Transform::GetLeft() const {
-
 	Mtx44 transformationMatrix;
 	transformationMatrix.SetToTranslation(1, 0, 0);
 	transformationMatrix = GetRotationMatrix() * transformationMatrix;
-
 	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
-
 }
 
 /*******************************************************************************/
@@ -154,25 +138,12 @@ The rotationMatrix of the GameObject.
 */
 /*******************************************************************************/
 Mtx44 Transform::GetRotationMatrix() const {
-
 	//Mtx44 transformationMatrix[3];
 	Mtx44 rotationMatrix[3];
-
 	rotationMatrix[0].SetToRotation(this->rotation.x, 1, 0, 0);
 	rotationMatrix[1].SetToRotation(this->rotation.y, 0, 1, 0);
 	rotationMatrix[2].SetToRotation(this->rotation.z, 0, 0, 1);
-
-	//rotationMatrix.SetToIdentity();
-	
-	//transformationMatrix.SetToRotation(this->rotation.y, 0, 1, 0);
-	//rotationMatrix = rotationMatrix * transformationMatrix;
-	//transformationMatrix.SetToRotation(this->rotation.x, 1, 0, 0);
-	//rotationMatrix = rotationMatrix * transformationMatrix;
-	//transformationMatrix.SetToRotation(this->rotation.z, 0, 0, 1);
-	//rotationMatrix = rotationMatrix * transformationMatrix;
-
 	return rotationMatrix[1] * rotationMatrix[0] * rotationMatrix[2];
-
 }
 
 //Setter(s)
@@ -187,9 +158,7 @@ The position of the GameObject.
 */
 /*******************************************************************************/
 void Transform::SetPosition(const Vector3& position) {
-
 	this->position = position;
-
 }
 
 /*******************************************************************************/
@@ -206,9 +175,7 @@ The position of the GameObject on the z-axis.
 */
 /*******************************************************************************/
 void Transform::SetPosition(float x, float y, float z) {
-
 	SetPosition(Vector3(x, y, z));
-
 }
 
 void Transform::SetPositionX(const float x) {
@@ -233,9 +200,7 @@ The rotation of the GameObject.
 */
 /*******************************************************************************/
 void Transform::SetRotation(const Vector3& rotation) {
-
 	this->rotation = rotation;
-
 }
 
 /*******************************************************************************/
@@ -252,9 +217,7 @@ The rotation of the GameObject on the z-axis.
 */
 /*******************************************************************************/
 void Transform::SetRotation(float x, float y, float z) {
-
 	SetRotation(Vector3(x, y, z));
-
 }
 
 /*******************************************************************************/
@@ -267,9 +230,7 @@ The scale of the GameObject.
 */
 /*******************************************************************************/
 void Transform::SetScale(const Vector3& scale) {
-
 	this->scale = scale;
-
 }
 
 /*******************************************************************************/
@@ -286,9 +247,7 @@ The scale of the GameObject on the z-axis.
 */
 /*******************************************************************************/
 void Transform::SetScale(float x, float y, float z) {
-
 	SetScale(Vector3(x, y, z));
-
 }
 
 //Function(s)
@@ -303,9 +262,7 @@ The amount to translate the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Translate(const Vector3& translation) {
-
 	this->position += translation;
-
 }
 
 /*******************************************************************************/
@@ -322,9 +279,7 @@ The amount to translate the GameObject by on the z-axis.
 */
 /*******************************************************************************/
 void Transform::Translate(float x, float y, float z) {
-
 	Translate(Vector3(x, y, z));
-
 }
 
 /*******************************************************************************/
@@ -337,9 +292,7 @@ The amount to rotate the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Rotate(const Vector3& rotation) {
-
 	this->rotation += rotation;
-
 }
 
 /*******************************************************************************/
@@ -356,9 +309,7 @@ The amount to rotate the GameObject by on the z-axis.
 */
 /*******************************************************************************/
 void Transform::Rotate(float x, float y, float z) {
-
 	Rotate(Vector3(x, y, z));
-
 }
 
 /*******************************************************************************/
@@ -371,11 +322,9 @@ The amount to scale the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Scale(const Vector3& scale) {
-
 	this->scale.x *= scale.x;
 	this->scale.y *= scale.y;
 	this->scale.z *= scale.z;
-
 }
 
 /*******************************************************************************/
@@ -392,9 +341,7 @@ The amount to scale the GameObject by on the z-axis.
 */
 /*******************************************************************************/
 void Transform::Scale(float x, float y, float z) {
-
 	Scale(Vector3(x, y, z));
-
 }
 
 /*******************************************************************************/
@@ -407,9 +354,7 @@ The amount to scale the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Scale(float scale) {
-
 	this->scale *= scale;
-
 }
 
 /*******************************************************************************/
@@ -427,7 +372,6 @@ The fucking up vector the fucking shit is supposed to orient to.
 */
 /*******************************************************************************/
 void Transform::LookAt(Vector3 target, Vector3 up) {
-
 	Vector3 view = target - position;
 	Vector3 left = up.Cross(view);
 	up = view.Cross(left);
@@ -463,5 +407,4 @@ void Transform::LookAt(Vector3 target, Vector3 up) {
 	}
 
 	rotation.Set(x, y, z);
-
 }

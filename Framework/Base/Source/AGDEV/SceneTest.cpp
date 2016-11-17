@@ -41,6 +41,7 @@ void SceneTest::Init() {
 	cube->GetComponent<Transform>().SetPosition(0, 0, 5);
 	cube->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
 	cube->AddScript<CubeScript>(0);
+	cube->RemoveComponent<Transform>();
 }
 
 void SceneTest::Update(double deltaTime) {	

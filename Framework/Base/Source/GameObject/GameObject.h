@@ -1,9 +1,10 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#include "GameObjectManager.h"
 #include "../Others/IDGenerator.h"
 #include "../Component/ComponentManager.h"
-#include "GameObjectManager.h"
+#include "../Component/Physics/Transform.h"
 #include "../Script/Script.h"
 #include <string>
 #include <bitset>
@@ -42,6 +43,7 @@ public:
 			scripts[i] = nullptr;
 		}
 		tag = "Default";
+		AddComponent<Transform>();
 	}
 	virtual ~GameObject() {
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
@@ -105,6 +107,11 @@ public:
 		componentBitset[id] = 0;
 		ComponentManager::GetInstance().RemoveComponent(*components[id]);
 		components[id] = nullptr;
+	}
+
+	template<>
+	void RemoveComponent<Transform>() {
+		cout << "Cannot remove Transform Component. All GameObjects must have it." << endl;
 	}
 
 	template <class Type>

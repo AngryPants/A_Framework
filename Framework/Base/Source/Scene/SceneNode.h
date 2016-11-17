@@ -10,40 +10,44 @@ class SceneNode {
 
 private:
 	//Variable(s)
-	string space;
-	int id;
 	GameObject* gameObject;
+	SceneNode* rootNode;
 	SceneNode* parent;
 	set<SceneNode*> children;
-	
-public:	
+	bool isDestroyed;
+
+	//Private Function(s)
+	bool CheckIsParent(const SceneNode* nodePtr) const;
+	bool RemoveChild(SceneNode& sceneNode);
+
+public:
 	//Constructor(s) & Destructor
-	SceneNode(const string& space);
-	virtual ~SceneNode();
+	SceneNode(GameObject& gameObject, SceneNode* rootNode);
+	virtual ~SceneNode(); //DO NOT CALL THE DESTRUCTOR! SERIOUSLY, DON'T! If you wannt delete shit, use the Destroy() function;
 
 	//Interface Function(s)
 	const string& GetSpace() const;
-
-	void Destroy(); //Destroy this node and it's children.
-
-	void SetID(const int id); //Set the ID for this node.
-	int GetID() const; //Get the ID for this node.
-
-	bool SetGameObject(GameObject* gameObject); //Set the GameObject for this SceneNode
-	GameObject* GetGameObject(); //Get the GameObject for this SceneNode
-
-	void SetParent(SceneNode* parent);
-	SceneNode* GetParent();
 	
-	//Get the GameObject inside this SceneGraph
-	SceneNode* AddChild(GameObject* child);
-	bool DeleteChild(GameObject* child);
-	bool DeleteChild(const int id);
-	bool DeleteAllChildren();
-	SceneNode* DetachChild(GameObject* child);
-	SceneNode* DetachChild(const int id);
-	int GetNumberOfChildren() const;
+	//Deletion
+	void Destroy();
+	bool IsDestroyed() const;
 
+	//GameObject
+	GameObject& GetGameObject(); //Get the GameObject for this SceneNode
+
+	//Parent
+	bool SetParent(SceneNode& sceneNode);
+	bool RemoveParent();
+	GameObject* GetParent();
+
+	//Children
+	bool AddChild(SceneNode& sceneNode);
+	bool DetachChild(SceneNode& sceneNode);
+	bool DetachAllChildren();
+	bool DestroyChild(SceneNode& sceneNode);
+	bool DestroyAllChildren();
+	unsigned int GetNumChildren() const;
+	
 };
 
 #endif

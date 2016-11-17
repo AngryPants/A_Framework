@@ -36,11 +36,9 @@ public:
 	template <class Type>
 	void CreateScene(const string& sceneName) {
 		if (!is_base_of<Scene, Type>::value) {
-			//Error::ThrowException("Cannot create scene with a non-scene as type.");
 			cout << "Cannot create scene with a non-scene as type." << endl;
 			throw exception("Cannot create scene with a non-scene as type.");
 		} else if (CheckIfSceneExist(sceneName)) {
-			//Error::ThrowException("Cannot CreateScene(" + sceneName + ") as another scene with that name already exists.");
 			cout << "Cannot Create Scene" << endl;
 			throw exception("Cannot Create Scene");
 		}

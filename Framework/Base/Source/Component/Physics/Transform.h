@@ -15,6 +15,9 @@ Header file for Transform.
 #include "../Component.h"
 #include "Vector3.h"
 #include "MatrixStack.h"
+#include <set>
+
+using std::set;
 
 /*******************************************************************************/
 /*!
