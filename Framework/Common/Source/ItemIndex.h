@@ -85,7 +85,7 @@ public:
 		if (itemPtr != nullptr) {
 			delete itemPtr;
 		}
-	}		
+	}
 	//Clear everything. The items are deleted.
 	void Clear() {
 		while (validSlots.size() > 0) {
@@ -108,6 +108,21 @@ public:
 	//Get the number of freeSlots indexes.
 	unsigned int GetNumFree() const {
 		return freeSlots.size();
+	}
+	//Get the number of items. It'll be the same as the number of validSlots.
+	unsigned int GetNumItems() const {
+		return validSlots.size();
+	}
+
+	//Copy all da stuff.
+	ItemIndex<Type>& operator=(const ItemIndex<Type>& rhs) {
+		Clear();
+		this->freeSlots = rhs.freeSlots;
+		this->validSlots = rhs.validSlots;
+		this->items.resize(rhs.items.size(), nullptr);
+		for (set<unsigned int>::iterator setIter = rhs.GetValidIndexes().begin(); setIter != rhs.GetValidIndexes().end(); ++setIter) {
+			items[*setIter] = new Type(rhs.items[*setIter]);
+		}
 	}
 
 };

@@ -11,7 +11,7 @@ private:
 	GameObject* camera;
 	GameObject* light;
 	GameObject* cube;
-
+	
 public:
 	//Constructor(s) & Destructor
 	SceneTest(const string& name);

@@ -52,6 +52,7 @@ bool AudioManager::PlaySoleAudio2D(const string& audioFile, bool looped, float v
 	{
 		audioEngine->setAllSoundsPaused();
 		audioEngine->play2D(audioFile.c_str(), looped);
+		return false;
 	}
 }
 

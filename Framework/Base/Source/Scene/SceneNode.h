@@ -16,8 +16,7 @@ private:
 	SceneNode* parent;
 	set<SceneNode*> children;
 	
-public:
-	
+public:	
 	//Constructor(s) & Destructor
 	SceneNode(const string& space);
 	virtual ~SceneNode();
@@ -37,9 +36,6 @@ public:
 	SceneNode* GetParent();
 	
 	//Get the GameObject inside this SceneGraph
-	//SceneNode* GetGameObject(GameObject* gameObject);
-	//SceneNode* GetGameObject(const int id);
-
 	SceneNode* AddChild(GameObject* child);
 	bool DeleteChild(GameObject* child);
 	bool DeleteChild(const int id);

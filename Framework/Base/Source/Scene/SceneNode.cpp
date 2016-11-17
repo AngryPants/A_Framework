@@ -32,6 +32,7 @@ bool SceneNode::SetGameObject(GameObject* gameObject) {
 		throw std::exception("A SceneNode can only take in a GameObject in the same space as it.");
 	}
 	this->gameObject = gameObject;
+	return true;
 }
 
 GameObject* SceneNode::GetGameObject() {

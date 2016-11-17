@@ -19,6 +19,7 @@ class GameObject {
 
 private:
 	//Variable(s)
+	GameObjectID id;
 	string space;
 	ComponentBitset componentBitset;
 	Component* components[MAX_COMPONENTS];
@@ -32,6 +33,7 @@ public:
 
 	//Constructor(s) & Destructor
 	GameObject(const string& space, const string& name = "GameObject") : space(space), name(name) {
+		this->id = IDGenerator::GetInstance().GetGameObjectID();
 		destroyed = false;
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
 			this->components[i] = nullptr;
@@ -53,6 +55,7 @@ public:
 				delete scripts[i];
 			}
 		}
+		IDGenerator::GetInstance().ReturnGameObjectID(id);
 	}
 
 	//Name
@@ -64,6 +67,9 @@ public:
 	}
 	const string& GetSpace() const {
 		return this->space;
+	}
+	int GetID() const {
+		return this->id;
 	}
 
 	//Components
@@ -140,6 +146,7 @@ public:
 		}
 		Type* script = new Type(*this);
 		this->scripts[index] = script;
+		return script;
 	}
 
 	void RemoveScript(unsigned int index) {
