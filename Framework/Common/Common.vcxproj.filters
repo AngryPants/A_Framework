@@ -40,14 +40,8 @@
     <ClCompile Include="Source\Vector3.cpp">
       <Filter>Source Files\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Error.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Error.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ItemIndex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
