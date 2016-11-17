@@ -3,11 +3,21 @@
 
 #include "GameObject.h"
 
+//Include Systems
+#include "TextureManager.h"
+#include "MeshBuilder.h"
+
+//Include Scripts
+
 //Include Components
 #include "Camera.h"
 #include "Transform.h"
 #include "Light.h"
 #include "MeshRenderer.h"
+#include "SpriteRenderer.h"
+#include "TextRenderer.h"
+#include "HealthComponent.h"
+#include "SphereCollider.h"
 
 class GameObjectFactory {
 

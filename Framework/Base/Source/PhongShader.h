@@ -44,7 +44,7 @@ namespace PhongShader {
 		UniformID lightCosInner[MAX_LIGHTS];
 		UniformID lightExponent[MAX_LIGHTS];
 	};
-
+	
 	void LoadShader(const string& shaderName, PhongShader::Uniforms& uniforms);
 	void DeleteShader(const string& shaderName);
 	void SetAlphaDiscardValue(const float alphaValue, const PhongShader::Uniforms& uniforms);

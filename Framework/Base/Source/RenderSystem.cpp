@@ -3,9 +3,12 @@
 #include "GameObject.h"
 #include "RenderHelper.h"
 #include "GraphicsManager.h"
+#include "Application.h"
 
 //Include Components
 #include "MeshRenderer.h"
+#include "TextRenderer.h"
+#include "SpriteRenderer.h"
 #include "Transform.h"
 #include "Camera.h"
 #include "Light.h"
@@ -18,6 +21,18 @@ RenderSystem::~RenderSystem() {
 }
 
 //Interface Function(s)
+void RenderSystem::Update(const string& space, double deltaTime) {
+	//Sprite Animation
+	set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
+	for (set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
+		SpriteRenderer& spriteRenderer = *(static_cast<SpriteRenderer*>(*setIter));		
+		if (!spriteRenderer.isActive) {
+			continue;
+		}
+		spriteRenderer.Update(deltaTime);
+	}
+}
+
 void RenderSystem::Render(const string& space) {
 	
 	//Cameras
@@ -41,9 +56,11 @@ void RenderSystem::Render(const string& space) {
 
 	//Ensure that we have a camera to even render,
 	if (camPtr == nullptr) {
+		cout << "No suitable camera. Unable to Render()." << endl;
 		return;
 	}
 	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
+	camPtr->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
 
 	//Lights
 	set<Component*>& lights = ComponentManager::GetInstance().GetComponents<Light>(space);
@@ -79,7 +96,55 @@ void RenderSystem::Render(const string& space) {
 			modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
 			modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
 			modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
-			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);
+			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);	
+		modelStack.PopMatrix();
+	}
+
+	//Sprite Animation
+	set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
+	for (set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
+		SpriteRenderer& spriteRenderer = *(static_cast<SpriteRenderer*>(*setIter));		
+		if (spriteRenderer.GetGameObject().HasComponent<Transform>() == false) {
+			continue;
+		}
+		Transform& transform = spriteRenderer.GetGameObject().GetComponent<Transform>();
+		if (!spriteRenderer.isActive || !transform.isActive || spriteRenderer.GetSpriteAnimation() == nullptr) {
+			continue;
+		}
+
+		MS& modelStack = GraphicsManager::GetInstance().modelStack;
+		modelStack.PushMatrix();
+			modelStack.Translate(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
+			modelStack.Rotate(transform.GetRotation().y, 0, 1, 0);
+			modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
+			modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
+			modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
+			RenderHelper::GetInstance().RenderMesh(*spriteRenderer.GetSpriteAnimation(), spriteRenderer.textureList, spriteRenderer.lightEnabled);
+		modelStack.PopMatrix();
+	}
+
+	//Text
+	set<Component*>& textRenderers = ComponentManager::GetInstance().GetComponents<TextRenderer>(space);
+	//Loop through them.
+	for (set<Component*>::iterator setIter = textRenderers.begin(); setIter != textRenderers.end(); ++setIter) {
+		TextRenderer& textRenderer = *(static_cast<TextRenderer*>(*setIter));
+		//Check if the GameObject has the required components.
+		if (textRenderer.GetGameObject().HasComponent<Transform>() == false) {
+			continue;
+		}
+		Transform& transform = textRenderer.GetGameObject().GetComponent<Transform>();
+		if (!textRenderer.isActive || !transform.isActive || textRenderer.mesh == nullptr) {
+			continue;
+		}
+
+		MS& modelStack = GraphicsManager::GetInstance().modelStack;
+		modelStack.PushMatrix();
+			modelStack.Translate(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
+			modelStack.Rotate(transform.GetRotation().y, 0, 1, 0);
+			modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
+			modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
+			modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
+			RenderHelper::GetInstance().RenderText(*textRenderer.mesh, textRenderer.textureList, textRenderer.text, textRenderer.textColor);
 		modelStack.PopMatrix();
 	}
 

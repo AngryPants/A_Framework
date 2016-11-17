@@ -37,7 +37,7 @@ void GameObjectManager::AddGameObjects() {
 }
 
 void GameObjectManager::RemoveGameObjects() {
-	for (set<GameObject*>::iterator setIter = addQueue.begin(); setIter != addQueue.end(); ++setIter) {
+	for (set<GameObject*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ++setIter) {
 		GameObject* goPtr = *setIter;
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
 		mapIter->second.erase(goPtr);
@@ -113,11 +113,18 @@ void GameObjectManager::UpdateScripts(const string& space, const double deltaTim
 }
 
 set<GameObject*>& GameObjectManager::GetGameObjects(const string& space) {
-
 	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
 	if (mapIter == goMap.end()) {
 		throw exception("Cannot GetGameObjects() as space is not found.");
 	}
 
 	return mapIter->second;
+}
+
+int GameObjectManager::GetNumGameObjects(const string& space) {
+	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
+	if (mapIter == goMap.end()) {
+		return 0;
+	}
+	return mapIter->second.size();
 }

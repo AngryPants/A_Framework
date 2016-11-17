@@ -9,16 +9,18 @@ class HealthComponent : public Component {
 private:
 	//Variable(s)
 	int hp;
+	int maxHp;
 
 public:
 	//Constructor(s) & Destructor
 	HealthComponent(GameObject& gameObject) : Component("Health Component", gameObject) {
 		hp = 1;
+		maxHp = 10;
 	}
-	virtual ~HealthComponent();
+	virtual ~HealthComponent() {}
 
 	//Interface Function(s)
-	bool isAlive() {
+	bool IsAlive() {
 		return hp > 0;
 	}
 
@@ -41,6 +43,19 @@ public:
 	}
 	int GetHealth() const {
 		return hp;
+	}
+	void SetMaxHealth(const int maxHealth) {
+		if (maxHealth > 0) {
+			this->maxHp = maxHealth;
+		} else {
+			this->maxHp = 0;
+		}
+		if (this->hp > this->maxHp) {
+			this->hp = this->maxHp;
+		}
+	}
+	int GetMaxHealth() const {
+		return this->maxHp;
 	}
 
 };

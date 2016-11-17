@@ -26,25 +26,36 @@ void AudioManager::Update() {
 
 }
 
+bool AudioManager::PauseAudioList(bool state) {
+	audioEngine->setAllSoundsPaused(state);
+	return true;
+}
+
 bool AudioManager::PlayAudio2D(const string& audioFile, bool looped, float volume) {
 
-	ISound* soundPtr = audioEngine->play2D(audioFile.c_str(), looped, false, true);
-	soundPtr->setVolume(volume);
-	audioList.insert(soundPtr);
-
+		if (audioEngine->isCurrentlyPlaying(audioFile.c_str()))
+			return true;
+	
+		ISound* soundPtr = audioEngine->play2D(audioFile.c_str(), looped);
+		if (audioList.find(soundPtr) != audioList.end()) {
+			audioList.insert(soundPtr);
+		}
 	return true;
+}
 
+bool AudioManager::PlaySoleAudio2D(const string& audioFile, bool looped, float volume) {
+
+	if (audioEngine->isCurrentlyPlaying(audioFile.c_str())) {
+		return true;
+	}
+	else
+	{
+		audioEngine->setAllSoundsPaused();
+		audioEngine->play2D(audioFile.c_str(), looped);
+	}
 }
 
 bool AudioManager::ClearAudioList() {
-
-	set<ISound*>::iterator iter = audioList.begin();
-	while (audioList.size() > 0) {
-		if (*iter) {
-			(*iter)->drop();
-		}
-		iter = audioList.erase(iter);
-	}
 
 	audioEngine->removeAllSoundSources();
 

@@ -3,6 +3,9 @@
 
 #include "Component.h"
 #include "Vector3.h"
+#include <vector>
+
+using namespace std;
 
 //Forward Declaration
 class GameObject;
@@ -12,38 +15,36 @@ class CollisionInfo {
 
 private:
 	//Variable(s)
-	GameObject* gameObject;
 	bool previousState;
 	bool currentState;
-	Vector3 collisionPoint;
+
 
 public:
+	//Variable(s)
+	vector<GameObject*> gameObjects;
+	vector<Vector3> collisionPoint;
+
 	//Constructor(s) & Destructor
 	CollisionInfo() {
-		gameObject = nullptr;
+		gameObjects.clear();
+		collisionPoint.clear();
 		previousState = false;
-		currentState = false;
+		currentState = false;		
 	}
 	virtual ~CollisionInfo() {}
 
-	void Collide(bool hasCollision, GameObject* gameObject = nullptr, const Vector3& collisionPoint = Vector3(0, 0, 0)) {
+	void Collide(GameObject& gameObject, const Vector3& collisionPoint) {
+		currentState = true;
+		this->gameObjects.push_back(&gameObject);
+		this->collisionPoint.push_back(collisionPoint);
+	}
+
+	void Reset() {
+		gameObjects.clear();
+		collisionPoint.clear();
 		previousState = currentState;
-		if (!hasCollision || gameObject == nullptr) {
-			currentState = false;
-			this->gameObject = nullptr;
-			this->collisionPoint.SetZero();
-		} else {
-			currentState = true;
-			this->gameObject = gameObject;
-			this->collisionPoint = collisionPoint;
-		}		
+		currentState = false;
 	}
-
-	const Vector3& GetCollisionPoint() {
-		return this->collisionPoint;
-	}
-
-	GameObject* GetGameObject();
 
 	bool EnterCollision() {
 		return (currentState == true && previousState == false);
@@ -74,7 +75,7 @@ public:
 
 	//Destructor
 	virtual ~Collider() {}
-	
+
 };
 
 #endif

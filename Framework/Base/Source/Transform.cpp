@@ -211,6 +211,18 @@ void Transform::SetPosition(float x, float y, float z) {
 
 }
 
+void Transform::SetPositionX(const float x) {
+	this->position.x = x;
+}
+
+void Transform::SetPositionY(const float y) {
+	this->position.y = y;
+}
+
+void Transform::SetPositionZ(const float z) {
+	this->position.z = z;
+}
+
 /*******************************************************************************/
 /*!
 \brief

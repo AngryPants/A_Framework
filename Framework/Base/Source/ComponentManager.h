@@ -52,12 +52,8 @@ public:
 		return *componentPtr;
 	}
 
-	template <class Type>
-	void RemoveComponent(Type& component) {
-		if (std::is_base_of<Component, Type>::value == false) {
-			throw exception("Cannot remove non-component using RemoveComponent().");
-		}
-		removeQueue[IDGenerator::GetInstance().GetComponentTypeID<Type>()].insert(&component);
+	void RemoveComponent(Component& component, ComponentTypeID id) {
+		removeQueue[id].insert(&component);
 	}
 
 	template <class Type>

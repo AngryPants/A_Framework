@@ -45,24 +45,19 @@ void SceneTest::Init() {
 	CubeScript* cubeScript = new CubeScript();
 	cubeScript->go = cube;
 	cube->scripts[0] = cubeScript;
-	
+
 }
 
-void SceneTest::Update(double deltaTime) {
-	
-	camera->GetComponent<Camera>().aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
-	//camera->GetComponent<Transform>().LookAt(light->GetComponent<Transform>().GetPosition(), Vector3(0, 1, 0));
-	
+void SceneTest::Update(double deltaTime) {	
 	GameObjectManager::GetInstance().UpdateScripts(name, deltaTime);
-
 	//Close da app
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
 		Application::GetInstance().Quit();
 	}
-
+	RenderSystem::GetInstance().Update(name, deltaTime);
 }
 
-void SceneTest::Render() {	
+void SceneTest::Render() {
 	GraphicsManager::GetInstance().ClearColor();
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 
@@ -75,9 +70,7 @@ void SceneTest::Render() {
 	RenderSystem::GetInstance().RenderUI(name);
 }
 
-void SceneTest::Exit() {
-	
+void SceneTest::Exit() {	
 	RenderHelper::GetInstance().DeleteShader(SHADERS::PHONG);
 	GameObjectManager::GetInstance().Clear(name);
-
 }

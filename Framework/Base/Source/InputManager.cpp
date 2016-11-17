@@ -69,30 +69,50 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			break;
 		}
 
-		case KEYS::A: {
+		case KEYS::LEFT: {
 			SetInput(inputInfo, INPUT_LEFT, input.GetState());
 			break;
 		}
-		case KEYS::D: {
+		case KEYS::RIGHT: {
 			SetInput(inputInfo, INPUT_RIGHT, input.GetState());
 			break;
 		}
-		case KEYS::W: {
+		case KEYS::UP: {
 			SetInput(inputInfo, INPUT_FORWARD, input.GetState());
 			break;
 		}
-		case KEYS::S: {
+		case KEYS::DOWN: {
 			SetInput(inputInfo, INPUT_BACKWARD, input.GetState());
 			break;
 		}
-		case KEYS::Q: {
-			SetInput(inputInfo, INPUT_UP, input.GetState());
+		case KEYS::ENTER: {
+			SetInput(inputInfo, INPUT_SELECT, input.GetState());
 			break;
 		}
-		case KEYS::E: {
-			SetInput(inputInfo, INPUT_DOWN, input.GetState());
+		case KEYS::SPACE: {
+			SetInput(inputInfo, INPUT_SHOOT, input.GetState());
 			break;
-		}		
+		}
+		case KEYS::ONE: {
+			SetInput(inputInfo, INPUT_SELECT_DEFAULT, input.GetState());
+			break;
+		}
+		case KEYS::TWO: {
+			SetInput(inputInfo, INPUT_SELECT_OCTOMAN, input.GetState());
+			break;
+		}
+		case KEYS::THREE: {
+			SetInput(inputInfo, INPUT_SELECT_DONKEY_KING, input.GetState());
+			break;
+		}
+		case KEYS::FOUR: {
+			SetInput(inputInfo, INPUT_SELECT_COOKIE_MASTER, input.GetState());
+			break;
+		}
+		case KEYS::FIVE: {			
+			SetInput(inputInfo, INPUT_SELECT_BOWSIR, input.GetState());
+			break;
+		}
 	}
 }
 

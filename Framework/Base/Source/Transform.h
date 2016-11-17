@@ -52,6 +52,9 @@ public:
 	//Setters(s)
 	void SetPosition(const Vector3& position);
 	void SetPosition(float x, float y, float z);
+	void SetPositionX(const float x);
+	void SetPositionY(const float y);
+	void SetPositionZ(const float z);
 	void SetRotation(const Vector3& rotation);
 	void SetRotation(float x, float y, float z);
 	void SetScale(const Vector3& scale);

@@ -103,6 +103,9 @@
     <ClCompile Include="Source\Collider.cpp">
       <Filter>Source Files\Component\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SpriteRenderer.cpp">
+      <Filter>Source Files\Component\Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="Source\SceneNode.cpp">
       <Filter>Source Files\SceneGraph</Filter>
     </ClCompile>
@@ -234,9 +237,6 @@
     <ClInclude Include="Source\SceneEmpty.h">
       <Filter>Header Files\Test</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MeshRenderer.h">
-      <Filter>Header Files\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\IDGenerator.h">
       <Filter>Header Files\Others</Filter>
     </ClInclude>
@@ -258,10 +258,19 @@
     <ClInclude Include="Source\SphereCollider.h">
       <Filter>Header Files\Component\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneNode.h">
-      <Filter>Header Files\SceneGraph</Filter>
+    <ClInclude Include="Source\MeshRenderer.h">
+      <Filter>Header Files\Component\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpriteRenderer.h">
+      <Filter>Header Files\Component\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextRenderer.h">
+      <Filter>Header Files\Component\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneGraph.h">
+      <Filter>Header Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneNode.h">
       <Filter>Header Files\SceneGraph</Filter>
     </ClInclude>
   </ItemGroup>
@@ -302,17 +311,11 @@
     <Filter Include="Header Files\Texture">
       <UniqueIdentifier>{02e80f52-fb51-4f50-9119-7a1155c63cad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scene">
-      <UniqueIdentifier>{8020bce8-bbb6-4af1-b7c5-50ce94ae5721}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Systems">
       <UniqueIdentifier>{e57160ba-ae31-412b-a9c8-3e7acb0f9ad2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{664cd4e5-7738-4b43-bf83-5743bbff58f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Component">
-      <UniqueIdentifier>{f879f05b-76a0-4a35-bc88-c28cf6c8c68c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{f3f6ba48-634b-4673-a140-723b24bdc1c5}</UniqueIdentifier>
@@ -365,14 +368,29 @@
     <Filter Include="Header Files\Component\Collision">
       <UniqueIdentifier>{0d993572-6cbe-45de-be21-44dfd5044dc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Component\Graphics">
+      <UniqueIdentifier>{8f8f7d7b-0d02-4418-be21-fafb1e4cbdec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripts">
+      <UniqueIdentifier>{af508437-b7ab-4d00-9b4b-36de72c021a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{8020bce8-bbb6-4af1-b7c5-50ce94ae5721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{f879f05b-76a0-4a35-bc88-c28cf6c8c68c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Component\Collision">
       <UniqueIdentifier>{046d8ed2-4f37-4738-af9e-54afffbdbe2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\Graphics">
+      <UniqueIdentifier>{ee5528e8-c054-4414-a3b4-755a8c357376}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\SceneGraph">
-      <UniqueIdentifier>{358efa3c-0ef5-4b44-879a-4335a308f5fc}</UniqueIdentifier>
+      <UniqueIdentifier>{d86726e0-24ac-4b5d-a953-90b4193815cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\SceneGraph">
-      <UniqueIdentifier>{f2832a79-c23d-453f-a846-b7a52101f785}</UniqueIdentifier>
+      <UniqueIdentifier>{29eae400-2a86-45f6-865b-f7c1dbc8a364}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

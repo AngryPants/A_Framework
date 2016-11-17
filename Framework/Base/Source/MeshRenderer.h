@@ -12,7 +12,7 @@ public:
 	Mesh* mesh;
 	TextureList textureList;
 	bool lightEnabled;
-
+	
 	//Constructor(s) & Destructor
 	MeshRenderer(GameObject& gameObject) : Component("Mesh Renderer", gameObject) {
 		mesh = nullptr;

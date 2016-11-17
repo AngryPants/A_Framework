@@ -589,7 +589,6 @@ Mesh* MeshBuilder::GenerateText(const std::string &meshName, unsigned numRow, un
 	meshMap.insert(pair<string, Mesh*>(meshName, mesh));
 
 	return mesh;
-
 }
 
 Normal CalculateTerrainNormal(float heightLeft, float heightRight, float heightUp, float heightDown) {

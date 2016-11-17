@@ -60,11 +60,18 @@ int Application::GetWindowHeight() {
 }
 
 Application::Application() {
-	m_window_height = 800;
-	m_window_width = 1024;
+	m_window_height = 900;
+	m_window_width = 1600;
 }
 
 Application::~Application() {
+}
+
+void Application::InitScenes() {
+	//Add Scenes Here!
+	SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
+	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
+	SceneManager::GetInstance().SetActiveScene("Test Scene");
 }
 
 void Application::Init() {
@@ -84,8 +91,8 @@ void Application::Init() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 	
 	//Create a window and create its OpenGL context
-	m_window = glfwCreateWindow(m_window_width, m_window_height, "150496F_Framework", NULL, NULL); //Windowed
-	//m_window = glfwCreateWindow(glfwGetVideoMode(glfwGetPrimaryMonitor())->width, glfwGetVideoMode(glfwGetPrimaryMonitor())->height, "150496F_ACG", glfwGetPrimaryMonitor(), NULL);
+	m_window = glfwCreateWindow(m_window_width, m_window_height, "A_Framework", NULL, NULL); //Windowed
+	//m_window = glfwCreateWindow(glfwGetVideoMode(glfwGetPrimaryMonitor())->width, glfwGetVideoMode(glfwGetPrimaryMonitor())->height, "A_Framework", glfwGetPrimaryMonitor(), NULL);
 
 	//If the window couldn't be created
 	if (!m_window) {
@@ -125,13 +132,6 @@ void Application::Init() {
 	controller::GamepadManager::GetInstance().SetWindow(m_window);
 
 	quit = false;
-}
-
-void Application::InitScenes() {
-	//Add Scenes Here!
-	SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
-	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
-	SceneManager::GetInstance().SetActiveScene("Test Scene");
 }
 
 void Application::ExitSystems() {

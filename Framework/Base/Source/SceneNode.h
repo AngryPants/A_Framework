@@ -20,7 +20,7 @@ public:
 	
 	//Constructor(s) & Destructor
 	SceneNode(const string& space);
-	virtual ~SceneNode() {}
+	virtual ~SceneNode();
 
 	//Interface Function(s)
 	const string& GetSpace() const;

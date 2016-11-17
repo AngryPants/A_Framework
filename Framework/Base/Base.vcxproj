@@ -42,6 +42,7 @@
     <ClCompile Include="Source\ShaderProgram.cpp" />
     <ClCompile Include="Source\SphereCollider.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
+    <ClCompile Include="Source\SpriteRenderer.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureManager.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
@@ -93,6 +94,8 @@
     <ClInclude Include="Source\ShaderProgram.h" />
     <ClInclude Include="Source\SphereCollider.h" />
     <ClInclude Include="Source\SpriteAnimation.h" />
+    <ClInclude Include="Source\SpriteRenderer.h" />
+    <ClInclude Include="Source\TextRenderer.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\TextureList.h" />
     <ClInclude Include="Source\TextureManager.h" />

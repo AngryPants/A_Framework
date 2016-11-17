@@ -19,6 +19,7 @@ private:
 
 public:
 	//Interface Function(s)
+	virtual void Update(const string& space, double deltaTime);
 	virtual void Render(const string& space);
 	virtual void RenderUI(const string& space);
 

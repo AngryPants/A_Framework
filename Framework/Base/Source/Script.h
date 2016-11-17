@@ -4,10 +4,12 @@
 class Script {
 
 public:
+	//Constructor(s) & Destructor
 	Script() {}
 	virtual ~Script() {}
 
-	virtual void Update(const double deltaTime) {}
+	//Interface Function(s)
+	virtual void Update(double deltaTime) {}
 
 };
 

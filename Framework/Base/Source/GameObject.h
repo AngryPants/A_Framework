@@ -44,9 +44,10 @@ public:
 	virtual ~GameObject() {
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
 			if (this->components[i] != nullptr) {
-				ComponentManager::GetInstance().RemoveComponent(*components[i]);
+				ComponentManager::GetInstance().RemoveComponent(*components[i], i);
 			}
 		}
+		componentBitset.reset();
 		for (unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
 			if (scripts[i] != nullptr) {
 				delete scripts[i];

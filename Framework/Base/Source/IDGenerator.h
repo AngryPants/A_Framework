@@ -24,7 +24,6 @@ private:
 	//Private Function(s)
 	ComponentTypeID GenerateComponentTypeID() {
 		static ComponentTypeID currentID = 0;
-		cout << "Current ID is " << std::to_string(currentID) << "." << endl;
 		return currentID++;
 	}
 
