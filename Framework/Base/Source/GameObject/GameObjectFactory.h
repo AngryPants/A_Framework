@@ -44,6 +44,14 @@ public:
 		return GameObjectManager::GetInstance().CreateGameObject(space, name);
 	}
 
+	static GameObject& CreateCube(const string& space, const string& name = "Cube") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<Transform>();
+		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Cube", "OBJ//Default//Cube.obj");
+
+		return go;
+	}
+
 };
 
 #endif

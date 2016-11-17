@@ -38,13 +38,10 @@ void SceneTest::Init() {
 	light->GetComponent<Transform>().SetPosition(0, 0, 5);
 	light->GetComponent<Transform>().SetRotation(45, 0, 0);
 
-	cube = &GameObjectFactory::CreateEmpty(name);
-	cube->AddComponent<Transform>().SetPosition(0, 0, 5);
-	cube->AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Cube", "OBJ//Default//Cube.obj");
+	cube = &GameObjectFactory::CreateCube(name);
+	cube->GetComponent<Transform>().SetPosition(0, 0, 5);
 	cube->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-	CubeScript* cubeScript = new CubeScript();
-	cubeScript->go = cube;
-	cube->scripts[0] = cubeScript;
+	cube->AddScript<CubeScript>(0);
 
 }
 

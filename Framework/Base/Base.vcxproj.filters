@@ -329,5 +329,8 @@
     <ClCompile Include="Source\Component\ComponentManager.cpp">
       <Filter>Files\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Script\Script.cpp">
+      <Filter>Files\Script</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

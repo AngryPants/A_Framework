@@ -125,6 +125,35 @@ public:
 		return destroyed;
 	}
 
+	//Scripts
+	template <class Type>
+	Type* AddScript(unsigned int index) {
+		if (index > sizeof(scripts)/sizeof(scripts[0])) {
+			string errorMessage = "Unable to AddScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
+			cout << errorMessage << endl;
+			return nullptr;
+		}
+		if (scripts[index] != nullptr) {
+			string errorMessage = "Unable to AddScript(" + to_string(index) + ") to GameObject " + name + " as there is already a script in the specified slot.";
+			cout << errorMessage << endl;
+			return nullptr;
+		}
+		Type* script = new Type(*this);
+		this->scripts[index] = script;
+	}
+
+	void RemoveScript(unsigned int index) {
+		if(index > sizeof(scripts)/sizeof(scripts[0])) {
+			string errorMessage = "Unable to RemoveScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
+			cout << errorMessage << endl;
+			return;
+		}
+		if (scripts[index] != nullptr) {
+			delete scripts[index];
+			scripts[index] = nullptr;
+		}
+	}
+	
 };
 
 #endif

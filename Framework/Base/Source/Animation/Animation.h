@@ -1,6 +1,10 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include <string>
+
+using std::string;
+
 struct Animation {
 
 public:

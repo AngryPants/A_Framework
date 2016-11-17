@@ -5,6 +5,7 @@
 SpriteRenderer::SpriteRenderer(GameObject& gameObject) : Component("Sprite Renderer", gameObject) {
 	mesh = nullptr;
 	lightEnabled = false;
+	currentAnimation = nullptr;
 }
 
 SpriteRenderer::~SpriteRenderer() {
@@ -13,56 +14,60 @@ SpriteRenderer::~SpriteRenderer() {
 //Interface
 void SpriteRenderer::Update(double deltaTime) {
 	if (mesh != nullptr) {
-		map<string, Animation>::iterator mapIter = animations.find(currentAnimation);
-		if (mapIter != animations.end()) {
-			mesh->animation = &mapIter->second;
-		}
+		mesh->animation = currentAnimation;
 		mesh->Update(deltaTime);
 		mesh->animation = nullptr;
 	}
 }
 
-void SpriteRenderer::AddAnimation(const string& animName, Animation animation) {
-	map<string, Animation>::iterator mapIter = animations.find(animName);
+void SpriteRenderer::AddAnimation(const string& animName, Animation& animation) {
+	map<string, Animation*>::iterator mapIter = animations.find(animName);
 	if (mapIter != animations.end()) {
-		animations.erase(mapIter);
-	}
-	animations.insert(std::pair<string, Animation>(animName, animation));
+		delete mapIter->second;
+		mapIter->second = &animation;
+	} else {
+		animations.insert(std::pair<string, Animation*>(animName, &animation));
+	}	
 }
 
-void SpriteRenderer::SetAnimation(const string& animName) {
-	map<string, Animation>::iterator mapIter = animations.find(animName);
+void SpriteRenderer::SetAnimation(const string& animName, bool reset, bool animActive) {
+	currentAnimation = nullptr;
+	map<string, Animation*>::iterator mapIter = animations.find(animName);
 	if (mapIter != animations.end()) {
-		mapIter->second.Reset(true);
-		currentAnimation = animName;
-	} else {
-		currentAnimation.clear();
+		if (reset) {
+			mapIter->second->Reset(animActive);
+		}		
+		currentAnimation = mapIter->second;
 	}
 }
 
 void SpriteRenderer::RemoveAnimation(const string& name) {
-	map<string, Animation>::iterator mapIter = animations.find(name);
+	map<string, Animation*>::iterator mapIter = animations.find(name);
 	if (mapIter != animations.end()) {
-		animations.erase(mapIter);
-		if (name == currentAnimation) {
-			currentAnimation.clear();
+		if (currentAnimation == mapIter->second) {
+			currentAnimation = nullptr;
 		}
+		delete mapIter->second;
+		animations.erase(mapIter);
 	}
 }
 
 void SpriteRenderer::RemoveAllAnimation() {
+	currentAnimation = nullptr;
+	for (map<string, Animation*>::iterator mapIter = animations.begin(); mapIter != animations.end(); ++mapIter) {
+		delete mapIter->second;
+	}
 	animations.clear();
-	currentAnimation.clear();
 }
 
-const string& SpriteRenderer::GetCurrentAnimation() const {
+Animation* SpriteRenderer::GetCurrentAnimation() {
 	return this->currentAnimation;
 }
 
 Animation* SpriteRenderer::GetAnimation(const string& animName) {
-	map<string, Animation>::iterator mapIter = animations.find(animName);
+	map<string, Animation*>::iterator mapIter = animations.find(animName);
 	if (mapIter != animations.end()) {
-		return &mapIter->second;
+		return mapIter->second;
 	}
 	return nullptr;
 }
@@ -76,17 +81,11 @@ void SpriteRenderer::RemoveSpriteAnimation() {
 }
 
 SpriteAnimation* SpriteRenderer::GetSpriteAnimation() {
-	if (mesh != nullptr) {
-		map<string, Animation>::iterator mapIter = animations.find(currentAnimation);
-		if (mapIter != animations.end()) {
-			mesh->animation = &mapIter->second;
-		}
-	}
+	mesh->animation = currentAnimation;
 	return mesh;
 }
 
 void SpriteRenderer::ClearAll() {
-	mesh = nullptr;
-	animations.clear();
-	currentAnimation.clear();
+	RemoveSpriteAnimation();
+	RemoveAllAnimation();
 }

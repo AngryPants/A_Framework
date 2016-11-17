@@ -14,9 +14,9 @@ class SpriteRenderer : public Component {
 private:
 	//Variable(s)
 	SpriteAnimation* mesh;
-	map<string, Animation> animations;
-	string currentAnimation;
-
+	map<string, Animation*> animations;
+	Animation* currentAnimation;
+	
 public:
 	//Variable(s)	
 	TextureList textureList;
@@ -28,11 +28,11 @@ public:
 
 	//Interface
 	void Update(double deltaTime);
-	void AddAnimation(const string& animName, Animation animation);
-	void SetAnimation(const string& animName);
+	void AddAnimation(const string& animName, Animation& animation);
+	void SetAnimation(const string& animName, bool reset = true, bool animActive = true);
 	void RemoveAnimation(const string& animName);
 	void RemoveAllAnimation();
-	const string& GetCurrentAnimation() const;
+	Animation* GetCurrentAnimation();
 	Animation* GetAnimation(const string& animName);
 	void SetSpriteAnimation(SpriteAnimation& mesh);
 	void RemoveSpriteAnimation();

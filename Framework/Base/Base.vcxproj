@@ -96,6 +96,7 @@
     <ClCompile Include="Source\Others\Utility.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneNode.cpp" />
+    <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Texture\LoadTGA.cpp" />

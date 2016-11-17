@@ -21,5 +21,5 @@ void main(void) {
 	_CrtSetReportMode( _CRT_ERROR, _CRTDBG_MODE_DEBUG );
 	RunApplication();
 	_CrtDumpMemoryLeaks();
-	system("pause");
+	//system("pause");
 }
