@@ -17,9 +17,9 @@
 #include "../Texture/TextureManager.h"
 #include "../Mesh/MeshBuilder.h"
 #include "../Graphics/GraphicsManager.h"
-
 #include "../Systems/RenderSystem.h"
 #include "../Others/IDGenerator.h"
+#include "../Scene/SceneGraph.h"
 
 //Include Controller(s)
 #include "../Input/Controller_Keyboard.h"
@@ -141,6 +141,7 @@ void Application::ExitSystems() {
 	//GameObjectManager MUST be destroyed BEFORE ComponentManager.
 	GameObjectManager::Destroy();
 	ComponentManager::Destroy();
+	SceneGraph::Destroy();
 
 	MeshBuilder::Destroy();
 	TextureManager::Destroy();

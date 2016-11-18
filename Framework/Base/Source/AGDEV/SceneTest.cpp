@@ -6,7 +6,10 @@
 #include "../Mesh/MeshBuilder.h"
 #include "../Texture/TextureManager.h"
 #include "../Systems/RenderSystem.h"
+
+//Include Scripts
 #include "CubeScript.h"
+#include "../AGDEV/RotateScript.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -40,8 +43,15 @@ void SceneTest::Init() {
 	cube = &GameObjectFactory::CreateCube(name);
 	cube->GetComponent<Transform>().SetPosition(0, 0, 5);
 	cube->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-	cube->AddScript<CubeScript>(0);
+	cube->CreateScript<CubeScript>(0);
+	cube->CreateScript<RotateScript>(1);
 	cube->RemoveComponent<Transform>();
+
+	GameObject* cube2 = &GameObjectFactory::CreateCube(name);
+	cube2->GetComponent<Transform>().SetPosition(1, 1, 0);
+	cube2->SetParent(*cube);
+	cube2->CreateScript<RotateScript>(0);
+
 }
 
 void SceneTest::Update(double deltaTime) {	

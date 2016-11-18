@@ -1,28 +1,31 @@
 #ifndef SCENE_NODE_H
 #define SCENE_NODE_H
 
-#include "../GameObject/GameObject.h"
 #include <set>
+#include <string>
 
 using std::set;
+using std::string;
+
+class GameObject;
 
 class SceneNode {
 
 private:
 	//Variable(s)
 	GameObject* gameObject;
-	SceneNode* rootNode;
 	SceneNode* parent;
 	set<SceneNode*> children;
 	bool isDestroyed;
+	string space;
 
 	//Private Function(s)
 	bool CheckIsParent(const SceneNode* nodePtr) const;
-	bool RemoveChild(SceneNode& sceneNode);
+	bool DetachChild_Private(SceneNode& sceneNode);
 
 public:
 	//Constructor(s) & Destructor
-	SceneNode(GameObject& gameObject, SceneNode* rootNode);
+	SceneNode(const string& space, GameObject* gameObject);
 	virtual ~SceneNode(); //DO NOT CALL THE DESTRUCTOR! SERIOUSLY, DON'T! If you wannt delete shit, use the Destroy() function;
 
 	//Interface Function(s)
@@ -33,12 +36,13 @@ public:
 	bool IsDestroyed() const;
 
 	//GameObject
-	GameObject& GetGameObject(); //Get the GameObject for this SceneNode
+	GameObject* GetGameObject(); //Get the GameObject for this SceneNode
 
 	//Parent
 	bool SetParent(SceneNode& sceneNode);
-	bool RemoveParent();
-	GameObject* GetParent();
+	bool DetachParent();
+	SceneNode* GetParent();
+	bool IsRoot() const;
 
 	//Children
 	bool AddChild(SceneNode& sceneNode);
@@ -46,6 +50,7 @@ public:
 	bool DetachAllChildren();
 	bool DestroyChild(SceneNode& sceneNode);
 	bool DestroyAllChildren();
+	set<SceneNode*> GetChildren();
 	unsigned int GetNumChildren() const;
 	
 };

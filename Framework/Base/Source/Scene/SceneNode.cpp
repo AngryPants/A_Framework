@@ -1,15 +1,24 @@
 #include "SceneNode.h"
+#include "SceneGraph.h"
+#include "../GameObject/GameObject.h"
 
 //Constructor(s) & Destructor
-SceneNode::SceneNode(GameObject& gameObject, SceneNode* rootNode) {
-	this->rootNode = rootNode;
-	this->parent = rootNode;
-	this->gameObject = nullptr;	
+SceneNode::SceneNode(const string& space, GameObject* gameObject) {
+	this->space = space;
+	this->gameObject = gameObject;
 	this->isDestroyed = false;
+	parent = nullptr;
+	SceneNode* rootNode = SceneGraph::GetInstance().GetRootNode(space);
+	if (rootNode != nullptr) {
+		rootNode->AddChild(*this); //By default our parent is the root node.
+	}
 }
 
 //DO NOT CALL THE DESTRUCTOR! SERIOUSLY, DON'T! If you wannt delete shit, use the Destroy() function;
 SceneNode::~SceneNode() {
+	if (!IsRoot()) {
+		SceneGraph::GetInstance().RemoveSceneNode(*this);
+	}
 }
 
 //Private Function(s)
@@ -20,11 +29,15 @@ SceneNode::~SceneNode() {
 The pointer to check if it is a parent.
 */
 bool SceneNode::CheckIsParent(const SceneNode* nodePtr) const {
-	if (nodePtr == nullptr) {
+	if (nodePtr == nullptr) { //If it is a nullptr, it isn't our parent.
 		return false;
-	} else if (nodePtr == this->parent) {
+	} else if (nodePtr == this) { //If it is us, it isn;t our parent.
+		return false;
+	} else if (IsRoot()) { //If we are the root node, then we have no parent.
+		return false;
+	}else if (nodePtr == this->parent) { //It is our parent.
 		return true;
-	} else if (parent != nullptr) {
+	} else if (parent != nullptr) { //Ask our parent to check his parent to check is parent, to check this parent, to check his parent, to check his...
 		return parent->CheckIsParent(nodePtr);
 	}
 	return false;
@@ -32,7 +45,7 @@ bool SceneNode::CheckIsParent(const SceneNode* nodePtr) const {
 
 //Simply, check if this is a child and if it is, just remove it from our list.
 //It does not additional check. This is strictly a private function.
-bool SceneNode::RemoveChild(SceneNode& sceneNode) {
+bool SceneNode::DetachChild_Private(SceneNode& sceneNode) {
 	set<SceneNode*>::iterator setIter = children.find(&sceneNode);
 	if (setIter != children.end()) {
 		children.erase(setIter);
@@ -43,21 +56,23 @@ bool SceneNode::RemoveChild(SceneNode& sceneNode) {
 
 //Interface Function(s)
 const string& SceneNode::GetSpace() const {
-	return this->gameObject->GetSpace();
+	return this->space;
 }
 
-GameObject& SceneNode::GetGameObject() {
-	return *this->gameObject;
+GameObject* SceneNode::GetGameObject() {
+	return this->gameObject;
 }
 
 //Deletion
 void SceneNode::Destroy() {
 	if (!isDestroyed) {
 		isDestroyed = true;
-		gameObject->Destroy();
+		if (gameObject != nullptr) {
+			gameObject->Destroy();
+		}
 		DestroyAllChildren();
-		parent->RemoveChild(*this);
-	}	
+		parent->DetachChild_Private(*this);
+	}
 }
 
 bool SceneNode::IsDestroyed() const {
@@ -66,15 +81,25 @@ bool SceneNode::IsDestroyed() const {
 
 //Parent
 bool SceneNode::SetParent(SceneNode& sceneNode) {
-	return sceneNode.AddChild(*this);
-}
-
-bool SceneNode::RemoveParent() {
+	if (IsRoot() == false) {
+		return sceneNode.AddChild(*this);
+	}
 	return false;
 }
 
-GameObject* SceneNode::GetParent() {
-	return nullptr;
+bool SceneNode::DetachParent() {
+	if (!IsRoot()) {
+		parent->DetachChild(*this);
+	}
+	return false;
+}
+
+SceneNode* SceneNode::GetParent() {
+	return this->parent;
+}
+
+bool SceneNode::IsRoot() const {
+	return this->parent == nullptr;
 }
 
 //Children
@@ -100,7 +125,7 @@ bool SceneNode::AddChild(SceneNode& sceneNode) {
 	}
 	//Lastly, we need to make sure that if it already has a parent, it detaches it.
 	if (sceneNode.parent != nullptr) {
-		sceneNode.parent->RemoveChild(sceneNode);
+		sceneNode.parent->DetachChild_Private(sceneNode);
 	}
 	//Now the child needs to add us as a parent.
 	sceneNode.parent = this;
@@ -110,8 +135,8 @@ bool SceneNode::AddChild(SceneNode& sceneNode) {
 }
 
 bool SceneNode::DetachChild(SceneNode& sceneNode) {
-	if (RemoveChild(sceneNode)) {
-		sceneNode.parent = rootNode;
+	if (DetachChild_Private(sceneNode)) { //If this is a child, we remove it from our list.
+		sceneNode.parent = SceneGraph::GetInstance().GetRootNode(space); //Set the child's parent to the root node.
 		return true;
 	}
 	return false;
@@ -120,14 +145,14 @@ bool SceneNode::DetachChild(SceneNode& sceneNode) {
 bool SceneNode::DetachAllChildren() {
 	for (set<SceneNode*>::iterator setIter = children.begin(); setIter != children.end(); ++setIter) {
 		SceneNode* nodePtr = *setIter;
-		nodePtr->parent = rootNode;
+		nodePtr->parent = SceneGraph::GetInstance().GetRootNode(space);
 	}
 	children.clear();
 	return true;
 }
 
 bool SceneNode::DestroyChild(SceneNode& sceneNode) {
-	if (RemoveChild(sceneNode)) {
+	if (DetachChild_Private(sceneNode)) {
 		sceneNode.Destroy();
 		return true;
 	}
@@ -141,6 +166,10 @@ bool SceneNode::DestroyAllChildren() {
 	}
 	children.clear();
 	return true;
+}
+
+set<SceneNode*> SceneNode::GetChildren() {
+	return children;
 }
 
 unsigned int SceneNode::GetNumChildren() const {

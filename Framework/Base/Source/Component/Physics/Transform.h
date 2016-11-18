@@ -35,10 +35,8 @@ private:
 	Vector3 scale;
 
 public:
-	//Constructor(s)
+	//Constructor(s) & Destructor
 	Transform(GameObject& gameObject);
-
-	//Destructor
 	virtual ~Transform();
 
 	//Getter(s)

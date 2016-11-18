@@ -57,7 +57,7 @@ public:
 	}
 
 	template <class Type>
-	set<Component*>& GetComponents(const string& space) {
+	set<Component*> GetComponents(const string& space) {
 		if (componentMap.count(space) == 0) {
 			array<set<Component*>, MAX_COMPONENTS> componentArray;
 			componentMap.insert(std::pair<string, array<set<Component*>, MAX_COMPONENTS> >(space, componentArray));			

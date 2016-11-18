@@ -6,9 +6,12 @@
 #include "../Component/ComponentManager.h"
 #include "../Component/Physics/Transform.h"
 #include "../Script/Script.h"
+#include "../Scene/SceneGraph.h"
+#include "../Scene/SceneNode.h"
 #include <string>
 #include <bitset>
 #include <exception>
+#include <vector>
 #include <set>
 #include <map>
 
@@ -25,6 +28,7 @@ private:
 	ComponentBitset componentBitset;
 	Component* components[MAX_COMPONENTS];
 	bool destroyed;
+	SceneNode* node;
 
 public:
 	//Variable(s)
@@ -44,6 +48,7 @@ public:
 		}
 		tag = "Default";
 		AddComponent<Transform>();
+		node = SceneGraph::GetInstance().CreateSceneNode(*this); //SceneGraph
 	}
 	virtual ~GameObject() {
 		for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
@@ -58,6 +63,7 @@ public:
 			}
 		}
 		IDGenerator::GetInstance().ReturnGameObjectID(id);
+		delete node; //SceneGraph
 	}
 
 	//Name
@@ -140,8 +146,8 @@ public:
 
 	//Scripts
 	template <class Type>
-	Type* AddScript(unsigned int index) {
-		if (index > sizeof(scripts)/sizeof(scripts[0])) {
+	Type* CreateScript(unsigned int index) {
+		if (index > sizeof(scripts)/sizeof(scripts[0]) - 1) {
 			string errorMessage = "Unable to AddScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
 			cout << errorMessage << endl;
 			return nullptr;
@@ -155,9 +161,8 @@ public:
 		this->scripts[index] = script;
 		return script;
 	}
-
 	void RemoveScript(unsigned int index) {
-		if(index > sizeof(scripts)/sizeof(scripts[0])) {
+		if(index > sizeof(scripts)/sizeof(scripts[0]) - 1) {
 			string errorMessage = "Unable to RemoveScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
 			cout << errorMessage << endl;
 			return;
@@ -167,7 +172,39 @@ public:
 			scripts[index] = nullptr;
 		}
 	}
-	
+	bool HasScript(unsigned int index) {
+		if(index > sizeof(scripts)/sizeof(scripts[0]) - 1) {
+			return false;
+		}
+		return scripts[index] != nullptr;
+	}
+
+	//Parent
+	bool SetParent(GameObject& gameObject) {
+		return node->SetParent(*gameObject.node);
+	}
+	bool HasParent() const {
+		return node->GetParent() != nullptr;
+	}
+	GameObject* GetParent() {
+		return node->GetParent()->GetGameObject();
+	}
+
+	//Child
+	bool AddChild(GameObject& gameObject) {
+		return node->AddChild(*gameObject.node);
+	}
+	void GetChildren(vector<GameObject*>& children) {
+		children.clear();
+		children.resize(node->GetNumChildren(), nullptr);
+		set<SceneNode*>& childrenNodes = node->GetChildren();
+		int i = 0;
+		for (set<SceneNode*>::iterator setIter = childrenNodes.begin(); setIter != childrenNodes.end(); ++setIter) {
+			children[i] = (*setIter)->GetGameObject();
+			++i;
+		}
+	}
+
 };
 
 #endif

@@ -157,6 +157,9 @@
     <ClInclude Include="Source\Component\ComponentManager.h">
       <Filter>Files\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\RotateScript.h">
+      <Filter>Files\AGDEV</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -331,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="Source\Script\Script.cpp">
       <Filter>Files\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneGraph.cpp">
+      <Filter>Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

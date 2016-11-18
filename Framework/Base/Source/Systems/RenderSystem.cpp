@@ -1,9 +1,13 @@
 #include "RenderSystem.h"
+
+//Include Systems
 #include "../Component/ComponentManager.h"
 #include "../GameObject/GameObject.h"
 #include "../Graphics/RenderHelper.h"
 #include "../Graphics/GraphicsManager.h"
 #include "../Application/Application.h"
+#include "../Scene/SceneGraph.h"
+#include "../Scene/SceneNode.h"
 
 //Include Components
 #include "../Component/Rendering/MeshRenderer.h"
@@ -31,6 +35,27 @@ void RenderSystem::Update(const string& space, double deltaTime) {
 		}
 		spriteRenderer.Update(deltaTime);
 	}
+}
+
+void RenderRecursion(GameObject& gameObject) {
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+	Transform& transform = gameObject.GetComponent<Transform>();
+	modelStack.PushMatrix();
+		modelStack.Translate(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
+		modelStack.Rotate(transform.GetRotation().y, 0, 1, 0);
+		modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
+		modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
+		modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
+		if (gameObject.HasComponent<MeshRenderer>()) {
+			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
+			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);
+		}
+		vector<GameObject*> children;
+		gameObject.GetChildren(children);
+		for (unsigned int i = 0; i < children.size(); ++i) {
+			RenderRecursion(*children[i]);
+		}
+	modelStack.PopMatrix();
 }
 
 void RenderSystem::Render(const string& space) {
@@ -76,7 +101,7 @@ void RenderSystem::Render(const string& space) {
 	}
 
 	//Now Render the meshes
-	set<Component*>& meshRenderers = ComponentManager::GetInstance().GetComponents<MeshRenderer>(space);
+	/*set<Component*>& meshRenderers = ComponentManager::GetInstance().GetComponents<MeshRenderer>(space);
 	//Loop through them.
 	for (set<Component*>::iterator setIter = meshRenderers.begin(); setIter != meshRenderers.end(); ++setIter) {
 		MeshRenderer& meshRenderer = *(static_cast<MeshRenderer*>(*setIter));
@@ -98,6 +123,13 @@ void RenderSystem::Render(const string& space) {
 			modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
 			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);	
 		modelStack.PopMatrix();
+	}*/
+
+	SceneNode* rootNode = SceneGraph::GetInstance().GetRootNode(space);
+	set<SceneNode*>& rootChildren = rootNode->GetChildren();
+	for (set<SceneNode*>::iterator nodeIter = rootChildren.begin(); nodeIter != rootChildren.end(); ++nodeIter) {
+		SceneNode* nodePtr = *nodeIter;
+		RenderRecursion(*nodePtr->GetGameObject());
 	}
 
 	//Sprite Animation

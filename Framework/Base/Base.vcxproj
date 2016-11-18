@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AGDEV\CubeScript.h" />
+    <ClInclude Include="Source\AGDEV\RotateScript.h" />
     <ClInclude Include="Source\AGDEV\SceneEmpty.h" />
     <ClInclude Include="Source\AGDEV\SceneTest.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
@@ -94,6 +95,7 @@
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Mesh\MeshBuilder.cpp" />
     <ClCompile Include="Source\Others\Utility.cpp" />
+    <ClCompile Include="Source\Scene\SceneGraph.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneNode.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />

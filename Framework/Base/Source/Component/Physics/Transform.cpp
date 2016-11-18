@@ -25,6 +25,7 @@ The constructor of Transform.
 */
 /*******************************************************************************/
 Transform::Transform(GameObject& gameObject) : Component("Transform", gameObject) {
+	//Transformation Stuff
 	SetPosition(0, 0, 0);
 	SetRotation(0, 0, 0);
 	SetScale(1, 1, 1);
@@ -231,6 +232,27 @@ The scale of the GameObject.
 /*******************************************************************************/
 void Transform::SetScale(const Vector3& scale) {
 	this->scale = scale;
+	if(Vector::IsEqual(this->scale.x,0.0f)) {
+		if(this->scale.x >= 0.0f) {
+			this->scale.x = Math::EPSILON;
+		} else {
+			this->scale.x = -Math::EPSILON;
+		}
+	}
+	if(Vector::IsEqual(this->scale.y,0.0f)) {
+		if(this->scale.y >= 0.0f) {
+			this->scale.y = Math::EPSILON;
+		} else {
+			this->scale.y = -Math::EPSILON;
+		}
+	}
+	if(Vector::IsEqual(this->scale.z,0.0f)) {
+		if(this->scale.z >= 0.0f) {
+			this->scale.z = Math::EPSILON;
+		} else {
+			this->scale.z = -Math::EPSILON;
+		}
+	}
 }
 
 /*******************************************************************************/
@@ -248,6 +270,27 @@ The scale of the GameObject on the z-axis.
 /*******************************************************************************/
 void Transform::SetScale(float x, float y, float z) {
 	SetScale(Vector3(x, y, z));
+	if (Vector::IsEqual(this->scale.x,0.0f)) {
+		if (this->scale.x >= 0.0f) {
+			this->scale.x = Math::EPSILON;
+		} else {
+			this->scale.x = -Math::EPSILON;
+		}
+	}
+	if (Vector::IsEqual(this->scale.y,0.0f)) {
+		if(this->scale.y >= 0.0f) {
+			this->scale.y = Math::EPSILON;
+		} else {
+			this->scale.y = -Math::EPSILON;
+		}
+	}
+	if (Vector::IsEqual(this->scale.z,0.0f)) {
+		if(this->scale.z >= 0.0f) {
+			this->scale.z = Math::EPSILON;
+		} else {
+			this->scale.z = -Math::EPSILON;
+		}
+	}
 }
 
 //Function(s)
