@@ -17,7 +17,7 @@
 #include "../Texture/TextureManager.h"
 #include "../Mesh/MeshBuilder.h"
 #include "../Graphics/GraphicsManager.h"
-#include "../Systems/RenderSystem.h"
+#include "../Systems/Rendering/RenderSystem.h"
 #include "../Others/IDGenerator.h"
 #include "../Scene/SceneGraph.h"
 

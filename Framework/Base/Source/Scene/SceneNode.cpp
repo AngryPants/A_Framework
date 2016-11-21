@@ -16,6 +16,7 @@ SceneNode::SceneNode(const string& space, GameObject* gameObject) {
 
 //DO NOT CALL THE DESTRUCTOR! SERIOUSLY, DON'T! If you wannt delete shit, use the Destroy() function;
 SceneNode::~SceneNode() {
+	Destroy();
 	if (!IsRoot()) {
 		SceneGraph::GetInstance().RemoveSceneNode(*this);
 	}
@@ -71,7 +72,9 @@ void SceneNode::Destroy() {
 			gameObject->Destroy();
 		}
 		DestroyAllChildren();
-		parent->DetachChild_Private(*this);
+		if (parent != nullptr) {
+			parent->DetachChild_Private(*this);
+		}
 	}
 }
 
@@ -159,12 +162,22 @@ bool SceneNode::DestroyChild(SceneNode& sceneNode) {
 	return false;
 }
 
+/*
+NOTE: We have to use a while loop because when we call the Destroy() function of our child,
+The child will be erased from our children set, causing our setIter to be invalid.
+Hence we need to use a while loop and get the begin() instead, in order not to have
+to worry about invalid iterators.
+*/
 bool SceneNode::DestroyAllChildren() {
-	for (set<SceneNode*>::iterator setIter = children.begin(); setIter != children.end(); ++setIter) {
+	/*for (set<SceneNode*>::iterator setIter = children.begin(); setIter != children.end(); ++setIter) {
 		SceneNode* nodePtr = *setIter;
 		nodePtr->Destroy();
 	}
-	children.clear();
+	children.clear();*/
+	while (children.empty() == false) {
+		SceneNode* nodePtr = *children.begin();
+		nodePtr->Destroy();
+	}
 	return true;
 }
 

@@ -2,8 +2,10 @@
 #define GAMEOBJECT_MANAGER_H
 
 #include "SingletonTemplate.h"
+#include "../Others/IDGenerator.h"
 #include <map>
 #include <set>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -21,6 +23,7 @@ private:
 	set<GameObject*> addQueue;
 	set<GameObject*> removeQueue;
 	map<string, set<GameObject*> > goMap;
+	vector<GameObject*> goVector;
 
 	//Constructor(s) & Destructor
 	GameObjectManager();
@@ -34,12 +37,13 @@ public:
 	//Interface Function(s)
 	GameObject& CreateGameObject(const string& space, const string& name = "GameObject");
 	void RemoveGameObject(GameObject& gameObject);
+	GameObject* GetGameObjectByID(GameObjectID id);
 	void Clear(const string& space);
 	void ClearAll();
 	void Update();
 	void UpdateScripts(const string& space, const double deltaTime);
-	set<GameObject*>& GetGameObjects(const string& space);
-	int GetNumGameObjects(const string& space);
+	set<GameObject*> GetGameObjects(const string& space);
+	int GetNumGameObjects(const string& space);	
 
 };
 

@@ -49,6 +49,34 @@ public:
 		return go;
 	}
 
+	static GameObject& CreateSphere(const string& space, const string& name = "Sphere") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Sphere", "OBJ//Default//Sphere.obj");
+
+		return go;
+	}
+
+	static GameObject& CreateQuad(const string& space, const string& name = "Quad") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateQuad("Default Quad");
+
+		return go;
+	}
+
+	static GameObject& CreatePlane(const string& space, const string& name = "Plane") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Plane", "OBJ//Default//Plane.obj");
+
+		return go;
+	}
+
+	static GameObject& CreateCylinder(const string& space,const string& name = "Cylinder") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
+		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Cylinder","OBJ//Default//Cylinder.obj");
+
+		return go;
+	}
+
 };
 
 #endif

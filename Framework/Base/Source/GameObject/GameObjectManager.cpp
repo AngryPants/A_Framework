@@ -13,6 +13,11 @@ GameObject& GameObjectManager::CreateGameObject(const string& space, const strin
 	GameObject* goPtr = new GameObject(space, name);
 	//Add to the addQueue.
 	addQueue.insert(goPtr);
+	//Add to our goVector
+	if (goPtr->GetID() >= goVector.size()) {
+		goVector.resize(goPtr->GetID() + 1, nullptr);
+	}
+	goVector[goPtr->GetID()] = goPtr;
 
 	return *goPtr;
 }
@@ -41,12 +46,21 @@ void GameObjectManager::RemoveGameObjects() {
 		GameObject* goPtr = *setIter;
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
 		mapIter->second.erase(goPtr);
+		goVector[goPtr->GetID()] = nullptr;
 		delete goPtr;
 	}
 	removeQueue.clear();
 }
 
+GameObject* GameObjectManager::GetGameObjectByID(GameObjectID id) {
+	if (id >= goVector.size()) {
+		return nullptr;
+	}
+	return goVector[id];
+}
+
 void GameObjectManager::Clear(const string& space) {
+	//Remove them from our remove queue, since we're gonna delete it in the main set anyways.
 	set<GameObject*>::iterator setIter = removeQueue.begin();
 	while (setIter != removeQueue.end()) {
 		GameObject* goPtr = *setIter;
@@ -57,22 +71,26 @@ void GameObjectManager::Clear(const string& space) {
 		}
 	}
 
+	//Delete those in our add queue.
 	setIter = addQueue.begin();
 	while (setIter != addQueue.end()) {
 		GameObject* goPtr = *setIter;
 		if (goPtr->GetSpace() == space) {
 			setIter = addQueue.erase(setIter);
-			delete goPtr;			
+			goVector[goPtr->GetID()] = nullptr;
+			delete goPtr;
 		} else {
 			++setIter;
 		}
 	}
 
+	//Delete the main set.
 	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
 	if (mapIter != goMap.end()) {
 		setIter = mapIter->second.begin();
 		while (setIter != mapIter->second.end()) {
 			GameObject* goPtr = *setIter;
+			goVector[goPtr->GetID()] = nullptr;
 			delete goPtr;
 			++setIter;
 		}
@@ -80,27 +98,31 @@ void GameObjectManager::Clear(const string& space) {
 	}
 }
 
-void GameObjectManager::ClearAll() {
-	
+//Clear Everything.
+void GameObjectManager::ClearAll() {	
 	while (!goMap.empty()) {
 		Clear(goMap.begin()->first);
 	}
-
 }
 
+//Add and remove whatever we need.
 void GameObjectManager::Update() {
 	AddGameObjects();
 	RemoveGameObjects();
+	while (!goVector.empty() && goVector.back() == nullptr) {
+		goVector.pop_back();
+	}
 }
 
 void GameObjectManager::UpdateScripts(const string& space, const double deltaTime) {
-
+	//Check that the space exist.
 	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
 	if (mapIter == goMap.end()) {
 		cout << "Unable to UpdateScripts() as space is not found." << endl;
 		return;
 	}
 
+	//Update the scripts.
 	for (set<GameObject*>::iterator setIter = mapIter->second.begin(); setIter != mapIter->second.end(); ++setIter) {
 		GameObject* go = *setIter;
 		for (unsigned int i = 0; i < sizeof(go->scripts)/sizeof(go->scripts[0]); ++i) {
@@ -109,10 +131,9 @@ void GameObjectManager::UpdateScripts(const string& space, const double deltaTim
 			}
 		}
 	}
-
 }
 
-set<GameObject*>& GameObjectManager::GetGameObjects(const string& space) {
+set<GameObject*> GameObjectManager::GetGameObjects(const string& space) {
 	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
 	if (mapIter == goMap.end()) {
 		throw exception("Cannot GetGameObjects() as space is not found.");

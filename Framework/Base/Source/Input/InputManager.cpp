@@ -60,57 +60,53 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 
 	//Quit Button
 	switch (input.GetKey()) {
+		//Utility
 		case KEYS::ESCAPE: {
 			SetInput(inputInfo, INPUT_QUIT, input.GetState());
 			break;
 		}
-		case KEYS::R:{
+		case KEYS::R: {
 			SetInput(inputInfo, INPUT_RESET, input.GetState());
 			break;
 		}
+		case KEYS::ENTER: {
+			SetInput(inputInfo,INPUT_SELECT,input.GetState());
+			break;
+		}
 
+		//Movement
+		case KEYS::W: {
+			SetInput(inputInfo,INPUT_MOVE_FORWARD,input.GetState());
+			break;
+		}
+		case KEYS::S: {
+			SetInput(inputInfo,INPUT_MOVE_BACKWARD,input.GetState());
+			break;
+		}
+		case KEYS::A: {
+			SetInput(inputInfo, INPUT_MOVE_LEFT, input.GetState());
+			break;
+		}
+		case KEYS::D: {
+			SetInput(inputInfo, INPUT_MOVE_RIGHT, input.GetState());
+			break;
+		}
+
+		//Looking
 		case KEYS::LEFT: {
-			SetInput(inputInfo, INPUT_LEFT, input.GetState());
+			SetInput(inputInfo,INPUT_LOOK_LEFT,input.GetState());
 			break;
 		}
 		case KEYS::RIGHT: {
-			SetInput(inputInfo, INPUT_RIGHT, input.GetState());
+			SetInput(inputInfo,INPUT_LOOK_RIGHT,input.GetState());
 			break;
 		}
 		case KEYS::UP: {
-			SetInput(inputInfo, INPUT_FORWARD, input.GetState());
+			SetInput(inputInfo,INPUT_LOOK_UP,input.GetState());
 			break;
 		}
 		case KEYS::DOWN: {
-			SetInput(inputInfo, INPUT_BACKWARD, input.GetState());
-			break;
-		}
-		case KEYS::ENTER: {
-			SetInput(inputInfo, INPUT_SELECT, input.GetState());
-			break;
-		}
-		case KEYS::SPACE: {
-			SetInput(inputInfo, INPUT_SHOOT, input.GetState());
-			break;
-		}
-		case KEYS::ONE: {
-			SetInput(inputInfo, INPUT_SELECT_DEFAULT, input.GetState());
-			break;
-		}
-		case KEYS::TWO: {
-			SetInput(inputInfo, INPUT_SELECT_OCTOMAN, input.GetState());
-			break;
-		}
-		case KEYS::THREE: {
-			SetInput(inputInfo, INPUT_SELECT_DONKEY_KING, input.GetState());
-			break;
-		}
-		case KEYS::FOUR: {
-			SetInput(inputInfo, INPUT_SELECT_COOKIE_MASTER, input.GetState());
-			break;
-		}
-		case KEYS::FIVE: {			
-			SetInput(inputInfo, INPUT_SELECT_BOWSIR, input.GetState());
+			SetInput(inputInfo,INPUT_LOOK_DOWN,input.GetState());
 			break;
 		}
 	}

@@ -8,10 +8,9 @@
 class SceneTest : public Scene {
 
 private:
-	GameObject* camera;
-	GameObject* light;
-	GameObject* cube;
-	
+	//Variable(s)
+	GameObject* player;
+
 public:
 	//Constructor(s) & Destructor
 	SceneTest(const string& name);

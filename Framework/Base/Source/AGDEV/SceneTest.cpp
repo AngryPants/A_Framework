@@ -5,11 +5,13 @@
 #include "../Input/InputManager.h"
 #include "../Mesh/MeshBuilder.h"
 #include "../Texture/TextureManager.h"
-#include "../Systems/RenderSystem.h"
+#include "../Systems/Rendering//RenderSystem.h"
 
 //Include Scripts
-#include "CubeScript.h"
-#include "../AGDEV/RotateScript.h"
+#include "RotateScript.h"
+#include "ScaleScript.h"
+#include "PlayerCameraScript.h"
+#include "PlayerMovementScript.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -31,26 +33,41 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 
-	camera = &GameObjectFactory::CreateCamera(name);
-	camera->GetComponent<Transform>().SetPosition(0, 3, 0);
-	camera->GetComponent<Transform>().SetRotation(45, 0, 0);
-	light = &GameObjectFactory::CreateLight(name);
+	//Player
+	player = &GameObjectFactory::CreateEmpty(name);
+	player->CreateScript<PlayerMovementScript>();
+	player->GetComponent<Transform>().SetLocalPosition(0, 0, -5);
+
+	//Camera
+	GameObject* camera = &GameObjectFactory::CreateCamera(name);
+	camera->SetParent(*player);
+	camera->GetComponent<Transform>().SetLocalPosition(0, 1, 0);
+	camera->CreateScript<PlayerCameraScript>();
+	
+	//Lights
+	GameObject* light = &GameObjectFactory::CreateLight(name);
 	light->GetComponent<Light>().type = Light::LIGHT_TYPE::LIGHT_DIRECTIONAL;
 	light->GetComponent<Light>().power = 5.0f;
-	light->GetComponent<Transform>().SetPosition(0, 0, 5);
-	light->GetComponent<Transform>().SetRotation(45, 0, 0);
+	light->GetComponent<Transform>().SetLocalPosition(0, 0, 5);
+	light->GetComponent<Transform>().SetLocalRotation(45, 0, 0);
 
-	cube = &GameObjectFactory::CreateCube(name);
-	cube->GetComponent<Transform>().SetPosition(0, 0, 5);
+	//Cube
+	GameObject* cube = &GameObjectFactory::CreateCube(name, "Cube 1");
+	cube->GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 	cube->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-	cube->CreateScript<CubeScript>(0);
-	cube->CreateScript<RotateScript>(1);
-	cube->RemoveComponent<Transform>();
+	cube->CreateScript<RotateScript>();
+	cube->CreateScript<ScaleScript>();
 
-	GameObject* cube2 = &GameObjectFactory::CreateCube(name);
-	cube2->GetComponent<Transform>().SetPosition(1, 1, 0);
+	//Cube 2
+	GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Cube 2");
 	cube2->SetParent(*cube);
-	cube2->CreateScript<RotateScript>(0);
+	cube2->GetComponent<Transform>().SetLocalPosition(1, 1, 0);
+	cube2->CreateScript<RotateScript>();
+
+	//Plane
+	GameObject* plane = &GameObjectFactory::CreatePlane(name, "Plane");
+	plane->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
+	plane->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
 }
 

@@ -11,8 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\AGDEV\CubeScript.h" />
+    <ClInclude Include="Source\AGDEV\PlayerCameraScript.h" />
+    <ClInclude Include="Source\AGDEV\PlayerMovementScript.h" />
     <ClInclude Include="Source\AGDEV\RotateScript.h" />
+    <ClInclude Include="Source\AGDEV\ScaleScript.h" />
     <ClInclude Include="Source\AGDEV\SceneEmpty.h" />
     <ClInclude Include="Source\AGDEV\SceneTest.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
@@ -57,15 +59,17 @@
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneNode.h" />
     <ClInclude Include="Source\Script\Script.h" />
-    <ClInclude Include="Source\Systems\CollisionSystem.h" />
-    <ClInclude Include="Source\Systems\PhysicsSystem.h" />
-    <ClInclude Include="Source\Systems\RenderSystem.h" />
+    <ClInclude Include="Source\Systems\Physics\CollisionSystem.h" />
+    <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
+    <ClInclude Include="Source\Systems\Rendering\RenderSystem.h" />
     <ClInclude Include="Source\Texture\LoadTGA.h" />
     <ClInclude Include="Source\Texture\Texture.h" />
     <ClInclude Include="Source\Texture\TextureList.h" />
     <ClInclude Include="Source\Texture\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp" />
+    <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp" />
     <ClCompile Include="Source\AGDEV\SceneTest.cpp" />
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Animation\SpriteAnimation.cpp" />
@@ -99,8 +103,8 @@
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneNode.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />
-    <ClCompile Include="Source\Systems\CollisionSystem.cpp" />
-    <ClCompile Include="Source\Systems\RenderSystem.cpp" />
+    <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp" />
     <ClCompile Include="Source\Texture\LoadTGA.cpp" />
     <ClCompile Include="Source\Texture\Texture.cpp" />
     <ClCompile Include="Source\Texture\TextureManager.cpp" />

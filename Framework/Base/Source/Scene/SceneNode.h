@@ -26,7 +26,7 @@ private:
 public:
 	//Constructor(s) & Destructor
 	SceneNode(const string& space, GameObject* gameObject);
-	virtual ~SceneNode(); //DO NOT CALL THE DESTRUCTOR! SERIOUSLY, DON'T! If you wannt delete shit, use the Destroy() function;
+	virtual ~SceneNode(); //DO NOT CALL THE DESTRUCTOR! SERIOUSLY, DON'T! If you wannt delete shit, use the Destroy() function.
 
 	//Interface Function(s)
 	const string& GetSpace() const;

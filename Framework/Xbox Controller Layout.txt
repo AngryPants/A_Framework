@@ -1,6 +1,6 @@
-Logitech Gamepad F310 layout
-Num axes: 5
-Num buttons: 14
+Xbox Controller Layout
+Num Axes: 5
+Num Buttons: 14
 
 axes[00] = left_stick_left(negative) && left_stick_right(positive)
 axes[01] = left_stick_down(negative) && left_stick_up(positive)

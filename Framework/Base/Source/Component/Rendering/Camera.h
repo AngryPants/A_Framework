@@ -61,7 +61,7 @@ public:
 	virtual ~Camera();
 
 	void SetFOV(const float& FOV);
-	float GetFOV();
+	float GetFOV() const;
 
 	void SetOrthoSize(const float& orthoSize);
 	float GetOrthoSize() const;

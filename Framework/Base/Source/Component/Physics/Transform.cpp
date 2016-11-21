@@ -25,10 +25,9 @@ The constructor of Transform.
 */
 /*******************************************************************************/
 Transform::Transform(GameObject& gameObject) : Component("Transform", gameObject) {
-	//Transformation Stuff
-	SetPosition(0, 0, 0);
-	SetRotation(0, 0, 0);
-	SetScale(1, 1, 1);
+	SetLocalPosition(0, 0, 0);
+	SetLocalRotation(0, 0, 0);
+	SetLocalScale(1, 1, 1);
 }
 
 /*******************************************************************************/
@@ -51,8 +50,8 @@ Gets the global position.
 The position of the GameObject.
 */
 /*******************************************************************************/
-const Vector3& Transform::GetPosition() const {
-	return this->position;
+const Vector3& Transform::GetLocalPosition() const {
+	return this->localPosition;
 }
 
 /*******************************************************************************/
@@ -64,8 +63,8 @@ Gets the global rotation.
 The rotation of the GameObject.
 */
 /*******************************************************************************/
-const Vector3& Transform::GetRotation() const {
-	return this->rotation;
+const Vector3& Transform::GetLocalRotation() const {
+	return this->localRotation;
 }
 
 /*******************************************************************************/
@@ -77,36 +76,84 @@ Gets the global scale.
 The scale of the GameObject.
 */
 /*******************************************************************************/
-const Vector3& Transform::GetScale() const {
-	return this->scale;
+const Vector3& Transform::GetLocalScale() const {
+	return this->localScale;
+}
+
+Vector3 Transform::GetPosition() const {
+	GameObject* parentPtr = GetGameObject().GetParent();
+	if (parentPtr == nullptr) {
+		return localPosition;
+	}
+
+	Mtx44 transformationMatrix = GetTranslationMatrix();
+	while (parentPtr != nullptr) {
+		//transformationMatrix = transformationMatrix * parentPtr->GetComponent<Transform>().GetTransformationMatrix();
+		transformationMatrix = parentPtr->GetComponent<Transform>().GetTransformationMatrix() * transformationMatrix;
+		parentPtr = parentPtr->GetParent();		
+	}
+	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
+}
+
+Vector3 Transform::GetForward() const {
+	Mtx44 rotationMatrix = GetRotationMatrix();
+	GameObject* parentPtr = GetGameObject().GetParent();
+	while (parentPtr != nullptr) {
+		//rotationMatrix = rotationMatrix * parentPtr->GetComponent<Transform>().GetRotationMatrix();
+		rotationMatrix = parentPtr->GetComponent<Transform>().GetRotationMatrix() * rotationMatrix; //WHY DOES  THIS WORK?!
+		parentPtr = parentPtr->GetParent();
+	}
+	return rotationMatrix * Vector3(0, 0, 1);
+}
+
+Vector3 Transform::GetUp() const {
+	Mtx44 rotationMatrix = GetRotationMatrix();
+	GameObject* parentPtr = GetGameObject().GetParent();
+	while(parentPtr != nullptr) {
+		//rotationMatrix = rotationMatrix * parentPtr->GetComponent<Transform>().GetRotationMatrix();
+		rotationMatrix = parentPtr->GetComponent<Transform>().GetRotationMatrix() * rotationMatrix; //WHY DOES  THIS WORK?!
+		parentPtr = parentPtr->GetParent();
+	}
+	return rotationMatrix * Vector3(0, 1, 0);
+}
+
+Vector3 Transform::GetLeft() const {
+	Mtx44 rotationMatrix = GetRotationMatrix();
+	GameObject* parentPtr = GetGameObject().GetParent();
+	while(parentPtr != nullptr) {
+		//rotationMatrix = rotationMatrix * parentPtr->GetComponent<Transform>().GetRotationMatrix();
+		rotationMatrix = parentPtr->GetComponent<Transform>().GetRotationMatrix() * rotationMatrix; //WHY DOES  THIS WORK?!
+		parentPtr = parentPtr->GetParent();
+	}
+	return rotationMatrix * Vector3(1, 0, 0);
 }
 
 /*******************************************************************************/
 /*!
 \brief
-Gets the forward vector of the GameObject.
+Gets the forward vector of the GameObject relative to the parent.
 
 \return
-The forward vector of the GameObject.
+The forward vector of the GameObject relative to the parent.
 */
 /*******************************************************************************/
-Vector3 Transform::GetForward() const {
+Vector3 Transform::GetLocalForward() const {
 	Mtx44 transformationMatrix;
 	transformationMatrix.SetToTranslation(0, 0, 1);
-	transformationMatrix = GetRotationMatrix() * transformationMatrix;	
+	transformationMatrix = GetRotationMatrix() * transformationMatrix;
 	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
 }
 
 /*******************************************************************************/
 /*!
 \brief
-Gets the up vector of the GameObject.
+Gets the up vector of the GameObject relative to the parent.
 
 \return
-The up vector of the GameObject.
+The up vector of the GameObject relative to the parent.
 */
 /*******************************************************************************/
-Vector3 Transform::GetUp() const {
+Vector3 Transform::GetLocalUp() const {
 	Mtx44 transformationMatrix;
 	transformationMatrix.SetToTranslation(0, 1, 0);
 	transformationMatrix = GetRotationMatrix() * transformationMatrix;
@@ -116,13 +163,13 @@ Vector3 Transform::GetUp() const {
 /*******************************************************************************/
 /*!
 \brief
-Gets the left vector of the GameObject.
+Gets the left vector of the GameObject relative to the parent.
 
 \return
-The left vector of the GameObject.
+The left vector of the GameObject relative to the parent.
 */
 /*******************************************************************************/
-Vector3 Transform::GetLeft() const {
+Vector3 Transform::GetLocalLeft() const {
 	Mtx44 transformationMatrix;
 	transformationMatrix.SetToTranslation(1, 0, 0);
 	transformationMatrix = GetRotationMatrix() * transformationMatrix;
@@ -139,12 +186,27 @@ The rotationMatrix of the GameObject.
 */
 /*******************************************************************************/
 Mtx44 Transform::GetRotationMatrix() const {
-	//Mtx44 transformationMatrix[3];
 	Mtx44 rotationMatrix[3];
-	rotationMatrix[0].SetToRotation(this->rotation.x, 1, 0, 0);
-	rotationMatrix[1].SetToRotation(this->rotation.y, 0, 1, 0);
-	rotationMatrix[2].SetToRotation(this->rotation.z, 0, 0, 1);
-	return rotationMatrix[1] * rotationMatrix[0] * rotationMatrix[2];
+	rotationMatrix[0].SetToRotation(this->localRotation.x, 1, 0, 0);
+	rotationMatrix[1].SetToRotation(this->localRotation.y, 0, 1, 0);
+	rotationMatrix[2].SetToRotation(this->localRotation.z, 0, 0, 1);
+	return rotationMatrix[1] * rotationMatrix[0] * rotationMatrix[2]; //Order of Rotation - Z, X, Y
+}
+
+Mtx44 Transform::GetTranslationMatrix() const {
+	Mtx44 translationMatrix;
+	translationMatrix.SetToTranslation(this->localPosition.x, this->localPosition.y, this->localPosition.z);	
+	return translationMatrix;
+}
+
+Mtx44 Transform::GetScaleMatrix() const {
+	Mtx44 scaleMatrix;
+	scaleMatrix.SetToScale(localScale.x, localScale.y, localScale.z);
+	return scaleMatrix;
+}
+
+Mtx44 Transform::GetTransformationMatrix() const {
+	return GetTranslationMatrix() * GetRotationMatrix() * GetScaleMatrix();
 }
 
 //Setter(s)
@@ -158,8 +220,8 @@ Sets the position of the GameObject.
 The position of the GameObject.
 */
 /*******************************************************************************/
-void Transform::SetPosition(const Vector3& position) {
-	this->position = position;
+void Transform::SetLocalPosition(const Vector3& position) {
+	this->localPosition = position;
 }
 
 /*******************************************************************************/
@@ -175,20 +237,20 @@ The position of the GameObject on the y-axis.
 The position of the GameObject on the z-axis.
 */
 /*******************************************************************************/
-void Transform::SetPosition(float x, float y, float z) {
-	SetPosition(Vector3(x, y, z));
+void Transform::SetLocalPosition(float x, float y, float z) {
+	SetLocalPosition(Vector3(x, y, z));
 }
 
-void Transform::SetPositionX(const float x) {
-	this->position.x = x;
+void Transform::SetLocalPositionX(const float x) {
+	this->localPosition.x = x;
 }
 
-void Transform::SetPositionY(const float y) {
-	this->position.y = y;
+void Transform::SetLocalPositionY(const float y) {
+	this->localPosition.y = y;
 }
 
-void Transform::SetPositionZ(const float z) {
-	this->position.z = z;
+void Transform::SetLocalPositionZ(const float z) {
+	this->localPosition.z = z;
 }
 
 /*******************************************************************************/
@@ -200,8 +262,8 @@ Sets the rotation of the GameObject.
 The rotation of the GameObject.
 */
 /*******************************************************************************/
-void Transform::SetRotation(const Vector3& rotation) {
-	this->rotation = rotation;
+void Transform::SetLocalRotation(const Vector3& rotation) {
+	this->localRotation = rotation;
 }
 
 /*******************************************************************************/
@@ -217,8 +279,20 @@ The rotation of the GameObject on the y-axis.
 The rotation of the GameObject on the z-axis.
 */
 /*******************************************************************************/
-void Transform::SetRotation(float x, float y, float z) {
-	SetRotation(Vector3(x, y, z));
+void Transform::SetLocalRotation(float x, float y, float z) {
+	SetLocalRotation(Vector3(x, y, z));
+}
+
+void Transform::SetLocalRotationX(float x) {
+	this->localRotation.x = x;
+}
+
+void Transform::SetLocalRotationY(float y) {
+	this->localRotation.y = y;
+}
+
+void Transform::SetLocalRotationZ(float z) {
+	this->localRotation.z = z;
 }
 
 /*******************************************************************************/
@@ -230,27 +304,28 @@ Sets the scale of the GameObject.
 The scale of the GameObject.
 */
 /*******************************************************************************/
-void Transform::SetScale(const Vector3& scale) {
-	this->scale = scale;
-	if(Vector::IsEqual(this->scale.x,0.0f)) {
-		if(this->scale.x >= 0.0f) {
-			this->scale.x = Math::EPSILON;
+void Transform::SetLocalScale(const Vector3& scale) {
+	this->localScale = scale;
+
+	if(Vector::IsEqual(this->localScale.x,0.0f)) {
+		if(this->localScale.x >= 0.0f) {
+			this->localScale.x = Math::EPSILON;
 		} else {
-			this->scale.x = -Math::EPSILON;
+			this->localScale.x = -Math::EPSILON;
 		}
 	}
-	if(Vector::IsEqual(this->scale.y,0.0f)) {
-		if(this->scale.y >= 0.0f) {
-			this->scale.y = Math::EPSILON;
+	if(Vector::IsEqual(this->localScale.y,0.0f)) {
+		if(this->localScale.y >= 0.0f) {
+			this->localScale.y = Math::EPSILON;
 		} else {
-			this->scale.y = -Math::EPSILON;
+			this->localScale.y = -Math::EPSILON;
 		}
 	}
-	if(Vector::IsEqual(this->scale.z,0.0f)) {
-		if(this->scale.z >= 0.0f) {
-			this->scale.z = Math::EPSILON;
+	if(Vector::IsEqual(this->localScale.z,0.0f)) {
+		if(this->localScale.z >= 0.0f) {
+			this->localScale.z = Math::EPSILON;
 		} else {
-			this->scale.z = -Math::EPSILON;
+			this->localScale.z = -Math::EPSILON;
 		}
 	}
 }
@@ -268,27 +343,39 @@ The scale of the GameObject on the y-axis.
 The scale of the GameObject on the z-axis.
 */
 /*******************************************************************************/
-void Transform::SetScale(float x, float y, float z) {
-	SetScale(Vector3(x, y, z));
-	if (Vector::IsEqual(this->scale.x,0.0f)) {
-		if (this->scale.x >= 0.0f) {
-			this->scale.x = Math::EPSILON;
+void Transform::SetLocalScale(float x, float y, float z) {
+	SetLocalScale(Vector3(x, y, z));
+}
+
+void Transform::SetLocalScaleX(float x) {
+	this->localScale.x = x;
+	if (Vector::IsEqual(localScale.x, 0.0f)) {
+		if (localScale.x >= 0.0f) {
+			localScale.x = Math::EPSILON;
 		} else {
-			this->scale.x = -Math::EPSILON;
+			localScale.x = -Math::EPSILON;
 		}
 	}
-	if (Vector::IsEqual(this->scale.y,0.0f)) {
-		if(this->scale.y >= 0.0f) {
-			this->scale.y = Math::EPSILON;
+}
+
+void Transform::SetLocalScaleY(float y) {
+	this->localScale.y = y;
+	if(Vector::IsEqual(localScale.y,0.0f)) {
+		if(localScale.y >= 0.0f) {
+			localScale.y = Math::EPSILON;
 		} else {
-			this->scale.y = -Math::EPSILON;
+			localScale.y = -Math::EPSILON;
 		}
 	}
-	if (Vector::IsEqual(this->scale.z,0.0f)) {
-		if(this->scale.z >= 0.0f) {
-			this->scale.z = Math::EPSILON;
+}
+
+void Transform::SetLocalScaleZ(float z) {
+	this->localScale.z = z;
+	if(Vector::IsEqual(localScale.z,0.0f)) {
+		if(localScale.z >= 0.0f) {
+			localScale.z = Math::EPSILON;
 		} else {
-			this->scale.z = -Math::EPSILON;
+			localScale.z = -Math::EPSILON;
 		}
 	}
 }
@@ -305,7 +392,7 @@ The amount to translate the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Translate(const Vector3& translation) {
-	this->position += translation;
+	this->localPosition += translation;
 }
 
 /*******************************************************************************/
@@ -335,7 +422,7 @@ The amount to rotate the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Rotate(const Vector3& rotation) {
-	this->rotation += rotation;
+	this->localRotation += rotation;
 }
 
 /*******************************************************************************/
@@ -365,9 +452,31 @@ The amount to scale the GameObject by.
 */
 /*******************************************************************************/
 void Transform::Scale(const Vector3& scale) {
-	this->scale.x *= scale.x;
-	this->scale.y *= scale.y;
-	this->scale.z *= scale.z;
+	this->localScale.x *= scale.x;
+	this->localScale.y *= scale.y;
+	this->localScale.z *= scale.z;
+
+	if(Vector::IsEqual(this->localScale.x,0.0f)) {
+		if(this->localScale.x >= 0.0f) {
+			this->localScale.x = Math::EPSILON;
+		} else {
+			this->localScale.x = -Math::EPSILON;
+		}
+	}
+	if(Vector::IsEqual(this->localScale.y,0.0f)) {
+		if(this->localScale.y >= 0.0f) {
+			this->localScale.y = Math::EPSILON;
+		} else {
+			this->localScale.y = -Math::EPSILON;
+		}
+	}
+	if(Vector::IsEqual(this->localScale.z,0.0f)) {
+		if(this->localScale.z >= 0.0f) {
+			this->localScale.z = Math::EPSILON;
+		} else {
+			this->localScale.z = -Math::EPSILON;
+		}
+	}
 }
 
 /*******************************************************************************/
@@ -390,19 +499,6 @@ void Transform::Scale(float x, float y, float z) {
 /*******************************************************************************/
 /*!
 \brief
-Scale the GameObject uniformly.
-
-\param scale
-The amount to scale the GameObject by.
-*/
-/*******************************************************************************/
-void Transform::Scale(float scale) {
-	this->scale *= scale;
-}
-
-/*******************************************************************************/
-/*!
-\brief
 Rotates the transform so the forward vector points at target's current position.
 Then it rotates the transform to point its up direction vector in the direction hinted at by the worldUp vector.
 If you leave out the up parameter, the function will use the world y axis.
@@ -414,7 +510,7 @@ The target' position.
 The fucking up vector the fucking shit is supposed to orient to.
 */
 /*******************************************************************************/
-void Transform::LookAt(Vector3 target, Vector3 up) {
+/*void Transform::LookAt(Vector3 target, Vector3 up) {
 	Vector3 view = target - position;
 	Vector3 left = up.Cross(view);
 	up = view.Cross(left);
@@ -450,4 +546,4 @@ void Transform::LookAt(Vector3 target, Vector3 up) {
 	}
 
 	rotation.Set(x, y, z);
-}
+}*/

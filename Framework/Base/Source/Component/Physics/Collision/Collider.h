@@ -18,7 +18,6 @@ private:
 	bool previousState;
 	bool currentState;
 
-
 public:
 	//Variable(s)
 	vector<GameObject*> gameObjects;

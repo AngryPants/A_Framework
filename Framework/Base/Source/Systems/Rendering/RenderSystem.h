@@ -2,7 +2,7 @@
 #define RENDER_SYSTEM_H
 
 #include "SingletonTemplate.h"
-#include "../Others/IDGenerator.h"
+#include "../../Others/IDGenerator.h"
 #include <string>
 #include <bitset>
 
@@ -16,6 +16,9 @@ private:
 	//Constructor(s) & Destructor
 	RenderSystem();
 	virtual ~RenderSystem();
+
+	//Private Function(s)
+	void RenderRecursion(GameObject& gameObject);
 
 public:
 	//Interface Function(s)

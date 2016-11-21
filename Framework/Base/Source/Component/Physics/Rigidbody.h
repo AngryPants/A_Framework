@@ -1,7 +1,7 @@
 #ifndef RIGIDBODY_H
 #define RIGIDBODY_H
 
-#include "Component.h"
+#include "../Component.h"
 #include "Vector3.h"
 
 /*class Rigidbody {
@@ -14,6 +14,7 @@ private:
 
 public:
 	bool useGravity;
+	bool isTrigger;
 
 	//Constructor(s) & Destructor
 	Rigidbody(GameObject& gameObject);

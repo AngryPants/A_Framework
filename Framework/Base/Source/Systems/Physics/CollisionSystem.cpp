@@ -1,8 +1,8 @@
 #include "CollisionSystem.h"
-#include "../Component/ComponentManager.h"
-#include "../Component/Physics/Transform.h"
-#include "../Component/Physics/Collision/SphereCollider.h"
-#include "../GameObject/GameObject.h"
+#include "../../Component/ComponentManager.h"
+#include "../../Component/Physics/Transform.h"
+#include "../../Component/Physics/Collision/SphereCollider.h"
+#include "../../GameObject/GameObject.h"
 
 /*float CollisionSystem::CircleCircle(Vector2 circlePositionA, Vector2 circlePositionB, float circleRadiusA, float circleRadiusB, Vector2 circleVelocityA, Vector2 circleVelocityB, bool directionCheck)
 {

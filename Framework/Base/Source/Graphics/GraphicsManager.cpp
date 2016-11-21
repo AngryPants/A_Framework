@@ -60,13 +60,14 @@ bool GraphicsManager::ClearShaders() {
 }
 
 //MVP
-void GraphicsManager::SetToCameraView(Camera& camera, Transform& transform) {
+//void GraphicsManager::SetToCameraView(Camera& camera, const Vector3& position, const Vector3& target, const Vector3& up) {
+void GraphicsManager::SetToCameraView(const Camera& camera, const Transform& transform) {
 
 	modelStack.LoadIdentity();
 	viewStack.LoadIdentity();
 
 	Vector3 position = transform.GetPosition();
-	Vector3 target = transform.GetPosition() + transform.GetForward();
+	Vector3 target = position + transform.GetForward();
 	Vector3 up = transform.GetUp();
 	viewStack.LookAt(position.x, position.y, position.z,
 					 target.x, target.y, target.z,

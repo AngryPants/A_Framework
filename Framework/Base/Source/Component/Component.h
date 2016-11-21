@@ -31,6 +31,9 @@ public:
 	GameObject& GetGameObject() {
 		return *gameObject;
 	}
+	GameObject& GetGameObject() const {
+		return *gameObject;
+	}
 
 	const string& GetSpace() const {
 		return space;

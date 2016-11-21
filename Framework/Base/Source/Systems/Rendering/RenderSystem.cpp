@@ -1,21 +1,26 @@
 #include "RenderSystem.h"
 
 //Include Systems
-#include "../Component/ComponentManager.h"
-#include "../GameObject/GameObject.h"
-#include "../Graphics/RenderHelper.h"
-#include "../Graphics/GraphicsManager.h"
-#include "../Application/Application.h"
-#include "../Scene/SceneGraph.h"
-#include "../Scene/SceneNode.h"
+#include "../../Component/ComponentManager.h"
+#include "../../GameObject/GameObject.h"
+#include "../../Graphics/RenderHelper.h"
+#include "../../Graphics/GraphicsManager.h"
+#include "../../Application/Application.h"
+#include "../../Scene/SceneGraph.h"
+#include "../../Scene/SceneNode.h"
 
 //Include Components
-#include "../Component/Rendering/MeshRenderer.h"
-#include "../Component/Rendering/SpriteRenderer.h"
-#include "../Component/Rendering/TextRenderer.h"
-#include "../Component/Physics/Transform.h"
-#include "../Component/Rendering/Camera.h"
-#include "../Component/Rendering/Light.h"
+#include "../../Component/Rendering/MeshRenderer.h"
+#include "../../Component/Rendering/SpriteRenderer.h"
+#include "../../Component/Rendering/TextRenderer.h"
+#include "../../Component/Physics/Transform.h"
+#include "../../Component/Rendering/Camera.h"
+#include "../../Component/Rendering/Light.h"
+
+//Others
+#include <stack>
+
+using std::stack;
 
 //Constructor(s) & Destructor
 RenderSystem::RenderSystem() {
@@ -24,38 +29,46 @@ RenderSystem::RenderSystem() {
 RenderSystem::~RenderSystem() {
 }
 
-//Interface Function(s)
-void RenderSystem::Update(const string& space, double deltaTime) {
-	//Sprite Animation
-	set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
-	for (set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
-		SpriteRenderer& spriteRenderer = *(static_cast<SpriteRenderer*>(*setIter));		
-		if (!spriteRenderer.isActive) {
-			continue;
-		}
-		spriteRenderer.Update(deltaTime);
-	}
-}
-
-void RenderRecursion(GameObject& gameObject) {
-	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+//Private Function(s)
+void RenderSystem::RenderRecursion(GameObject& gameObject) {
+	//Get our transform.
 	Transform& transform = gameObject.GetComponent<Transform>();
+
+	//Get our modelStack from GraphicsManager.
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	modelStack.PushMatrix();
-		modelStack.Translate(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
-		modelStack.Rotate(transform.GetRotation().y, 0, 1, 0);
-		modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
-		modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
-		modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
+		//Do our transformation.
+		modelStack.Translate(transform.GetLocalPosition().x, transform.GetLocalPosition().y, transform.GetLocalPosition().z);
+		//Order of Rotation - Z, X, Y
+		modelStack.Rotate(transform.GetLocalRotation().y, 0, 1, 0);
+		modelStack.Rotate(transform.GetLocalRotation().x, 1, 0, 0);
+		modelStack.Rotate(transform.GetLocalRotation().z, 0, 0, 1);
+		modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);
+		//Check for MeshRenderer.
 		if (gameObject.HasComponent<MeshRenderer>()) {
 			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
 			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);
 		}
+		//Recursion in the children.
 		vector<GameObject*> children;
 		gameObject.GetChildren(children);
 		for (unsigned int i = 0; i < children.size(); ++i) {
 			RenderRecursion(*children[i]);
 		}
 	modelStack.PopMatrix();
+}
+
+//Interface Function(s)
+void RenderSystem::Update(const string& space, double deltaTime) {
+	//Sprite Animation
+	set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
+	for(set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
+		SpriteRenderer& spriteRenderer = *(static_cast<SpriteRenderer*>(*setIter));
+		if(!spriteRenderer.isActive) {
+			continue;
+		}
+		spriteRenderer.Update(deltaTime);
+	}
 }
 
 void RenderSystem::Render(const string& space) {
@@ -84,6 +97,12 @@ void RenderSystem::Render(const string& space) {
 		cout << "No suitable camera. Unable to Render()." << endl;
 		return;
 	}
+	//Camera Debugging
+	//cout << "Camera Position" << camPtr->GetGameObject().GetComponent<Transform>().GetPosition() << endl;
+	//cout << "Camera Forward: " << camPtr->GetGameObject().GetComponent<Transform>().GetForward() << endl;
+	//cout << "Camera Up: " << camPtr->GetGameObject().GetComponent<Transform>().GetUp() << endl;
+	//cout << "Camera Left: " << camPtr->GetGameObject().GetComponent<Transform>().GetLeft() << endl;
+
 	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
 	camPtr->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
 
@@ -133,7 +152,7 @@ void RenderSystem::Render(const string& space) {
 	}
 
 	//Sprite Animation
-	set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
+	/*set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
 	for (set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
 		SpriteRenderer& spriteRenderer = *(static_cast<SpriteRenderer*>(*setIter));		
 		if (spriteRenderer.GetGameObject().HasComponent<Transform>() == false) {
@@ -147,16 +166,16 @@ void RenderSystem::Render(const string& space) {
 		MS& modelStack = GraphicsManager::GetInstance().modelStack;
 		modelStack.PushMatrix();
 			modelStack.Translate(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
-			modelStack.Rotate(transform.GetRotation().y, 0, 1, 0);
-			modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
-			modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
-			modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
+			modelStack.Rotate(transform.GetLocalRotation().y, 0, 1, 0);
+			modelStack.Rotate(transform.GetLocalRotation().x, 1, 0, 0);
+			modelStack.Rotate(transform.GetLocalRotation().z, 0, 0, 1);
+			modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);
 			RenderHelper::GetInstance().RenderMesh(*spriteRenderer.GetSpriteAnimation(), spriteRenderer.textureList, spriteRenderer.lightEnabled);
 		modelStack.PopMatrix();
-	}
+	}*/
 
 	//Text
-	set<Component*>& textRenderers = ComponentManager::GetInstance().GetComponents<TextRenderer>(space);
+	/*set<Component*>& textRenderers = ComponentManager::GetInstance().GetComponents<TextRenderer>(space);
 	//Loop through them.
 	for (set<Component*>::iterator setIter = textRenderers.begin(); setIter != textRenderers.end(); ++setIter) {
 		TextRenderer& textRenderer = *(static_cast<TextRenderer*>(*setIter));
@@ -172,14 +191,13 @@ void RenderSystem::Render(const string& space) {
 		MS& modelStack = GraphicsManager::GetInstance().modelStack;
 		modelStack.PushMatrix();
 			modelStack.Translate(transform.GetPosition().x, transform.GetPosition().y, transform.GetPosition().z);
-			modelStack.Rotate(transform.GetRotation().y, 0, 1, 0);
-			modelStack.Rotate(transform.GetRotation().x, 1, 0, 0);
-			modelStack.Rotate(transform.GetRotation().z, 0, 0, 1);
-			modelStack.Scale(transform.GetScale().x, transform.GetScale().y, transform.GetScale().z);
+			modelStack.Rotate(transform.GetLocalRotation().y, 0, 1, 0);
+			modelStack.Rotate(transform.GetLocalRotation().x, 1, 0, 0);
+			modelStack.Rotate(transform.GetLocalRotation().z, 0, 0, 1);
+			modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);
 			RenderHelper::GetInstance().RenderText(*textRenderer.mesh, textRenderer.textureList, textRenderer.text, textRenderer.textColor);
 		modelStack.PopMatrix();
-	}
-
+	}*/
 }
 
 void RenderSystem::RenderUI(const string& space) {

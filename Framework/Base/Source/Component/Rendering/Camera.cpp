@@ -44,7 +44,7 @@ void Camera::SetFOV(const float& FOV) {
 
 }
 
-float Camera::GetFOV() {
+float Camera::GetFOV() const {
 
 	return this->FOV;
 

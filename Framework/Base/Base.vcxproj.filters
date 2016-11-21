@@ -52,21 +52,6 @@
     <ClInclude Include="Source\Graphics\ShaderProgram.h">
       <Filter>Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\Controller_Gamepad.h">
-      <Filter>Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Controller_Keyboard.h">
-      <Filter>Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Controller_Mouse.h">
-      <Filter>Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\InputManager.h">
-      <Filter>Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Win32Input.h">
-      <Filter>Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Mesh\LoadOBJ.h">
       <Filter>Files\Mesh</Filter>
     </ClInclude>
@@ -103,29 +88,11 @@
     <ClInclude Include="Source\Script\Script.h">
       <Filter>Files\Script</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AGDEV\SceneEmpty.h">
-      <Filter>Files\AGDEV</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\SceneTest.h">
-      <Filter>Files\AGDEV</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\CubeScript.h">
-      <Filter>Files\AGDEV</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Animation\Animation.h">
       <Filter>Files\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\SpriteAnimation.h">
       <Filter>Files\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\CollisionSystem.h">
-      <Filter>Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\PhysicsSystem.h">
-      <Filter>Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\RenderSystem.h">
-      <Filter>Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Texture\LoadTGA.h">
       <Filter>Files\Texture</Filter>
@@ -157,8 +124,47 @@
     <ClInclude Include="Source\Component\ComponentManager.h">
       <Filter>Files\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Input\Controller_Gamepad.h">
+      <Filter>Files\Input\Gamepad</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Controller_Keyboard.h">
+      <Filter>Files\Input\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Controller_Mouse.h">
+      <Filter>Files\Input\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Win32Input.h">
+      <Filter>Files\Input\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\InputManager.h">
+      <Filter>Files\Input\InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\Rendering\RenderSystem.h">
+      <Filter>Files\Systems\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\Physics\CollisionSystem.h">
+      <Filter>Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h">
+      <Filter>Files\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\PlayerCameraScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
     <ClInclude Include="Source\AGDEV\RotateScript.h">
-      <Filter>Files\AGDEV</Filter>
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\SceneEmpty.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\SceneTest.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\PlayerMovementScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\ScaleScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +228,36 @@
     <Filter Include="Files\AGDEV">
       <UniqueIdentifier>{d754285e-c04f-41db-93cf-9aebe9515428}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files\Component\Game">
+      <UniqueIdentifier>{5a53f2ba-5f29-452c-802e-932b897bfe68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Input\Gamepad">
+      <UniqueIdentifier>{25a70dbb-03b0-45c1-a865-7bc2fbf66f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Input\Keyboard">
+      <UniqueIdentifier>{ab47f5d5-7085-4eea-b569-e921265517b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Input\Mouse">
+      <UniqueIdentifier>{8c4d4030-383d-488c-a3a7-67f2de53204d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Input\Win32">
+      <UniqueIdentifier>{72e02591-98db-4510-bc78-ad18910dcb76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Input\InputManager">
+      <UniqueIdentifier>{fca4aabd-1a05-4d57-814b-0bbcc534622f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\Rendering">
+      <UniqueIdentifier>{eb12ed44-967b-4d53-83c9-bcbca06c547e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\Physics">
+      <UniqueIdentifier>{af3e5794-0af2-49af-a131-bf78d05eb0f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Scene">
+      <UniqueIdentifier>{1156f533-1e19-4db9-b31c-3c72c79d4a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Script">
+      <UniqueIdentifier>{59c5f599-8cfd-4feb-b933-5a9b402ee6fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp">
@@ -263,21 +299,6 @@
     <ClCompile Include="Source\Graphics\ShaderProgram.cpp">
       <Filter>Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\Controller_Gamepad.cpp">
-      <Filter>Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Controller_Keyboard.cpp">
-      <Filter>Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Controller_Mouse.cpp">
-      <Filter>Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\InputManager.cpp">
-      <Filter>Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Win32Input.cpp">
-      <Filter>Files\Input</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Mesh\LoadOBJ.cpp">
       <Filter>Files\Mesh</Filter>
     </ClCompile>
@@ -296,20 +317,11 @@
     <ClCompile Include="Source\Scene\SceneNode.cpp">
       <Filter>Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\AGDEV\SceneTest.cpp">
-      <Filter>Files\AGDEV</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\Animation.cpp">
       <Filter>Files\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Animation\SpriteAnimation.cpp">
       <Filter>Files\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Systems\CollisionSystem.cpp">
-      <Filter>Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Systems\RenderSystem.cpp">
-      <Filter>Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Texture\LoadTGA.cpp">
       <Filter>Files\Texture</Filter>
@@ -337,6 +349,36 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneGraph.cpp">
       <Filter>Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Controller_Gamepad.cpp">
+      <Filter>Files\Input\Gamepad</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Controller_Keyboard.cpp">
+      <Filter>Files\Input\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Controller_Mouse.cpp">
+      <Filter>Files\Input\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Win32Input.cpp">
+      <Filter>Files\Input\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\InputManager.cpp">
+      <Filter>Files\Input\InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp">
+      <Filter>Files\Systems\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp">
+      <Filter>Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\SceneTest.cpp">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
