@@ -30,7 +30,7 @@ struct Vector2 : public Vector {
 	virtual float LengthSquared() const; //Get Square of Magnitude
 
 	friend std::ostream& operator<<(std::ostream& os, Vector2& rhs);
-	friend Vector2 operator*(float scalar, const Vector2& rhs); //what is this for?
+	friend Vector2 operator*(float scalar, const Vector2& rhs); //what is this for? To multiply a scalar with a vector
 
 };
 
