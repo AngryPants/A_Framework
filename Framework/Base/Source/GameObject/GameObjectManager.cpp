@@ -1,5 +1,7 @@
 #include "GameObjectManager.h"
 #include "GameObject.h"
+#include "../Systems/SpatialPartition/SPSystem.h"
+
 
 GameObjectManager::GameObjectManager() {
 }
@@ -19,6 +21,7 @@ GameObject& GameObjectManager::CreateGameObject(const string& space, const strin
 	}
 	goVector[goPtr->GetID()] = goPtr;
 
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID()); //SpatialPartition
 	return *goPtr;
 }
 
@@ -47,6 +50,7 @@ void GameObjectManager::RemoveGameObjects() {
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
 		mapIter->second.erase(goPtr);
 		goVector[goPtr->GetID()] = nullptr;
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 		delete goPtr;
 	}
 	removeQueue.clear();

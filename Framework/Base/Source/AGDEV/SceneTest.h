@@ -24,6 +24,9 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+
+	float debugCountdown = 3.f;
+
 };
 
 #endif

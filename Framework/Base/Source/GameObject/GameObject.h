@@ -34,34 +34,8 @@ private:
 	bool destroyed;	
 
 	//Constructor(s) & Destructor
-	GameObject(const string& space,const string& name = "GameObject"): space(space),name(name) {
-		this->id = IDGenerator::GetInstance().GetGameObjectID();
-		destroyed = false;
-		for(unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
-			this->components[i] = nullptr;
-		}
-		for(unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
-			scripts[i] = nullptr;
-		}
-		tag = "Default";
-		AddComponent<Transform>();
-		node = SceneGraph::GetInstance().CreateSceneNode(*this); //SceneGraph
-	}
-	virtual ~GameObject() {
-		for(unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
-			if(this->components[i] != nullptr) {
-				ComponentManager::GetInstance().RemoveComponent(*components[i],i);
-			}
-		}
-		componentBitset.reset();
-		for(unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
-			if(scripts[i] != nullptr) {
-				delete scripts[i];
-			}
-		}
-		IDGenerator::GetInstance().ReturnGameObjectID(id);
-		delete node; //SceneGraph
-	}
+	GameObject(const string& space, const string& name = "GameObject");
+	virtual ~GameObject();
 
 public:
 	//Variable(s)
@@ -69,18 +43,10 @@ public:
 	string tag;
 	
 	//Name
-	void SetName(const string& name) {
-		this->name = name;
-	}
-	const string& GetName() const {
-		return this->name;
-	}
-	const string& GetSpace() const {
-		return this->space;
-	}
-	int GetID() const {
-		return this->id;
-	}
+	void SetName(const string& name);
+	const string& GetName() const;
+	const string& GetSpace() const;
+	int GetID() const;
 
 	//Components
 	template <class Type>
@@ -105,15 +71,15 @@ public:
 
 	template <class Type>
 	void RemoveComponent() {
-		if (!HasComponent<Type>) {
+		if (!HasComponent<Type>()) {
 			cout << "This GameObject does not have this component." << endl;
 			throw std::exception("This GameObject does not have this component.");
 			return;
 		}
 
-		ComponentTypeID id = IDGenerator::GetComponentTypeID<Type>();
+		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
 		componentBitset[id] = 0;
-		ComponentManager::GetInstance().RemoveComponent(*components[id]);
+		ComponentManager::GetInstance().RemoveComponent(*components[id],id);
 		components[id] = nullptr;
 	}
 
@@ -144,19 +110,11 @@ public:
 		return *(static_cast<Type*>(componentPtr));
 	}
 
-	const ComponentBitset& GetComponentBitset() const {
-		return this->componentBitset;
-	}
+	const ComponentBitset& GetComponentBitset() const;
 
 	//Destruction
-	void Destroy() {
-		destroyed = true;
-		GameObjectManager::GetInstance().RemoveGameObject(*this);
-		node->Destroy();
-	}
-	bool IsDestroyed() const {
-		return destroyed;
-	}
+	void Destroy();
+	bool IsDestroyed() const;
 
 	//Scripts
 	template <class Type>
@@ -188,71 +146,24 @@ public:
 		cout << "Unable to CreateScript() as there are no available script slots left." << endl;
 		return nullptr;
 	}
-	void RemoveScript(unsigned int index) {
-		if(index > sizeof(scripts)/sizeof(scripts[0]) - 1) {
-			string errorMessage = "Unable to RemoveScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
-			cout << errorMessage << endl;
-			return;
-		}
-		if (scripts[index] != nullptr) {
-			delete scripts[index];
-			scripts[index] = nullptr;
-		}
-	}
-	bool HasScript(unsigned int index) {
-		if(index > sizeof(scripts)/sizeof(scripts[0]) - 1) {
-			return false;
-		}
-		return scripts[index] != nullptr;
-	}
+	void RemoveScript(unsigned int index);
+	
+	bool HasScript(unsigned int index);
 
 	//Parent
-	bool SetParent(GameObject& gameObject) {
-		if (node->SetParent(*gameObject.node)) {
-			GetComponent<Transform>().SetLocalPosition(0, 0, 0);
-			return true;
-		}
-		return false;
-	}
-	bool DetachParent() {
-		return node->DetachParent();
-	}
-	bool HasParent() const {
-		return node->GetParent() != nullptr;
-	}
-	bool IsChildOf(const GameObject& gameObject) {
-		return (node->GetParent() == gameObject.node);
-	}
-	GameObject* GetParent() {
-		return node->GetParent()->GetGameObject();
-	}
+	bool SetParent(GameObject& gameObject);
+	bool DetachParent();
+	bool HasParent() const;
+	bool IsChildOf(const GameObject& gameObject);
+	GameObject* GetParent();
 
 	//Child
-	bool AddChild(GameObject& gameObject) {
-		return node->AddChild(*gameObject.node);
-	}
-	bool DetachChild(GameObject& gameObject) {
-		return node->DetachChild(*(gameObject.node));
-	}
-	bool DetachAllChildren() {
-		return node->DetachAllChildren();
-	}
-	bool DestroyChild(GameObject& gameObject) {
-		return node->DestroyChild(*(gameObject.node));
-	}
-	bool DestroyAllChildren() {
-		return node->DestroyAllChildren();
-	}
-	void GetChildren(vector<GameObject*>& children) {
-		children.clear();
-		children.resize(node->GetNumChildren(), nullptr);
-		set<SceneNode*>& childrenNodes = node->GetChildren();
-		int i = 0;
-		for (set<SceneNode*>::iterator setIter = childrenNodes.begin(); setIter != childrenNodes.end(); ++setIter) {
-			children[i] = (*setIter)->GetGameObject();
-			++i;
-		}
-	}
+	bool AddChild(GameObject& gameObject);
+	bool DetachChild(GameObject& gameObject);
+	bool DetachAllChildren();
+	bool DestroyChild(GameObject& gameObject);
+	bool DestroyAllChildren();
+	void GetChildren(vector<GameObject*>& children);
 
 };
 

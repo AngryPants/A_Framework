@@ -29,6 +29,7 @@
     <ClInclude Include="Source\Component\Physics\Transform.h" />
     <ClInclude Include="Source\Component\Rendering\Camera.h" />
     <ClInclude Include="Source\Component\Rendering\Light.h" />
+    <ClInclude Include="Source\Component\Rendering\LODMeshHolder.h" />
     <ClInclude Include="Source\Component\Rendering\MeshRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\SpriteRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\TextRenderer.h" />
@@ -62,6 +63,9 @@
     <ClInclude Include="Source\Systems\Physics\CollisionSystem.h" />
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\Rendering\RenderSystem.h" />
+    <ClInclude Include="Source\Systems\SpatialPartition\Grid.h" />
+    <ClInclude Include="Source\Systems\SpatialPartition\SpatialPartition.h" />
+    <ClInclude Include="Source\Systems\SpatialPartition\SPSystem.h" />
     <ClInclude Include="Source\Texture\LoadTGA.h" />
     <ClInclude Include="Source\Texture\Texture.h" />
     <ClInclude Include="Source\Texture\TextureList.h" />
@@ -81,7 +85,9 @@
     <ClCompile Include="Source\Component\Physics\Collision\SphereCollider.cpp" />
     <ClCompile Include="Source\Component\Physics\Transform.cpp" />
     <ClCompile Include="Source\Component\Rendering\Camera.cpp" />
+    <ClCompile Include="Source\Component\Rendering\LODMeshHolder.cpp" />
     <ClCompile Include="Source\Component\Rendering\SpriteRenderer.cpp" />
+    <ClCompile Include="Source\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsManager.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsUtility.cpp" />
@@ -105,6 +111,9 @@
     <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp" />
+    <ClCompile Include="Source\Systems\SpatialPartition\Grid.cpp" />
+    <ClCompile Include="Source\Systems\SpatialPartition\SpatialPartition.cpp" />
+    <ClCompile Include="Source\Systems\SpatialPartition\SPSystem.cpp" />
     <ClCompile Include="Source\Texture\LoadTGA.cpp" />
     <ClCompile Include="Source\Texture\Texture.cpp" />
     <ClCompile Include="Source\Texture\TextureManager.cpp" />

@@ -166,6 +166,18 @@
     <ClInclude Include="Source\AGDEV\ScaleScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Rendering\LODMeshHolder.h">
+      <Filter>Files\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\SpatialPartition\Grid.h">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\SpatialPartition\SpatialPartition.h">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\SpatialPartition\SPSystem.h">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -257,6 +269,9 @@
     </Filter>
     <Filter Include="Files\AGDEV\Script">
       <UniqueIdentifier>{59c5f599-8cfd-4feb-b933-5a9b402ee6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\SpacialPartition">
+      <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +394,21 @@
     </ClCompile>
     <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Rendering\LODMeshHolder.cpp">
+      <Filter>Files\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\SpatialPartition\Grid.cpp">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\SpatialPartition\SpatialPartition.cpp">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\SpatialPartition\SPSystem.cpp">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\GameObject.cpp">
+      <Filter>Files\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -52,7 +52,7 @@ public:
 	static GameObject& CreateSphere(const string& space, const string& name = "Sphere") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<MeshRenderer>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Sphere", "OBJ//Default//Sphere.obj");
-
+		
 		return go;
 	}
 

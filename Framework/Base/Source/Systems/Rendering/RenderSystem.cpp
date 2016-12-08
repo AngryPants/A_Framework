@@ -8,6 +8,7 @@
 #include "../../Application/Application.h"
 #include "../../Scene/SceneGraph.h"
 #include "../../Scene/SceneNode.h"
+#include "../../Systems/SpatialPartition/SPSystem.h"
 
 //Include Components
 #include "../../Component/Rendering/MeshRenderer.h"

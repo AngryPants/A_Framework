@@ -43,7 +43,7 @@ public:
 	void Update();
 	void UpdateScripts(const string& space, const double deltaTime);
 	set<GameObject*> GetGameObjects(const string& space);
-	int GetNumGameObjects(const string& space);	
+	int GetNumGameObjects(const string& space);
 
 };
 

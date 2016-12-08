@@ -20,6 +20,7 @@
 #include "../Systems/Rendering/RenderSystem.h"
 #include "../Others/IDGenerator.h"
 #include "../Scene/SceneGraph.h"
+#include "../Systems/SpatialPartition/SPSystem.h"
 
 //Include Controller(s)
 #include "../Input/Controller_Keyboard.h"
@@ -142,6 +143,7 @@ void Application::ExitSystems() {
 	GameObjectManager::Destroy();
 	ComponentManager::Destroy();
 	SceneGraph::Destroy();
+	SpatialPartitionSystem::Destroy();
 
 	MeshBuilder::Destroy();
 	TextureManager::Destroy();

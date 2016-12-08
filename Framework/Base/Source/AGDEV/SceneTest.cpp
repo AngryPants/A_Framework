@@ -6,6 +6,7 @@
 #include "../Mesh/MeshBuilder.h"
 #include "../Texture/TextureManager.h"
 #include "../Systems/Rendering//RenderSystem.h"
+#include "../Systems/SpatialPartition/SPSystem.h"
 
 //Include Scripts
 #include "RotateScript.h"
@@ -32,6 +33,9 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().SetNumLights(8);
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
+
+	//SpatialPartition
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Init(10, 10, 4, 4, -1.f);
 
 	//Player
 	player = &GameObjectFactory::CreateEmpty(name);
@@ -69,15 +73,20 @@ void SceneTest::Init() {
 	plane->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
 	plane->GetComponent<MeshRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
+
 }
 
 void SceneTest::Update(double deltaTime) {	
 	GameObjectManager::GetInstance().UpdateScripts(name, deltaTime);
+	SpatialPartitionSystem::GetInstance().Update(name);
 	//Close da app
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
 		Application::GetInstance().Quit();
 	}
 	RenderSystem::GetInstance().Update(name, deltaTime);
+
+	debugCountdown -= deltaTime;
+	
 }
 
 void SceneTest::Render() {
@@ -91,6 +100,11 @@ void SceneTest::Render() {
 	GraphicsManager::GetInstance().SetToUI();
 
 	RenderSystem::GetInstance().RenderUI(name);
+	if (debugCountdown <= 0)
+	{
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
+		debugCountdown = 3.f;
+	}
 }
 
 void SceneTest::Exit() {	
