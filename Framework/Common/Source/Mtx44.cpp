@@ -50,8 +50,9 @@ Constructor with array of 16 floats. Default values are zero
 */
 /******************************************************************************/
 Mtx44::Mtx44(const float m[16]) {
-	for(int i = 0; i < 16; i++)
+	for(int i = 0; i < 16; i++) {
 		a[i] = m[i];
+	}		
 }
 
 /******************************************************************************/
@@ -61,8 +62,9 @@ Copy constructor
 */
 /******************************************************************************/
 Mtx44::Mtx44(const Mtx44 &rhs) {
-	for(int i = 0; i < 16; i++)
+	for(int i = 0; i < 16; i++) {
 		a[i] = rhs.a[i];
+	}		
 }
 
 /******************************************************************************/
@@ -95,9 +97,11 @@ Set this matrix to its Transpose
 */
 /******************************************************************************/
 void Mtx44::Transpose(void) {
-	for(int i = 0; i < 4; i++)
-		for(int j = i + 1; j < 4; j++)
+	for(int i = 0; i < 4; i++) {
+		for(int j = i + 1; j < 4; j++) {
 			swap(a[i * 4 + j], a[j * 4 + i]);
+		}			
+	}		
 }
 
 /******************************************************************************/
@@ -107,8 +111,9 @@ Set this matrix to zero
 */
 /******************************************************************************/
 void Mtx44::SetToZero(void) {
-	for(int i = 0; i < 16; i++)
+	for(int i = 0; i < 16; i++) {
 		a[i] = 0;
+	}		
 }
 
 /******************************************************************************/
@@ -151,8 +156,9 @@ Mtx44 Mtx44::GetInverse() const throw( DivideByZero ) {
     float b5 = a[10]*a[15] - a[11]*a[14];
 
     float det = a0*b5 - a1*b4 + a2*b3 + a3*b2 - a4*b1 + a5*b0;
-	if(abs(det) < Math::EPSILON)
+	if(abs(det) < Math::EPSILON) {
 		throw DivideByZero();
+	}		
     Mtx44 inverse;
 	if (Math::FAbs(det) > Math::EPSILON)
     {
@@ -207,9 +213,11 @@ operator* overload for matrix-matrix multiplication
 /******************************************************************************/
 Mtx44 Mtx44::operator*(const Mtx44& rhs) const {
 	Mtx44 ret;
-	for(int i = 0; i < 4; i++)
-		for(int j = 0; j < 4; j++)
+	for(int i = 0; i < 4; i++) {
+		for(int j = 0; j < 4; j++) {
 			ret.a[i * 4 + j] = a[0 * 4 + j] * rhs.a[i * 4 + 0] + a[1 * 4 + j] * rhs.a[i * 4 + 1] + a[2 * 4 + j] * rhs.a[i * 4 + 2] + a[3 * 4 + j] * rhs.a[i * 4 + 3];
+		}
+	}			
 	return ret;
 }
 
@@ -257,8 +265,9 @@ operator= overload for assignment
 */
 /******************************************************************************/
 Mtx44& Mtx44::operator=(const Mtx44& rhs) {
-	for(int i = 0; i < 16; i++)
+	for (int i = 0; i < 16; i++) {
 		a[i] = rhs.a[i];
+	}		
 	return *this;
 }
 
@@ -275,8 +284,9 @@ operator* overload for scalar multiplication
 /******************************************************************************/
 Mtx44 Mtx44::operator*(float scalar) const {
 	Mtx44 ret;
-	for(int i = 0; i < 16; i++)
+	for(int i = 0; i < 16; i++) {
 		ret.a[i] = scalar * a[i];
+	}		
 	return ret;
 }
 
@@ -293,8 +303,9 @@ operator* overload for matrix-vector3 multiplication
 /******************************************************************************/
 Vector3 Mtx44::operator*(const Vector3& rhs) const {
 	float b[4];
-	for(int i = 0; i < 4; i++)
+	for(int i = 0; i < 4; i++) {
 		b[i] = a[0 * 4 + i] * rhs.x + a[1 * 4 + i] * rhs.y + a[2 * 4 + i] * rhs.z + a[3 * 4 + i] * 0;
+	}		
 	Vector3 ret(b[0], b[1], b[2]);
 	return ret;
 }
@@ -318,8 +329,9 @@ Set Matrix to a rotation matrix about arbitrary axis
 /******************************************************************************/
 void Mtx44::SetToRotation(float degrees, float axisX, float axisY, float axisZ) throw( DivideByZero ) {
 	double mag = sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
-	if(Math::FAbs((float)mag) < Math::EPSILON)
+	if(Math::FAbs((float)mag) < Math::EPSILON) {
 		throw DivideByZero();
+	}		
 	double x = axisX / mag, y = axisY / mag, z = axisZ/ mag;
 	double c = cos(degrees * Math::PI / 180), s = sin(degrees * Math::PI / 180);
 	a[0] = (float)(x * x * (1.f - c) + c);
@@ -338,7 +350,6 @@ void Mtx44::SetToRotation(float degrees, float axisX, float axisY, float axisZ) 
 	a[13] = 0;
 	a[14] = 0;
 	a[15] = 1;
-
 }
 
 /******************************************************************************/

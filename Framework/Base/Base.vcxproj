@@ -61,6 +61,7 @@
     <ClInclude Include="Source\Scene\SceneNode.h" />
     <ClInclude Include="Source\Script\Script.h" />
     <ClInclude Include="Source\Systems\Physics\CollisionSystem.h" />
+    <ClInclude Include="Source\Systems\Physics\CollisionUtility.h" />
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\Rendering\RenderSystem.h" />
     <ClInclude Include="Source\Systems\SpatialPartition\Grid.h" />

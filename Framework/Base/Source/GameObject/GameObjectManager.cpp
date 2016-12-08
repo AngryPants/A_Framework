@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "../Systems/SpatialPartition/SPSystem.h"
 
-
+//Constructor(s) & Destructor
 GameObjectManager::GameObjectManager() {
 }
 
@@ -10,9 +10,10 @@ GameObjectManager::~GameObjectManager() {
 	ClearAll();
 }
 
+//Interface Function(s)
 GameObject& GameObjectManager::CreateGameObject(const string& space, const string& name) {
 	//Create the GameObject.
-	GameObject* goPtr = new GameObject(space, name);
+	GameObject* goPtr = new GameObject(space, name, {});
 	//Add to the addQueue.
 	addQueue.insert(goPtr);
 	//Add to our goVector
@@ -21,7 +22,9 @@ GameObject& GameObjectManager::CreateGameObject(const string& space, const strin
 	}
 	goVector[goPtr->GetID()] = goPtr;
 
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID()); //SpatialPartition
+	//SpatialPartition
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID());
+
 	return *goPtr;
 }
 
@@ -51,7 +54,8 @@ void GameObjectManager::RemoveGameObjects() {
 		mapIter->second.erase(goPtr);
 		goVector[goPtr->GetID()] = nullptr;
 		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
-		delete goPtr;
+		//delete goPtr;
+		goPtr->Delete({});
 	}
 	removeQueue.clear();
 }
@@ -82,7 +86,8 @@ void GameObjectManager::Clear(const string& space) {
 		if (goPtr->GetSpace() == space) {
 			setIter = addQueue.erase(setIter);
 			goVector[goPtr->GetID()] = nullptr;
-			delete goPtr;
+			//delete goPtr;
+			goPtr->Delete({});
 		} else {
 			++setIter;
 		}
@@ -95,7 +100,8 @@ void GameObjectManager::Clear(const string& space) {
 		while (setIter != mapIter->second.end()) {
 			GameObject* goPtr = *setIter;
 			goVector[goPtr->GetID()] = nullptr;
-			delete goPtr;
+			//delete goPtr;
+			goPtr->Delete({});
 			++setIter;
 		}
 		goMap.erase(mapIter);
@@ -129,11 +135,7 @@ void GameObjectManager::UpdateScripts(const string& space, const double deltaTim
 	//Update the scripts.
 	for (set<GameObject*>::iterator setIter = mapIter->second.begin(); setIter != mapIter->second.end(); ++setIter) {
 		GameObject* go = *setIter;
-		for (unsigned int i = 0; i < sizeof(go->scripts)/sizeof(go->scripts[0]); ++i) {
-			if (go->scripts[i] != nullptr) {
-				go->scripts[i]->Update(deltaTime);
-			}
-		}
+		go->UpdateScripts(deltaTime, {});
 	}
 }
 

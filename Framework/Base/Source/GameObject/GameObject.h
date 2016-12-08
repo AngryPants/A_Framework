@@ -1,13 +1,13 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "GameObjectManager.h"
 #include "../Others/IDGenerator.h"
 #include "../Component/ComponentManager.h"
 #include "../Component/Physics/Transform.h"
 #include "../Script/Script.h"
 #include "../Scene/SceneGraph.h"
 #include "../Scene/SceneNode.h"
+#include "PassKey.h"
 #include <string>
 #include <bitset>
 #include <exception>
@@ -19,9 +19,9 @@ using namespace std;
 
 typedef std::bitset<MAX_COMPONENTS> ComponentBitset;
 
-class GameObject {
+class GameObjectManager;
 
-	friend class GameObjectManager;
+class GameObject {
 
 private:
 	//Variable(s)
@@ -32,12 +32,15 @@ private:
 	SceneNode* node;
 	Script* scripts[8];	
 	bool destroyed;	
-
-	//Constructor(s) & Destructor
-	GameObject(const string& space, const string& name = "GameObject");
+	
+	//Destructor
 	virtual ~GameObject();
 
 public:
+	//Constructor(s)
+	GameObject(const string& _space, const string& _name, PassKey<GameObjectManager> _key);	
+	void Delete(PassKey<GameObjectManager> _key);
+
 	//Variable(s)
 	string name;
 	string tag;
@@ -117,6 +120,8 @@ public:
 	bool IsDestroyed() const;
 
 	//Scripts
+	bool HasScript(unsigned int index);
+
 	template <class Type>
 	Type* CreateScript(unsigned int index) {
 		if (index > sizeof(scripts)/sizeof(scripts[0]) - 1) {
@@ -133,6 +138,7 @@ public:
 		this->scripts[index] = script;
 		return script;
 	}
+
 	template <class Type>
 	Type* CreateScript() {
 		for (unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
@@ -146,9 +152,9 @@ public:
 		cout << "Unable to CreateScript() as there are no available script slots left." << endl;
 		return nullptr;
 	}
+
 	void RemoveScript(unsigned int index);
-	
-	bool HasScript(unsigned int index);
+	void UpdateScripts(double deltaTime, PassKey<GameObjectManager> _key);
 
 	//Parent
 	bool SetParent(GameObject& gameObject);

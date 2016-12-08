@@ -2,6 +2,7 @@
 #define GAMEOBJECT_FACTORY_H
 
 #include "GameObject.h"
+#include "GameObjectManager.h"
 
 //Include Systems
 #include "../Texture/TextureManager.h"
@@ -20,10 +21,13 @@
 
 class GameObjectFactory {
 
-public:
+private:
+	//Constructor(s) & Destructor
 	GameObjectFactory() {}
 	virtual ~GameObjectFactory() {}
 
+public:
+	//Interface Function(s)
 	static GameObject& CreateCamera(const string& space, const string& name = "Camera") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<Camera>();

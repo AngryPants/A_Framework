@@ -178,6 +178,9 @@
     <ClInclude Include="Source\Systems\SpatialPartition\SPSystem.h">
       <Filter>Files\Systems\SpacialPartition</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Systems\Physics\CollisionUtility.h">
+      <Filter>Files\Systems\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -194,9 +197,6 @@
     </Filter>
     <Filter Include="Files\Animation">
       <UniqueIdentifier>{b8f3479b-300b-49d6-8ef6-0e132e345305}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Others">
-      <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Scene">
       <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
@@ -272,6 +272,9 @@
     </Filter>
     <Filter Include="Files\Systems\SpacialPartition">
       <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Others">
+      <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,11 @@
 #include "GameObject.h"
+#include "GameObjectManager.h"
 
-GameObject::GameObject(const string& space, const string& name) : space(space), name(name) {
-	this->id = IDGenerator::GetInstance().GetGameObjectID();
+//Constructor(s) & Destructor
+GameObject::GameObject(const string& _space, const string& _name, PassKey<GameObjectManager> _key)
+: space(_space), name(_name) {
 	destroyed = false;
+	id = IDGenerator::GetInstance().GenerateGameObjectID({});
 	for (unsigned int i = 0; i < MAX_COMPONENTS; ++i) {
 		this->components[i] = nullptr;
 	}
@@ -27,9 +30,12 @@ GameObject::~GameObject()
 			delete scripts[i];
 		}
 	}
-	IDGenerator::GetInstance().ReturnGameObjectID(id);
+	IDGenerator::GetInstance().ReturnGameObjectID(id, {});
 	delete node; //SceneGraph
+}
 
+void GameObject::Delete(PassKey<GameObjectManager> _key) {
+	delete this;
 }
 
 //Name
@@ -60,6 +66,7 @@ bool GameObject::IsDestroyed() const {
 	return destroyed;
 }
 
+//Scripts
 void GameObject::RemoveScript(unsigned int index) {
 	if (index > sizeof(scripts) / sizeof(scripts[0]) - 1) {
 		string errorMessage = "Unable to RemoveScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
@@ -78,6 +85,15 @@ bool GameObject::HasScript(unsigned int index) {
 	return scripts[index] != nullptr;
 }
 
+void GameObject::UpdateScripts(double deltaTime, PassKey<GameObjectManager> _key) {
+	for (unsigned int i = 0; i < sizeof(scripts)/sizeof(scripts[0]); ++i) {
+		if (scripts[i] != nullptr) {
+			scripts[i]->Update(deltaTime);
+		}
+	}
+}
+
+//Parent-Child
 bool GameObject::SetParent(GameObject& gameObject) {
 	if (node->SetParent(*gameObject.node)) {
 		GetComponent<Transform>().SetLocalPosition(0, 0, 0);
@@ -85,6 +101,7 @@ bool GameObject::SetParent(GameObject& gameObject) {
 	}
 	return false;
 }
+
 bool GameObject::DetachParent() {
 	return node->DetachParent();
 }

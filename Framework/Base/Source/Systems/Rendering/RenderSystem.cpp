@@ -38,13 +38,15 @@ void RenderSystem::RenderRecursion(GameObject& gameObject) {
 	//Get our modelStack from GraphicsManager.
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	modelStack.PushMatrix();
-		//Do our transformation.
+		/*
 		modelStack.Translate(transform.GetLocalPosition().x, transform.GetLocalPosition().y, transform.GetLocalPosition().z);
 		//Order of Rotation - Z, X, Y
 		modelStack.Rotate(transform.GetLocalRotation().y, 0, 1, 0);
 		modelStack.Rotate(transform.GetLocalRotation().x, 1, 0, 0);
 		modelStack.Rotate(transform.GetLocalRotation().z, 0, 0, 1);
-		modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);
+		modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);*/
+		//Do our transformation.
+		modelStack.MultMatrix(transform.GetTransformationMatrix());
 		//Check for MeshRenderer.
 		if (gameObject.HasComponent<MeshRenderer>()) {
 			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();

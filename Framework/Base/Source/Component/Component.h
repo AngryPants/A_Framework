@@ -11,7 +11,6 @@ using std::endl;
 class GameObject;
 
 //NOTE: Any subclasses MUST have a constructor that only takes in an GameObject reference;
-
 class Component {
 	
 private:

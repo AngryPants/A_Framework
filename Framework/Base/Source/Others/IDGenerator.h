@@ -3,6 +3,7 @@
 
 #include "SingletonTemplate.h"
 #include "../Component/Component.h"
+#include "PassKey.h"
 #include <type_traits>
 #include <exception>
 #include <string>
@@ -11,11 +12,14 @@
 
 using namespace std;
 
-typedef unsigned int ComponentTypeID; //The ID of the component TYPE.
-typedef unsigned int GameObjectID;
+typedef long int ComponentTypeID; //The ID of the Component TYPE.
+typedef long int GameObjectID; //Unique ID for every GameObject.
 
+static const long int INVALID_COMPONENT_ID = -1;
+static const long int INVALID_GAMEOBJECT_ID = -1;
 static const unsigned int MAX_COMPONENTS = 64;
 
+//Handles ID Generation
 class IDGenerator : public Singleton<IDGenerator> {
 
 	friend class Singleton<IDGenerator>;
@@ -49,7 +53,7 @@ public:
 		return componentID;
 	}
 
-	GameObjectID GetGameObjectID() {
+	GameObjectID GenerateGameObjectID(PassKey<GameObject> _key) {
 		GameObjectID id = usedGameObjectIDs.size();
 		if (freeGameObjectIDs.empty() == false) {
 			id = *freeGameObjectIDs.begin();
@@ -59,9 +63,9 @@ public:
 		return id;
 	}
 
-	void ReturnGameObjectID(const GameObjectID id) {
+	void ReturnGameObjectID(const GameObjectID _id, PassKey<GameObject> _key) {
 		//Find the ID.
-		set<GameObjectID>::iterator setIter = usedGameObjectIDs.find(id);
+		set<GameObjectID>::iterator setIter = usedGameObjectIDs.find(_id);
 		//Check if the ID is valid.
 		if (setIter == usedGameObjectIDs.end()) {
 			string errorMessage = "Error! ReturnGameObjectID() failed as ID is not valid.";
@@ -70,7 +74,7 @@ public:
 		}
 		//Do the necessary actions.
 		usedGameObjectIDs.erase(setIter);
-		freeGameObjectIDs.insert(id);
+		freeGameObjectIDs.insert(_id);
 		//If there are no more usedGameObjectIDs, it means that there are no more gameObjects.
 		if (usedGameObjectIDs.empty()) {
 			freeGameObjectIDs.clear();

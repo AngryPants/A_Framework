@@ -30,10 +30,14 @@ class Transform : public Component {
 
 private:
 	//Variable(s)
+	//Local (Relative To Parent)
 	Vector3 localPosition;
 	Vector3 localRotation;
 	Vector3 localScale;
 	
+	//Global (Relative To World)
+	Vector3 position;
+
 public:
 	//Constructor(s) & Destructor
 	Transform(GameObject& gameObject);
@@ -45,7 +49,10 @@ public:
 	const Vector3& GetLocalRotation() const;
 	const Vector3& GetLocalScale() const;
 
+	//Get the position relative to the world.
 	Vector3 GetPosition() const;
+	//Vector3 GetRotation() const;
+	//Vector3 GetScale() const;
 
 	//Get the Forward, Up and Left Vectors of the transform relative to the world.
 	Vector3 GetForward() const;
@@ -81,6 +88,7 @@ public:
 	void SetLocalScaleZ(float z);
 	
 	//Function(s)
+	//Translate, Rotate and Scale the transform relative to the parent.
 	void Translate(const Vector3& translation);
 	void Translate(float x, float y, float z);
 	void Rotate(const Vector3& rotation);

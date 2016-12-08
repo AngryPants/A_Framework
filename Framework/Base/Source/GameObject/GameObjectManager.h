@@ -10,9 +10,8 @@
 
 using namespace std;
 
-class GameObject;
-
 //A space is simply a string that is used to identity which "bucket" the entity belongs to.
+class GameObject;
 
 class GameObjectManager : public Singleton<GameObjectManager> {
 
@@ -32,7 +31,7 @@ private:
 	//Private Function(s)
 	void AddGameObjects();
 	void RemoveGameObjects();
-
+	
 public:
 	//Interface Function(s)
 	GameObject& CreateGameObject(const string& space, const string& name = "GameObject");
