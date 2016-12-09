@@ -130,7 +130,7 @@ void Transform::CalculateTransformationMatrix() {
 	if (parent == nullptr) {
 		transformationMatrix = localTransformationMatrix;
 	} else {
-		transformationMatrix = localTransformationMatrix * parent->GetComponent<Transform>().GetTransformationMatrix();
+		transformationMatrix = parent->GetComponent<Transform>().GetTransformationMatrix() * localTransformationMatrix;
 	}
 }
 
@@ -139,7 +139,7 @@ void Transform::CalculateRotationMatrix() {
 	if (parent == nullptr) {
 		rotationMatrix = localRotationMatrix;
 	} else {
-		rotationMatrix = localRotationMatrix * parent->GetComponent<Transform>().GetRotationMatrix();
+		rotationMatrix = parent->GetComponent<Transform>().GetRotationMatrix() * localRotationMatrix;
 	}
 }
 
@@ -191,10 +191,10 @@ void Transform::CalculateGlobalVectors() {
 		up = localUp;
 		left = localLeft;
 	} else {
-		Mtx44 mat = parent->GetComponent<Transform>().GetRotationMatrix() * localRotationMatrix;
-		forward = mat * Vector3(0, 0, 1);
-		up = mat * Vector3(0, 1, 0);
-		left = mat * Vector3(1, 0, 0);
+		//Mtx44 mat = parent->GetComponent<Transform>().GetRotationMatrix() * localRotationMatrix;
+		forward = rotationMatrix * Vector3(0, 0, 1);
+		up = rotationMatrix * Vector3(0, 1, 0);
+		left = rotationMatrix * Vector3(1, 0, 0);
 	}
 }
 

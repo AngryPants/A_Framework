@@ -61,6 +61,11 @@ void RenderSystem::RenderRecursion(GameObject& gameObject) {
 	//Get our modelStack from GraphicsManager.
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	modelStack.PushMatrix();
+		/*modelStack.Translate(transform.GetLocalPosition().x, transform.GetLocalPosition().y, transform.GetLocalPosition().z);
+		modelStack.Rotate(transform.GetLocalRotation().y, 0, 1, 0);
+		modelStack.Rotate(transform.GetLocalRotation().x, 1, 0, 0);
+		modelStack.Rotate(transform.GetLocalRotation().z, 0, 0, 1);
+		modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);*/
 		//Check for MeshRenderer.
 		if (gameObject.HasComponent<MeshRenderer>()) {
 			modelStack.MultMatrix(transform.GetTransformationMatrix());
@@ -75,6 +80,8 @@ void RenderSystem::RenderRecursion(GameObject& gameObject) {
 	for (unsigned int i = 0; i < children.size(); ++i) {
 		RenderRecursion(*children[i]);
 	}	
+
+	//modelStack.PopMatrix();
 }
 
 //Interface Function(s)
@@ -127,7 +134,6 @@ void RenderSystem::Render(const string& space) {
 	}
 	debugTimer -= 1;*/
 
-	cout << "Camera Rotation" << camPtr->GetGameObject().GetComponent<Transform>().GetRotation() << endl;
 	camPtr->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
 	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
 
