@@ -4,7 +4,7 @@
 #include "../Component.h"
 #include "Vector3.h"
 
-class Rigidbody {
+class Rigidbody : public Component{
 
 private:
 	//Variable(s)
@@ -20,7 +20,6 @@ public:
 	//Constructor(s) & Destructor
 	Rigidbody(GameObject& gameObject);
 	virtual ~Rigidbody();
-		
 };
 
 #endif
