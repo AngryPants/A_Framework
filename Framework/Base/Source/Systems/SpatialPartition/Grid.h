@@ -11,9 +11,9 @@ protected:
 	Vector3 index;
 	// We use a Vector3 to store the size of this Grid within the Spatial Partition array.
 	Vector3 size;
-	// We use a Vector3 to store the x- and z-offset of this Grid.
+	// We use a Vector3 to store the x-y-z offset of this Grid.
 	Vector3 offset;
-	// We use a Vector3 to store the x- and z-offset of this Grid.
+	// We use a Vector3 to store the x-y-z offset of this Grid.
 	Vector3 min, max;
 
 	//list of objects in this grid
@@ -23,9 +23,9 @@ public:
 	Grid();
 	~Grid();
 	// Init
-	void Init(const int xIndex, const int zIndex,
-		const int xGridSize, const int zGridSize,
-		const float xOffset = 0, const float zOffset = 0);
+	void Init(const int xIndex, const int yIndex, const int zIndex,
+		const int xGridSize, const int yGridSize, const int zGridSize,
+		const float xOffset = 0, const int yOffset = 0, const float zOffset = 0);
 
 	// Update the grid
 	void Update(vector<GameObjectID>* migrationList);

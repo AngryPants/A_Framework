@@ -35,7 +35,7 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 
 	//SpatialPartition
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Init(10, 10, 4, 4, -1.f);
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Init(10, 10, 10, 4, 4, 4);
 
 	//Player
 	player = &GameObjectFactory::CreateEmpty(name);
@@ -103,7 +103,7 @@ void SceneTest::Render() {
 	if (debugCountdown <= 0)
 	{
 		SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
-		debugCountdown = 3.f;
+		debugCountdown = 10.f;
 	}
 }
 

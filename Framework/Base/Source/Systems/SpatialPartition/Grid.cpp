@@ -3,11 +3,11 @@
 #include "../../Graphics/RenderHelper.h"
 
 Grid::Grid()
-	: index(Vector3(-1, -1, -1))
-	, size(Vector3(-1, -1, -1))
-	, offset(Vector3(-1, -1, -1))
-	, min(Vector3(-1, -1, -1))
-	, max(Vector3(-1, -1, -1))
+	: index(Vector3(0, 0, 0))
+	, size(Vector3(0, 0, 0))
+	, offset(Vector3(0, 0, 0))
+	, min(Vector3(0, 0, 0))
+	, max(Vector3(0, 0, 0))
 	, listOfObjects(NULL) 
 {
 }
@@ -17,15 +17,15 @@ Grid::~Grid()
 	RemoveAll();
 }
 
-void Grid::Init(const int xIndex, const int zIndex,
-	const int xGridSize, const int zGridSize,
-	const float xOffset, const float zOffset)
+void Grid::Init(const int xIndex, const int yIndex, const int zIndex,
+const int xGridSize, const int yGridSize, const int zGridSize,
+const float xOffset, const int yOffset, const float zOffset)
 {
-	index.Set(xIndex, 0, zIndex);
-	size.Set(xGridSize, 0, zGridSize);
-	offset.Set(xOffset, 0, zOffset);
-	min.Set(index.x * size.x - offset.x, 0.0f, index.z * size.z - offset.z);
-	max.Set(index.x * size.x - offset.x + xGridSize, 0.0f, index.z * size.z - offset.z + zGridSize);
+	index.Set(xIndex, yIndex, zIndex);
+	size.Set(xGridSize, yGridSize, zGridSize);
+	offset.Set(xOffset, yOffset, zOffset);
+	min.Set(index.x * size.x - offset.x, index.y * size.y - offset.y, index.z * size.z - offset.z);
+	max.Set(index.x * size.x - offset.x + xGridSize, index.y * size.y - offset.y + yGridSize, index.z * size.z - offset.z + zGridSize);
 }
 
 // Update the grid
@@ -44,6 +44,7 @@ void Grid::Update(vector<GameObjectID>* migrationList)
 		Vector3 position = go->GetComponent<Transform>().GetPosition();
 
 		if (((min.x <= position.x) && (position.x <= max.x)) &&
+			((min.y <= position.y) && (position.y <= max.y)) &&
 			((min.z <= position.z) && (position.z <= max.z)))
 		{
 			// Move on otherwise

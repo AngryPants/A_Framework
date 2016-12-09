@@ -25,7 +25,7 @@ public:
 	virtual void Exit();
 
 
-	float debugCountdown = 3.f;
+	float debugCountdown = 10.f;
 
 };
 
