@@ -61,7 +61,7 @@ bool GraphicsManager::ClearShaders() {
 
 //MVP
 //void GraphicsManager::SetToCameraView(Camera& camera, const Vector3& position, const Vector3& target, const Vector3& up) {
-void GraphicsManager::SetToCameraView(const Camera& camera, const Transform& transform) {
+void GraphicsManager::SetToCameraView(Camera& camera, Transform& transform) {
 
 	modelStack.LoadIdentity();
 	viewStack.LoadIdentity();

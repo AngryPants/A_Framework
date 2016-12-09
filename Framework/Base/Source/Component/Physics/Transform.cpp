@@ -39,95 +39,212 @@ An empty destructor.
 Transform::~Transform() {
 }
 
-//Getter(s)
+void Transform::SetDirty() {
+	if (isDirty == false) {
+		isDirty = true;
+		vector<GameObject*> childrenList;
+		GetGameObject().GetChildren(childrenList);
+		for (vector<GameObject*>::iterator vecIter = childrenList.begin(); vecIter != childrenList.end(); ++vecIter) {
+			GameObject* goPtr = *vecIter;
+			goPtr->GetComponent<Transform>().SetDirty();
+		}
+	}	
+}
 
-/*******************************************************************************/
-/*!
-\brief
-Gets the global position.
+bool Transform::IsDirty() {
+	GameObject* parent = GetGameObject().GetParent();
+	if (parent != nullptr) {
+		isDirty |= parent->GetComponent<Transform>().IsDirty();
+	}
 
-\return
-The position of the GameObject.
-*/
-/*******************************************************************************/
+	return isDirty;
+}
+
+//Calculations
+void Transform::Calculate() {
+	//These functions must be called in this specific order due to certain matrices/vectors depending on others.
+
+	//Local
+	//Matrices
+	CalculateLocalMatrices();
+	
+	//Direction Vectors
+	CalculateLocalVectors();	
+	
+	//Global
+	//Matrices
+	CalculateTransformationMatrix();
+	CalculateRotationMatrix();
+
+	//Direction Vectors
+	CalculateGlobalVectors();
+
+	//Transformation
+	CalculatePosition();
+	//CalculateRotation();
+
+	isDirty = false;
+}
+
+//Local (Relative To Parent)
+//Matrices
+void Transform::CalculateLocalMatrices() {
+	//Translation
+	localTranslationMatrix.SetToTranslation(this->localPosition.x, this->localPosition.y, this->localPosition.z);
+
+	//Rotation
+	Mtx44 mat[3];
+	mat[0].SetToRotation(this->localRotation.x, 1, 0, 0);
+	mat[1].SetToRotation(this->localRotation.y, 0, 1, 0);
+	mat[2].SetToRotation(this->localRotation.z, 0, 0, 1);
+	localRotationMatrix = mat[1] * mat[0] * mat[2]; //Order of Rotation - Z, X, Y
+
+	//Scale
+	localScaleMatrix.SetToScale(localScale.x, localScale.y, localScale.z);
+
+	//All 3 Combined
+	localTransformationMatrix = localTranslationMatrix * localRotationMatrix * localScaleMatrix;
+}
+
+//Direction Vectors
+void Transform::CalculateLocalVectors() {
+	Vector3 direction;
+
+	//Forward
+	direction.Set(0, 0, 1);
+	localForward = localRotationMatrix * direction;
+
+	//Up
+	direction.Set(0, 1, 0);
+	localUp = localRotationMatrix * direction;
+
+	//Left
+	direction.Set(1, 0, 0);
+	localLeft = localRotationMatrix * direction;
+}
+
+//Global
+//Matrices
+void Transform::CalculateTransformationMatrix() {
+	GameObject* parent = GetGameObject().GetParent();
+	if (parent == nullptr) {
+		transformationMatrix = localTransformationMatrix;
+	} else {
+		transformationMatrix = localTransformationMatrix * parent->GetComponent<Transform>().GetTransformationMatrix();
+	}
+}
+
+void Transform::CalculateRotationMatrix() {
+	GameObject* parent = GetGameObject().GetParent();
+	if (parent == nullptr) {
+		rotationMatrix = localRotationMatrix;
+	} else {
+		rotationMatrix = localRotationMatrix * parent->GetComponent<Transform>().GetRotationMatrix();
+	}
+}
+
+//Transformation
+void Transform::CalculatePosition() {
+	//Make sure that this is called after CalculateTransformationMatrix.
+	GameObject* parent = GetGameObject().GetParent();
+	if (parent == nullptr) {
+		position = localPosition;
+	} else {
+		Mtx44 mat = localTranslationMatrix * parent->GetComponent<Transform>().GetTransformationMatrix();
+		position.Set(mat.a[12], mat.a[13], mat.a[14]);
+	}
+}
+
+/*void Transform::CalculateRotation() {
+	//Make sure that this is called after Calculating global direction vectors.
+	GameObject* parent = GetGameObject().GetParent();
+	if (parent == nullptr) {
+		rotation = localRotation;
+	} else {
+		//Imagine we start off with rotation of 0, 0, 0
+		//First we need to rotate on the Y-Axis until our forward aligns with the YZ-Plane.
+		//To do that we need our projection on the XZ-Plane, which is the View vector without it's Y-Value.
+		float y = Math::RadianToDegree(atan2(forward.x, forward.z));
+		//Then, we need to find our how much we rotated on the X-Axis.
+		float x = Math::RadianToDegree(-asin(forward.y));
+		//To find our Z-Rotation, we first need to know what our left vector would be if we had a Z-Rotation of 0,
+		//The expected left vector if Z-Rotation is 0:
+		Vector3 expectedLeft(forward.z, 0, -forward.x);
+		//The expected up vector id Z-Rotation is 0:
+		Vector3 expectedUp = forward.Cross(expectedLeft);
+		float z = 0.0f;
+		try {
+			z = Math::RadianToDegree(atan2(left.Dot(expectedUp.Normalize()), left.Dot(expectedLeft.Normalize())));
+		} catch (DivideByZero) {
+			//Do Nothing
+		}
+
+		rotation.Set(x, y, z);
+	}
+}*/
+
+//Direction Vectors
+void Transform::CalculateGlobalVectors() {
+	GameObject* parent = GetGameObject().GetParent();
+	if (parent == nullptr) {
+		forward = localForward;
+		up = localUp;
+		left = localLeft;
+	} else {
+		Mtx44 mat = parent->GetComponent<Transform>().GetRotationMatrix() * localRotationMatrix;
+		forward = mat * Vector3(0, 0, 1);
+		up = mat * Vector3(0, 1, 0);
+		left = mat * Vector3(1, 0, 0);
+	}
+}
+
+//Local
 const Vector3& Transform::GetLocalPosition() const {
 	return this->localPosition;
 }
 
-/*******************************************************************************/
-/*!
-\brief
-Gets the global rotation.
-
-\return
-The rotation of the GameObject.
-*/
-/*******************************************************************************/
 const Vector3& Transform::GetLocalRotation() const {
 	return this->localRotation;
 }
 
-/*******************************************************************************/
-/*!
-\brief
-Gets the global scale.
-
-\return
-The scale of the GameObject.
-*/
-/*******************************************************************************/
 const Vector3& Transform::GetLocalScale() const {
 	return this->localScale;
 }
 
-Vector3 Transform::GetPosition() const {
-	GameObject* parentPtr = GetGameObject().GetParent();
-	if (parentPtr == nullptr) {
-		return localPosition;
+//Matrices
+Mtx44 Transform::GetLocalRotationMatrix() {
+	if (IsDirty()) {
+		Calculate();
 	}
 
-	Mtx44 transformationMatrix = GetTranslationMatrix();
-	while (parentPtr != nullptr) {
-		//transformationMatrix = transformationMatrix * parentPtr->GetComponent<Transform>().GetTransformationMatrix();
-		transformationMatrix = parentPtr->GetComponent<Transform>().GetTransformationMatrix() * transformationMatrix;
-		parentPtr = parentPtr->GetParent();		
-	}
-	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
+	return localRotationMatrix;
 }
 
-Vector3 Transform::GetForward() const {
-	Mtx44 rotationMatrix = GetRotationMatrix();
-	GameObject* parentPtr = GetGameObject().GetParent();
-	while (parentPtr != nullptr) {
-		//rotationMatrix = rotationMatrix * parentPtr->GetComponent<Transform>().GetRotationMatrix();
-		rotationMatrix = parentPtr->GetComponent<Transform>().GetRotationMatrix() * rotationMatrix; //WHY DOES  THIS WORK?!
-		parentPtr = parentPtr->GetParent();
+Mtx44 Transform::GetLocalTranslationMatrix() {
+	if (IsDirty()) {
+		Calculate();
 	}
-	return rotationMatrix * Vector3(0, 0, 1);
+
+	return localTransformationMatrix;
 }
 
-Vector3 Transform::GetUp() const {
-	Mtx44 rotationMatrix = GetRotationMatrix();
-	GameObject* parentPtr = GetGameObject().GetParent();
-	while(parentPtr != nullptr) {
-		//rotationMatrix = rotationMatrix * parentPtr->GetComponent<Transform>().GetRotationMatrix();
-		rotationMatrix = parentPtr->GetComponent<Transform>().GetRotationMatrix() * rotationMatrix; //WHY DOES  THIS WORK?!
-		parentPtr = parentPtr->GetParent();
+Mtx44 Transform::GetLocalScaleMatrix() {
+	if (IsDirty()) {
+		Calculate();
 	}
-	return rotationMatrix * Vector3(0, 1, 0);
+
+	return localScaleMatrix;
 }
 
-Vector3 Transform::GetLeft() const {
-	Mtx44 rotationMatrix = GetRotationMatrix();
-	GameObject* parentPtr = GetGameObject().GetParent();
-	while(parentPtr != nullptr) {
-		//rotationMatrix = rotationMatrix * parentPtr->GetComponent<Transform>().GetRotationMatrix();
-		rotationMatrix = parentPtr->GetComponent<Transform>().GetRotationMatrix() * rotationMatrix; //WHY DOES  THIS WORK?!
-		parentPtr = parentPtr->GetParent();
+Mtx44 Transform::GetLocalTransformationMatrix() {
+	if (IsDirty()) {
+		Calculate();
 	}
-	return rotationMatrix * Vector3(1, 0, 0);
+
+	return localTransformationMatrix;
 }
 
+//Direction Vectors
 /*******************************************************************************/
 /*!
 \brief
@@ -137,11 +254,12 @@ Gets the forward vector of the GameObject relative to the parent.
 The forward vector of the GameObject relative to the parent.
 */
 /*******************************************************************************/
-Vector3 Transform::GetLocalForward() const {
-	Mtx44 transformationMatrix;
-	transformationMatrix.SetToTranslation(0, 0, 1);
-	transformationMatrix = GetRotationMatrix() * transformationMatrix;
-	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
+Vector3 Transform::GetLocalForward() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return localForward;
 }
 
 /*******************************************************************************/
@@ -153,11 +271,12 @@ Gets the up vector of the GameObject relative to the parent.
 The up vector of the GameObject relative to the parent.
 */
 /*******************************************************************************/
-Vector3 Transform::GetLocalUp() const {
-	Mtx44 transformationMatrix;
-	transformationMatrix.SetToTranslation(0, 1, 0);
-	transformationMatrix = GetRotationMatrix() * transformationMatrix;
-	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
+Vector3 Transform::GetLocalUp() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return localUp;
 }
 
 /*******************************************************************************/
@@ -169,44 +288,70 @@ Gets the left vector of the GameObject relative to the parent.
 The left vector of the GameObject relative to the parent.
 */
 /*******************************************************************************/
-Vector3 Transform::GetLocalLeft() const {
-	Mtx44 transformationMatrix;
-	transformationMatrix.SetToTranslation(1, 0, 0);
-	transformationMatrix = GetRotationMatrix() * transformationMatrix;
-	return Vector3(transformationMatrix.a[12], transformationMatrix.a[13], transformationMatrix.a[14]);
+Vector3 Transform::GetLocalLeft() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return localLeft;
 }
 
-/*******************************************************************************/
-/*!
-\brief
-Gets the rotation of the GameObject in the form of a Mtx44.
+//Global
+Vector3 Transform::GetPosition() {
+	if (IsDirty()) {
+		Calculate();
+	}
 
-\return
-The rotationMatrix of the GameObject.
-*/
-/*******************************************************************************/
-Mtx44 Transform::GetRotationMatrix() const {
-	Mtx44 rotationMatrix[3];
-	rotationMatrix[0].SetToRotation(this->localRotation.x, 1, 0, 0);
-	rotationMatrix[1].SetToRotation(this->localRotation.y, 0, 1, 0);
-	rotationMatrix[2].SetToRotation(this->localRotation.z, 0, 0, 1);
-	return rotationMatrix[1] * rotationMatrix[0] * rotationMatrix[2]; //Order of Rotation - Z, X, Y
+	return position;
 }
 
-Mtx44 Transform::GetTranslationMatrix() const {
-	Mtx44 translationMatrix;
-	translationMatrix.SetToTranslation(this->localPosition.x, this->localPosition.y, this->localPosition.z);	
-	return translationMatrix;
+/*Vector3 Transform::GetRotation() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return rotation;
+}*/
+
+Vector3 Transform::GetForward() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return forward;
 }
 
-Mtx44 Transform::GetScaleMatrix() const {
-	Mtx44 scaleMatrix;
-	scaleMatrix.SetToScale(localScale.x, localScale.y, localScale.z);
-	return scaleMatrix;
+Vector3 Transform::GetUp() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return up;
 }
 
-Mtx44 Transform::GetTransformationMatrix() const {
-	return GetTranslationMatrix() * GetRotationMatrix() * GetScaleMatrix();
+Vector3 Transform::GetLeft() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return left;
+}
+
+//Global
+Mtx44 Transform::GetTransformationMatrix() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return transformationMatrix;
+}
+
+Mtx44 Transform::GetRotationMatrix() {
+	if (IsDirty()) {
+		Calculate();
+	}
+
+	return rotationMatrix;
 }
 
 //Setter(s)
@@ -222,6 +367,7 @@ The position of the GameObject.
 /*******************************************************************************/
 void Transform::SetLocalPosition(const Vector3& position) {
 	this->localPosition = position;
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -238,19 +384,22 @@ The position of the GameObject on the z-axis.
 */
 /*******************************************************************************/
 void Transform::SetLocalPosition(float x, float y, float z) {
-	SetLocalPosition(Vector3(x, y, z));
+	SetLocalPosition(Vector3(x, y, z));	
 }
 
 void Transform::SetLocalPositionX(const float x) {
 	this->localPosition.x = x;
+	SetDirty();
 }
 
 void Transform::SetLocalPositionY(const float y) {
 	this->localPosition.y = y;
+	SetDirty();
 }
 
 void Transform::SetLocalPositionZ(const float z) {
 	this->localPosition.z = z;
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -264,6 +413,7 @@ The rotation of the GameObject.
 /*******************************************************************************/
 void Transform::SetLocalRotation(const Vector3& rotation) {
 	this->localRotation = rotation;
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -281,18 +431,22 @@ The rotation of the GameObject on the z-axis.
 /*******************************************************************************/
 void Transform::SetLocalRotation(float x, float y, float z) {
 	SetLocalRotation(Vector3(x, y, z));
+	SetDirty();
 }
 
 void Transform::SetLocalRotationX(float x) {
 	this->localRotation.x = x;
+	SetDirty();
 }
 
 void Transform::SetLocalRotationY(float y) {
 	this->localRotation.y = y;
+	SetDirty();
 }
 
 void Transform::SetLocalRotationZ(float z) {
 	this->localRotation.z = z;
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -306,28 +460,7 @@ The scale of the GameObject.
 /*******************************************************************************/
 void Transform::SetLocalScale(const Vector3& scale) {
 	this->localScale = scale;
-
-	if(Vector::IsEqual(this->localScale.x,0.0f)) {
-		if(this->localScale.x >= 0.0f) {
-			this->localScale.x = Math::EPSILON;
-		} else {
-			this->localScale.x = -Math::EPSILON;
-		}
-	}
-	if(Vector::IsEqual(this->localScale.y,0.0f)) {
-		if(this->localScale.y >= 0.0f) {
-			this->localScale.y = Math::EPSILON;
-		} else {
-			this->localScale.y = -Math::EPSILON;
-		}
-	}
-	if(Vector::IsEqual(this->localScale.z,0.0f)) {
-		if(this->localScale.z >= 0.0f) {
-			this->localScale.z = Math::EPSILON;
-		} else {
-			this->localScale.z = -Math::EPSILON;
-		}
-	}
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -349,35 +482,17 @@ void Transform::SetLocalScale(float x, float y, float z) {
 
 void Transform::SetLocalScaleX(float x) {
 	this->localScale.x = x;
-	if (Vector::IsEqual(localScale.x, 0.0f)) {
-		if (localScale.x >= 0.0f) {
-			localScale.x = Math::EPSILON;
-		} else {
-			localScale.x = -Math::EPSILON;
-		}
-	}
+	SetDirty();
 }
 
 void Transform::SetLocalScaleY(float y) {
 	this->localScale.y = y;
-	if(Vector::IsEqual(localScale.y,0.0f)) {
-		if(localScale.y >= 0.0f) {
-			localScale.y = Math::EPSILON;
-		} else {
-			localScale.y = -Math::EPSILON;
-		}
-	}
+	SetDirty();
 }
 
 void Transform::SetLocalScaleZ(float z) {
 	this->localScale.z = z;
-	if(Vector::IsEqual(localScale.z,0.0f)) {
-		if(localScale.z >= 0.0f) {
-			localScale.z = Math::EPSILON;
-		} else {
-			localScale.z = -Math::EPSILON;
-		}
-	}
+	SetDirty();
 }
 
 //Function(s)
@@ -393,6 +508,7 @@ The amount to translate the GameObject by.
 /*******************************************************************************/
 void Transform::Translate(const Vector3& translation) {
 	this->localPosition += translation;
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -423,6 +539,7 @@ The amount to rotate the GameObject by.
 /*******************************************************************************/
 void Transform::Rotate(const Vector3& rotation) {
 	this->localRotation += rotation;
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -455,28 +572,7 @@ void Transform::Scale(const Vector3& scale) {
 	this->localScale.x *= scale.x;
 	this->localScale.y *= scale.y;
 	this->localScale.z *= scale.z;
-
-	if(Vector::IsEqual(this->localScale.x,0.0f)) {
-		if(this->localScale.x >= 0.0f) {
-			this->localScale.x = Math::EPSILON;
-		} else {
-			this->localScale.x = -Math::EPSILON;
-		}
-	}
-	if(Vector::IsEqual(this->localScale.y,0.0f)) {
-		if(this->localScale.y >= 0.0f) {
-			this->localScale.y = Math::EPSILON;
-		} else {
-			this->localScale.y = -Math::EPSILON;
-		}
-	}
-	if(Vector::IsEqual(this->localScale.z,0.0f)) {
-		if(this->localScale.z >= 0.0f) {
-			this->localScale.z = Math::EPSILON;
-		} else {
-			this->localScale.z = -Math::EPSILON;
-		}
-	}
+	SetDirty();
 }
 
 /*******************************************************************************/
@@ -507,43 +603,47 @@ up is only a hint vector. The up vector of the rotation will only match the up v
 \param target
 The target' position.
 \param up
-The fucking up vector the fucking shit is supposed to orient to.
+The up vector the transform is supposed to orient to.
 */
 /*******************************************************************************/
-/*void Transform::LookAt(Vector3 target, Vector3 up) {
-	Vector3 view = target - position;
-	Vector3 left = up.Cross(view);
-	up = view.Cross(left);
+/*void Transform::LookAt(Vector3 _target, Vector3 _up) {
+	//Ensure that the parameters are valid.
+	Vector3 desiredView = _target - position;
+	Vector3 desiredLeft = _up.Cross(desiredView);
+	_up = desiredLeft.Cross(desiredLeft);
 	try {
-		view.Normalize();
-		left.Normalize();
-		up.Normalize();
+		desiredView.Normalize();
+		desiredLeft.Normalize();
+		_up.Normalize();
 	} catch (DivideByZero) {
 		cout << "[Transform::LookAt(Vector3 target, Vector3 up) Error]" << endl;
 		return;
 	}	
-	if (view.IsZero() || left.IsZero() || up.IsZero()) {
+	if (desiredView.IsZero() || desiredLeft.IsZero() || _up.IsZero()) {
 		cout << "[Transform::LookAt(Vector3 target, Vector3 up) Error]" << endl;
 		return;
 	}
 
+	//Let's move on to calculations. We want to find our what our global rotation would be if we were looking at the target.
 	//First we need to rotate on the Y-Axis until our View aligns with the YZ-Plane.
 	//To do that we need our projection on the XZ-Plane, which is the View vector without it's Y-Value.
-	float y = Math::RadianToDegree(atan2(view.x, view.z));
+	float y = Math::RadianToDegree(atan2(desiredView.x, desiredView.z));
 	//Then, we need to find our how much we rotated on the X-Axis.
-	float x = -Math::RadianToDegree(asin(view.y));
+	float x = Math::RadianToDegree(-asin(desiredView.y));
 	//To find our Z-Rotation, we first need to know what our left vector would be if we had a Z-Rotation of 0,
 	//The expected left vector if Z-Rotation is 0:
-	Vector3 expectedLeft(view.z, 0, -view.x);
+	Vector3 expectedLeft(desiredView.z, 0, -desiredView.x);
 	//The expected up vector id Z-Rotation is 0:
-	Vector3 expectedUp = view.Cross(expectedLeft);
+	Vector3 expectedUp = desiredView.Cross(expectedLeft);
 	float z = 0.0f;
 	try {
-		z = Math::RadianToDegree(atan2(left.Dot(expectedUp.Normalize()), left.Dot(expectedLeft.Normalize())));
+		z = Math::RadianToDegree(atan2(desiredView.Dot(expectedUp.Normalize()), desiredView.Dot(expectedLeft.Normalize())));
 	} catch (DivideByZero) {
 		cout << "[Transform::LookAt(Vector3 target, Vector3 up) Error]" << endl;
 		return;
 	}
 
-	rotation.Set(x, y, z);
+	//Now we know that we would need to be looking at Vector3(x, y, z) for our global rotation.
+	//However, since the whole transform relies on our localRotation, we need to convert it.
+
 }*/

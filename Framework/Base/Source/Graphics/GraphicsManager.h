@@ -45,7 +45,7 @@ public:
 	//MVP
 	MS modelStack, viewStack, projectionStack;
 	//void SetToCameraView(Camera& camera, const Vector3& position, const Vector3& target, const Vector3& up);
-	void SetToCameraView(const Camera& camera, const Transform& transform);
+	void SetToCameraView(Camera& camera, Transform& transform);
 	//void SetToUI(float left, float right, float down, float up, float near, float far);
 	void SetToUI();
 

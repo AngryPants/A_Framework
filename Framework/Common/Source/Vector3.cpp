@@ -250,9 +250,9 @@ bool Vector3::operator!= ( const Vector3& rhs ) const
 /******************************************************************************/
 Vector3& Vector3::operator=(const Vector3& rhs)
 {
-	x = rhs.x;
-	y = rhs.y;
-	z = rhs.z;
+	this->x = rhs.x;
+	this->y = rhs.y;
+	this->z = rhs.z;
 	return *this;
 }
 

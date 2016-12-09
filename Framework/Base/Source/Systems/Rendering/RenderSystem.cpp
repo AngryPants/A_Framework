@@ -31,22 +31,15 @@ RenderSystem::~RenderSystem() {
 }
 
 //Private Function(s)
-void RenderSystem::RenderRecursion(GameObject& gameObject) {
+/*void RenderSystem::RenderRecursion(GameObject& gameObject) {
 	//Get our transform.
 	Transform& transform = gameObject.GetComponent<Transform>();
 
 	//Get our modelStack from GraphicsManager.
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	modelStack.PushMatrix();
-		/*
-		modelStack.Translate(transform.GetLocalPosition().x, transform.GetLocalPosition().y, transform.GetLocalPosition().z);
-		//Order of Rotation - Z, X, Y
-		modelStack.Rotate(transform.GetLocalRotation().y, 0, 1, 0);
-		modelStack.Rotate(transform.GetLocalRotation().x, 1, 0, 0);
-		modelStack.Rotate(transform.GetLocalRotation().z, 0, 0, 1);
-		modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);*/
 		//Do our transformation.
-		modelStack.MultMatrix(transform.GetTransformationMatrix());
+		modelStack.MultMatrix(transform.GetLocalTransformationMatrix());
 		//Check for MeshRenderer.
 		if (gameObject.HasComponent<MeshRenderer>()) {
 			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
@@ -59,6 +52,29 @@ void RenderSystem::RenderRecursion(GameObject& gameObject) {
 			RenderRecursion(*children[i]);
 		}
 	modelStack.PopMatrix();
+}*/
+
+void RenderSystem::RenderRecursion(GameObject& gameObject) {
+	//Get our transform.
+	Transform& transform = gameObject.GetComponent<Transform>();
+
+	//Get our modelStack from GraphicsManager.
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+	modelStack.PushMatrix();
+		//Check for MeshRenderer.
+		if (gameObject.HasComponent<MeshRenderer>()) {
+			modelStack.MultMatrix(transform.GetTransformationMatrix());
+			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
+			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);
+		}		
+	modelStack.PopMatrix();
+		
+	//Recursion in the children.
+	vector<GameObject*> children;
+	gameObject.GetChildren(children);
+	for (unsigned int i = 0; i < children.size(); ++i) {
+		RenderRecursion(*children[i]);
+	}	
 }
 
 //Interface Function(s)
@@ -101,13 +117,19 @@ void RenderSystem::Render(const string& space) {
 		return;
 	}
 	//Camera Debugging
-	//cout << "Camera Position" << camPtr->GetGameObject().GetComponent<Transform>().GetPosition() << endl;
-	//cout << "Camera Forward: " << camPtr->GetGameObject().GetComponent<Transform>().GetForward() << endl;
-	//cout << "Camera Up: " << camPtr->GetGameObject().GetComponent<Transform>().GetUp() << endl;
-	//cout << "Camera Left: " << camPtr->GetGameObject().GetComponent<Transform>().GetLeft() << endl;
+	/*static int debugTimer = 1;
+	if (debugTimer < 0.0f) {
+		cout << "Camera Position" << camPtr->GetGameObject().GetComponent<Transform>().GetPosition() << endl;
+		cout << "Camera Forward: " << camPtr->GetGameObject().GetComponent<Transform>().GetForward() << endl;
+		cout << "Camera Up: " << camPtr->GetGameObject().GetComponent<Transform>().GetUp() << endl;
+		cout << "Camera Left: " << camPtr->GetGameObject().GetComponent<Transform>().GetLeft() << endl;
+		debugTimer = 240;
+	}
+	debugTimer -= 1;*/
 
-	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
+	cout << "Camera Rotation" << camPtr->GetGameObject().GetComponent<Transform>().GetRotation() << endl;
 	camPtr->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
+	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
 
 	//Lights
 	set<Component*>& lights = ComponentManager::GetInstance().GetComponents<Light>(space);

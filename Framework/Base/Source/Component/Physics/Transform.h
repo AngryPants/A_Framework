@@ -30,18 +30,76 @@ class Transform : public Component {
 
 private:
 	//Variable(s)
-	//Local (Relative To Parent)
+	//If true, our information is outdated.
+	bool isDirty;
+
+	///**************************Local (Relative To Parent)**************************///
+	//Transformations
 	Vector3 localPosition;
 	Vector3 localRotation;
 	Vector3 localScale;
 	
-	//Global (Relative To World)
+	//Matrices.
+	Mtx44 localRotationMatrix;
+	Mtx44 localTranslationMatrix;
+	Mtx44 localScaleMatrix;
+	Mtx44 localTransformationMatrix;
+
+	//Direction Vectors
+	Vector3 localForward;
+	Vector3 localUp;
+	Vector3 localLeft;
+	///******************************************************************************///
+
+	///**************************Global (Relative To World)**************************///
+	//Matrices
+	Mtx44 transformationMatrix;
+	Mtx44 rotationMatrix;
+
+	//Transformations
 	Vector3 position;
+	Vector3 rotation;
+
+	//Direction Vectors
+	Vector3 forward;
+	Vector3 up;
+	Vector3 left;
+	///******************************************************************************///
+
+	//Calculations
+	void Calculate();
+
+	///**************************Local (Relative To Parent)**************************///
+	//Direction Vectors
+	void CalculateLocalVectors();
+
+	//Matrices
+	void CalculateLocalMatrices();
+	///******************************************************************************///
+
+	///**************************Global (Relative To World)**************************///
+	//Transformation
+	void CalculatePosition();
+	//void CalculateRotation();
+
+	//Direction Vectors
+	void CalculateGlobalVectors();
+
+	//Matrices
+	void CalculateTransformationMatrix();
+	void CalculateRotationMatrix();
+	///******************************************************************************///
+
+	//We now have outdated information.
+	void SetDirty();
 
 public:
 	//Constructor(s) & Destructor
 	Transform(GameObject& gameObject);
 	virtual ~Transform();
+
+	//Check if our data is outdated.
+	bool IsDirty();
 
 	//Getter(s)
 	//Get the position, rotation and scale of the transform relative to the parent.
@@ -50,25 +108,27 @@ public:
 	const Vector3& GetLocalScale() const;
 
 	//Get the position relative to the world.
-	Vector3 GetPosition() const;
-	//Vector3 GetRotation() const;
-	//Vector3 GetScale() const;
+	Vector3 GetPosition();	
+	//Vector3 GetRotation();
 
 	//Get the Forward, Up and Left Vectors of the transform relative to the world.
-	Vector3 GetForward() const;
-	Vector3 GetUp() const;
-	Vector3 GetLeft() const;
+	Vector3 GetForward();
+	Vector3 GetUp();
+	Vector3 GetLeft();
 
 	//Get the Forward, Up and Left Vectors of the transform relative to the parent.
-	Vector3 GetLocalForward() const;
-	Vector3 GetLocalUp() const;
-	Vector3 GetLocalLeft() const;
+	Vector3 GetLocalForward();
+	Vector3 GetLocalUp();
+	Vector3 GetLocalLeft();
 
 	//Get the Rotation, Translation, Scale and Transformation matrix relative to the parent.
-	Mtx44 GetRotationMatrix() const;
-	Mtx44 GetTranslationMatrix() const;
-	Mtx44 GetScaleMatrix() const;
-	Mtx44 GetTransformationMatrix() const;
+	Mtx44 GetLocalRotationMatrix();
+	Mtx44 GetLocalTranslationMatrix();
+	Mtx44 GetLocalScaleMatrix();
+	Mtx44 GetLocalTransformationMatrix();
+
+	Mtx44 GetTransformationMatrix();
+	Mtx44 GetRotationMatrix();
 
 	//Setters(s)
 	void SetLocalPosition(const Vector3& position);
@@ -95,7 +155,7 @@ public:
 	void Rotate(float x, float y, float z);
 	void Scale(const Vector3& scale);
 	void Scale(float x, float y, float z);
-	//void LookAt(Vector3 target, Vector3 up = Vector3(0, 1, 0));
+	//void LookAt(Vector3 _target, Vector3 _up = Vector3(0, 1, 0));
 
 };
 
