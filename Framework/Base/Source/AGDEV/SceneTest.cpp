@@ -35,7 +35,7 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 
 	//SpatialPartition
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Init(10, 10, 4, 4, -1.f);
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Init(10, 10, 10, 4, 4, 4);
 
 	//Player
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
@@ -43,12 +43,11 @@ void SceneTest::Init() {
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, -5);
 
 	//Camera
-	GameObject* camera = &GameObjectFactory::CreateCamera(name, "Player Camera");
-	//camera->SetParent(*player);
-	camera->GetComponent<Transform>().SetLocalPosition(0, 1.7f, 0);
+	GameObject* camera = &GameObjectFactory::CreateCamera(name);
+	camera->SetParent(*player);
+	camera->GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 	camera->CreateScript<PlayerCameraScript>();
-	camera->CreateScript<PlayerMovementScript>();
-
+	
 	//Lights
 	GameObject* light = &GameObjectFactory::CreateLight(name);
 	light->GetComponent<Light>().type = Light::LIGHT_TYPE::LIGHT_DIRECTIONAL;
@@ -103,8 +102,8 @@ void SceneTest::Render() {
 	RenderSystem::GetInstance().RenderUI(name);
 	if (debugCountdown <= 0)
 	{
-		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
-		debugCountdown = 3.f;
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
+		debugCountdown = 10.f;
 	}
 }
 

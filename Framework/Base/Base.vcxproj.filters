@@ -181,6 +181,12 @@
     <ClInclude Include="Source\Systems\Physics\CollisionUtility.h">
       <Filter>Files\Systems\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Triggers\AABBTrigger.h">
+      <Filter>Files\Component\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Triggers\SphereTrigger.h">
+      <Filter>Files\Component\Triggers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -275,6 +281,9 @@
     </Filter>
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Triggers">
+      <UniqueIdentifier>{c18cf088-c9d3-45ed-b5e4-d3a868be6b95}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +421,18 @@
     </ClCompile>
     <ClCompile Include="Source\GameObject\GameObject.cpp">
       <Filter>Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Physics\RigidBody.cpp">
+      <Filter>Files\Component\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp">
+      <Filter>Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Triggers\SphereTrigger.cpp">
+      <Filter>Files\Component\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Triggers\AABBTrigger.cpp">
+      <Filter>Files\Component\Triggers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
