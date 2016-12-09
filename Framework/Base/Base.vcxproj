@@ -33,6 +33,8 @@
     <ClInclude Include="Source\Component\Rendering\MeshRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\SpriteRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\TextRenderer.h" />
+    <ClInclude Include="Source\Component\Triggers\AABBTrigger.h" />
+    <ClInclude Include="Source\Component\Triggers\SphereTrigger.h" />
     <ClInclude Include="Source\GameObject\GameObject.h" />
     <ClInclude Include="Source\GameObject\GameObjectFactory.h" />
     <ClInclude Include="Source\GameObject\GameObjectManager.h" />
@@ -84,10 +86,13 @@
     <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\ComponentManager.cpp" />
     <ClCompile Include="Source\Component\Physics\Collision\SphereCollider.cpp" />
+    <ClCompile Include="Source\Component\Physics\RigidBody.cpp" />
     <ClCompile Include="Source\Component\Physics\Transform.cpp" />
     <ClCompile Include="Source\Component\Rendering\Camera.cpp" />
     <ClCompile Include="Source\Component\Rendering\LODMeshHolder.cpp" />
     <ClCompile Include="Source\Component\Rendering\SpriteRenderer.cpp" />
+    <ClCompile Include="Source\Component\Triggers\AABBTrigger.cpp" />
+    <ClCompile Include="Source\Component\Triggers\SphereTrigger.cpp" />
     <ClCompile Include="Source\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsManager.cpp" />
@@ -111,6 +116,7 @@
     <ClCompile Include="Source\Scene\SceneNode.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp" />
     <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp" />
     <ClCompile Include="Source\Systems\SpatialPartition\Grid.cpp" />
     <ClCompile Include="Source\Systems\SpatialPartition\SpatialPartition.cpp" />
