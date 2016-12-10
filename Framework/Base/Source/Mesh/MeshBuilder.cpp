@@ -263,6 +263,114 @@ Mesh* MeshBuilder::GenerateCube(const std::string &meshName, Color color, float 
 
 }
 
+Mesh* MeshBuilder::GenerateWireframeCube(const std::string &meshName, Color color, float length) {
+
+	Mesh* mesh = GetMesh(meshName);
+	if (mesh != nullptr) {
+		return mesh;
+	}
+
+	vector<Vertex> vertex_buffer_data;
+	vector<GLuint> index_buffer_data;
+
+	Vertex v;
+	v.color = color;
+
+	//Front
+	v.normal.Set(0.0f, 0.0f, 1.0f);
+	v.pos.Set(0.5f * length, 0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, 0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, -0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, -0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+
+	//Left
+	v.normal.Set(1.0f, 0.0f, 0.0f);
+	v.pos.Set(0.5f * length, 0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, 0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, -0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, -0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+
+	//Back
+	v.normal.Set(0.0f, 0.0f, -1.0f);
+	v.pos.Set(-0.5f * length, 0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, 0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, -0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, -0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+
+	//Right
+	v.normal.Set(-1.0f, 0.0f, 0.0f);
+	v.pos.Set(-0.5f * length, 0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, 0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, -0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, -0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+
+	//Up
+	v.normal.Set(0.0f, 1.0f, 0.0f);
+	v.pos.Set(0.5f * length, 0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, 0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, 0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, 0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+
+	//Down
+	v.normal.Set(0.0f, -1.0f, 0.0f);
+	v.pos.Set(-0.5f * length, -0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, -0.5f * length, -0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, -0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, -0.5f * length, 0.5f * length);
+	vertex_buffer_data.push_back(v);
+
+	for (unsigned int i = 0; i < 6; ++i) {
+		index_buffer_data.push_back(0 + i * 4);
+		index_buffer_data.push_back(1 + i * 4);
+		index_buffer_data.push_back(2 + i * 4);
+		index_buffer_data.push_back(0 + i * 4);
+		index_buffer_data.push_back(2 + i * 4);
+		index_buffer_data.push_back(3 + i * 4);
+	}
+
+	mesh = new Mesh(meshName);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0); //Unbind the VBO
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); //Unbind the EBO
+
+	mesh->vertexSize = vertex_buffer_data.size();
+	mesh->indexSize = index_buffer_data.size();
+	mesh->mode = Mesh::DRAW_LINES;
+
+	meshMap.insert(pair<string, Mesh*>(meshName, mesh));
+
+	return mesh;
+
+}
+
 Mesh* MeshBuilder::GenerateCircle(const string& meshName, Color color, unsigned int numSlice, float radius) {
 
 	return GenerateRing(meshName, color, numSlice, radius, 0.0f);

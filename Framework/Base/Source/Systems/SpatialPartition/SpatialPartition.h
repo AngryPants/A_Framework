@@ -7,30 +7,27 @@
 class SpatialPartition
 {
 protected:
-
 	// Variables
 	Grid* theGrid;
-	int xSize;
-	int ySize;
-	int zSize;
-	int xGridSize;
-	int yGridSize;
-	int zGridSize;
-	int xNumOfGrid;
-	int yNumOfGrid;
-	int zNumOfGrid;
+	int xSize, ySize, zSize;
+	int xGridSize, yGridSize, zGridSize;
+	int xNumOfGrid, yNumOfGrid, zNumOfGrid;
+	int xPosition, yPosition, zPosition;
 
 	// LOD distances
 	float LevelOfDetails_Distances[2];
 
 public:
+	// The vector of objects due for migration to another grid
+	vector<GameObjectID> migrationList;
 
 	// Constructor
 	SpatialPartition();
 	virtual ~SpatialPartition();
 	// Initialise the spatial partition
-	bool Init(const int xGridSize, const int yGridSize, const int zGridSize,
-		const int xNumOfGrid, const int yNumOfGrid, const int zNumOfGrid);
+	bool Set(const int _xGridSize, const int _yGridSize, const int _zGridSize,
+			 const int _xNumOfGrid, const int _yNumOfGrid, const int _zNumOfGrid,
+			 const int _xPosition = 0, const int _yPosition = 0, const int _zPosition = 0);
 	// Update the spatial partition
 	void Update();
 
@@ -40,12 +37,18 @@ public:
 	int GetySize() const;
 	// Get zSize of the entire spatial partition
 	int GetzSize() const;
+
 	// Get xSize
 	int GetxGridSize() const;
 	// Get ySize
 	int GetyGridSize() const;
 	// Get zSize
 	int GetzGridSize() const;
+	
+	int GetxPosition() const;
+	int GetyPosition() const;
+	int GetzPosition() const;
+
 	// Get xNumOfGrid
 	int GetxNumOfGrid() const;
 	// Get yNumOfGrid
@@ -54,28 +57,26 @@ public:
 	int GetzNumOfGrid() const; 
 
 	// Get a particular grid
-	Grid GetGrid(const int xIndex, const int yIndex, const int zIndex) const; 
+	Grid GetGrid(const int _xIndex, const int _yIndex, const int _zIndex) const; 
+	Grid GetExtraGrid() const;
 	// Get vector of objects from this Spatial Partition
-	vector<GameObjectID> GetObjects(Vector3 position, const float radius);
+	vector<GameObjectID> GetObjects(Vector3 _position, const float _radius);
 
 	// Add a new object
-	void Add(GameObjectID theObject);
+	void Add(GameObjectID _theObject);
 	// Remove but not delete object from this grid
-	void Remove(GameObjectID theObject);
-	
-	// The vector of objects due for migration to another grid
-	vector<GameObjectID> migrationList;
+	void Remove(GameObjectID _theObject);
 
 	//Calculate the distance from camera to a grid centrepoint
-	float CalculateDistance(const Vector3& theCameraPosition, const int xIndex, const int yIndex, const int zIndex);
+	float CalculateDistance(const Vector3& _theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex);
 	// Calculate the squared distance from camera to a grid's centrepoint
-	float CalculateDistanceSquare(const Vector3& theCameraPosition, const int xIndex, const int yIndex, const int zIndex);
+	float CalculateDistanceSquare(const Vector3& theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex);
 
 	// Set LOD distances
 	//void SetLevelOfDetails(const float distance_High2Mid, const float distance_Mid2Low);
 	
 	// Check if a CGrid is visible to the camera
-	bool IsVisible(Vector3 theCameraPosition, Vector3 theCameraDirection, const int xIndex, const int yIndex, const int zIndex);
+	bool IsVisible(Vector3 _theCameraPosition, Vector3 _theCameraDirection, const int _xIndex, const int _yIndex, const int _zIndex);
 	
 	// print the contents of all the grids
 	void PrintSelf() const;

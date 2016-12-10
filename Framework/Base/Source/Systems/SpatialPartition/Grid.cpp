@@ -3,12 +3,12 @@
 #include "../../Graphics/RenderHelper.h"
 
 Grid::Grid()
-	: index(Vector3(0, 0, 0))
-	, size(Vector3(0, 0, 0))
-	, offset(Vector3(0, 0, 0))
-	, min(Vector3(0, 0, 0))
-	, max(Vector3(0, 0, 0))
-	, listOfObjects(NULL) 
+	: index(0, 0, 0)
+	, gridSize(0, 0, 0)
+	//, offset(0, 0, 0)
+	, position(0, 0, 0)
+	, min(0, 0, 0)
+	, max(0, 0, 0)
 {
 }
 
@@ -17,15 +17,26 @@ Grid::~Grid()
 	RemoveAll();
 }
 
-void Grid::Init(const int xIndex, const int yIndex, const int zIndex,
-const int xGridSize, const int yGridSize, const int zGridSize,
-const float xOffset, const int yOffset, const float zOffset)
+void Grid::Set(const GridIndex _index,
+			 const int _xGridSize, const int _yGridSize, const int _zGridSize,
+			 const int _xOffset, const int _yOffset, const int _zOffset)
 {
-	index.Set(xIndex, yIndex, zIndex);
-	size.Set(xGridSize, yGridSize, zGridSize);
-	offset.Set(xOffset, yOffset, zOffset);
-	min.Set(index.x * size.x - offset.x, index.y * size.y - offset.y, index.z * size.z - offset.z);
-	max.Set(index.x * size.x - offset.x + xGridSize, index.y * size.y - offset.y + yGridSize, index.z * size.z - offset.z + zGridSize);
+	this->index = _index;
+	this->gridSize.Set(_xGridSize, _yGridSize, _zGridSize);
+	//this->offset.Set(_offsetX, _offsetY, _offsetZ);
+
+	this->min.Set(index.x * gridSize.x + _xOffset, index.y * gridSize.y + _yOffset, index.z * gridSize.z + _zOffset);
+	this->max = min + gridSize;
+	this->position = min + (gridSize * 0.5f);
+	
+}
+
+GridIndex Grid::GetIndex() const {
+	return index;
+}	
+
+Vector3 Grid::GetPosition() const {
+	return position;
 }
 
 // Update the grid
@@ -39,7 +50,9 @@ void Grid::Update(vector<GameObjectID>* migrationList)
 		GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*it);
 		
 		if (go == nullptr)
+		{
 			continue;
+		}			
 		
 		Vector3 position = go->GetComponent<Transform>().GetPosition();
 
@@ -111,7 +124,9 @@ bool Grid::IsHere(GameObjectID theObject) const
 	for (size_t i = 0; i < listOfObjects.size(); ++i)
 	{
 		if (listOfObjects[i] == theObject)
+		{
 			return true;
+		}			
 	}
 	return false;
 }
@@ -122,12 +137,16 @@ vector<GameObjectID> Grid::GetListOfObject()
 	return listOfObjects;
 }
 
+int Grid::GetNumObjects() const {
+	return listOfObjects.size();
+}
+
 void Grid::PrintSelf()
 {
 	if (listOfObjects.size() > 0)
 	{
 		cout << "Grid::PrintSelf()" << endl;
-		cout << "\tIndex\t:\t" << index << "\t\tOffset\t:\t" << offset << endl;
+		cout << "\tIndex\t:\t" << index << "\t\tPosition\t:\t" << position << endl;
 		cout << "\tMin\t:\t" << min << "\tMax\t:\t" << max << endl;
 		cout << "\t------------------------------------------------------------------------" << endl;
 
@@ -136,9 +155,11 @@ void Grid::PrintSelf()
 			GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(listOfObjects[i]);
 
 			if (go == nullptr)
+			{
 				continue;
+			}		
 
-			cout << "\t" << i << "\t:\t" << go->GetComponent<Transform>().GetPosition() << endl;
+			cout << "\t" << i << " (" << go->GetID() << ")" << go->GetName() << "\t:\t" << go->GetComponent<Transform>().GetPosition() << endl;
 		}
 
 		cout << "\t------------------------------------------------------------------------" << endl;

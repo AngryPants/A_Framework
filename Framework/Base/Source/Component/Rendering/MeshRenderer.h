@@ -9,16 +9,11 @@ class MeshRenderer : public Component {
 
 public:
 	//Variable(s)
-	Mesh* mesh;
-	TextureList textureList;
 	bool lightEnabled;
 	
 	//Constructor(s) & Destructor
-	MeshRenderer(GameObject& gameObject) : Component("Mesh Renderer", gameObject) {
-		mesh = nullptr;
-		lightEnabled = true;
-	}
-	virtual ~MeshRenderer() {}
+	MeshRenderer(GameObject& gameObject);
+	virtual ~MeshRenderer();
 
 };
 

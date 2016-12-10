@@ -4,15 +4,56 @@
 #include "../../GameObject/GameObject.h"
 #include "../../Component/Rendering/LODMeshHolder.h"
 
+struct GridIndex {
+public:
+	//Variable(s)
+	int x, y, z;
+	//Constructor(s) & Destructor
+	GridIndex() {
+		Set(0, 0, 0);
+	}
+	GridIndex(const int _x, const int _y, const int _z) {
+		Set(_x, _y, _z);
+	}
+	GridIndex(const GridIndex& _rhs) {
+		Set(_rhs.x, _rhs.y,_rhs.z);
+	}
+	~GridIndex() {}
+
+	//Function(s)
+	void Set(const int _x, const int _y, const int _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
+	//Operator Overloads
+	GridIndex& operator=(const GridIndex& _rhs) {
+		Set(_rhs.x, _rhs.y,_rhs.z);
+		return *this;
+	}
+	bool operator==(const GridIndex& _rhs) const {
+		return (this->x == _rhs.x) && (this->y == _rhs.y) && (this->z == _rhs.z);
+	}
+
+	//Friend Function(s)
+	friend ostream& operator<<(ostream& os, const GridIndex& _rhs) {
+		os << "[" << _rhs.x << ", " << _rhs.y << ", " << _rhs.z << "]";
+		return os;
+	}
+};
+
 class Grid
 {
 protected:
 	// We use a Vector3 to store the indices of this Grid within the Spatial Partition array.
-	Vector3 index;
+	GridIndex index;
 	// We use a Vector3 to store the size of this Grid within the Spatial Partition array.
-	Vector3 size;
-	// We use a Vector3 to store the x-y-z offset of this Grid.
-	Vector3 offset;
+	Vector3 gridSize;
+	// We use a Vector3 to store the x-y-z offset of the spatial partition.
+	//Vector3 offset;
+	//We can find out position based on our min and max.
+	Vector3 position;
 	// We use a Vector3 to store the x-y-z offset of this Grid.
 	Vector3 min, max;
 
@@ -21,11 +62,14 @@ protected:
 	
 public:
 	Grid();
-	~Grid();
+	virtual ~Grid();
 	// Init
-	void Init(const int xIndex, const int yIndex, const int zIndex,
-		const int xGridSize, const int yGridSize, const int zGridSize,
-		const float xOffset = 0, const int yOffset = 0, const float zOffset = 0);
+	void Set(const GridIndex _index,
+			 const int _xGridSize, const int _yGridSize, const int _zGridSize,
+			 const int _xOffset, const int _yOffset, const int _zOffset);
+
+	GridIndex GetIndex() const;
+	Vector3 GetPosition() const;
 
 	// Update the grid
 	void Update(vector<GameObjectID>* migrationList);
@@ -42,6 +86,9 @@ public:
 
 	// Get list of objects in this grid
 	vector<GameObjectID> GetListOfObject();
+
+	//Get the number of objects in this grid.
+	int GetNumObjects() const;
 
 	// print all the information it contains
 	void PrintSelf();

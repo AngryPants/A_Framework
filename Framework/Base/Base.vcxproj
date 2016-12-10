@@ -17,6 +17,7 @@
     <ClInclude Include="Source\AGDEV\ScaleScript.h" />
     <ClInclude Include="Source\AGDEV\SceneEmpty.h" />
     <ClInclude Include="Source\AGDEV\SceneTest.h" />
+    <ClInclude Include="Source\AGDEV\TranslateScript.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Animation\SpriteAnimation.h" />
     <ClInclude Include="Source\Application\Application.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="Source\Component\Rendering\Camera.h" />
     <ClInclude Include="Source\Component\Rendering\Light.h" />
     <ClInclude Include="Source\Component\Rendering\LODMeshHolder.h" />
+    <ClInclude Include="Source\Component\Rendering\MeshHolder.h" />
     <ClInclude Include="Source\Component\Rendering\MeshRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\SpriteRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\TextRenderer.h" />
@@ -90,6 +92,8 @@
     <ClCompile Include="Source\Component\Physics\Transform.cpp" />
     <ClCompile Include="Source\Component\Rendering\Camera.cpp" />
     <ClCompile Include="Source\Component\Rendering\LODMeshHolder.cpp" />
+    <ClCompile Include="Source\Component\Rendering\MeshHolder.cpp" />
+    <ClCompile Include="Source\Component\Rendering\MeshRenderer.cpp" />
     <ClCompile Include="Source\Component\Rendering\SpriteRenderer.cpp" />
     <ClCompile Include="Source\Component\Triggers\AABBTrigger.cpp" />
     <ClCompile Include="Source\Component\Triggers\SphereTrigger.cpp" />

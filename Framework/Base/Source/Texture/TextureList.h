@@ -19,6 +19,13 @@ public:
 	}
 	virtual ~TextureList() {}
 	
+	//Function(s)
+	void Reset() {
+		for (unsigned int i = 0; i < MAX_TEXTURES; ++i) {
+			textureArray[i] = 0;
+		}
+	}
+
 	//Operator Overload.
 	bool operator==(const TextureList& rhs) const {		
 		for (unsigned int i = 0; i < MAX_TEXTURES; ++i) {

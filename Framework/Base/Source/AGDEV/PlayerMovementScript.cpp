@@ -16,16 +16,16 @@ PlayerMovementScript::~PlayerMovementScript() {
 void PlayerMovementScript::Update(double deltaTime) {
 	Transform& transform = GetGameObject().GetComponent<Transform>();
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_LEFT]) {
-		transform.Translate(movementSpeed * deltaTime * transform.GetLeft());
+		transform.Translate(movementSpeed * deltaTime * transform.GetLocalLeft());
 	}
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_RIGHT]) {
-		transform.Translate(movementSpeed * deltaTime * -transform.GetLeft());
+		transform.Translate(movementSpeed * deltaTime * -transform.GetLocalLeft());
 	}
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_FORWARD]) {
-		transform.Translate(movementSpeed * deltaTime * transform.GetForward());
+		transform.Translate(movementSpeed * deltaTime * transform.GetLocalForward());
 	}
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_BACKWARD]) {
-		transform.Translate(movementSpeed * deltaTime * -transform.GetForward());
+		transform.Translate(movementSpeed * deltaTime * -transform.GetLocalForward());
 	}
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_LEFT]) {
 		transform.Rotate(0,deltaTime * rotationSpeed, 0);
@@ -35,8 +35,10 @@ void PlayerMovementScript::Update(double deltaTime) {
 	}
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_ROLL_LEFT]) {
 		//transform.Rotate(0, 0, -deltaTime * rotationSpeed);
+		transform.Translate(movementSpeed * deltaTime * transform.GetLocalUp());
 	}
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_ROLL_RIGHT]) {
 		//transform.Rotate(0, 0, deltaTime * rotationSpeed);
+		transform.Translate(movementSpeed * deltaTime * -transform.GetLocalUp());
 	}
 }

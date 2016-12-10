@@ -187,6 +187,12 @@
     <ClInclude Include="Source\Component\Triggers\SphereTrigger.h">
       <Filter>Files\Component\Triggers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Rendering\MeshHolder.h">
+      <Filter>Files\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\TranslateScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -433,6 +439,12 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Triggers\AABBTrigger.cpp">
       <Filter>Files\Component\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Rendering\MeshRenderer.cpp">
+      <Filter>Files\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Rendering\MeshHolder.cpp">
+      <Filter>Files\Component\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

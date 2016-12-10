@@ -9,9 +9,12 @@
 #include "../../Scene/SceneGraph.h"
 #include "../../Scene/SceneNode.h"
 #include "../../Systems/SpatialPartition/SPSystem.h"
+#include "../../Mesh/MeshBuilder.h"
 
 //Include Components
 #include "../../Component/Rendering/MeshRenderer.h"
+#include "../../Component/Rendering/MeshHolder.h"
+#include "../../Component/Rendering/LODMeshHolder.h"
 #include "../../Component/Rendering/SpriteRenderer.h"
 #include "../../Component/Rendering/TextRenderer.h"
 #include "../../Component/Physics/Transform.h"
@@ -25,34 +28,11 @@ using std::stack;
 
 //Constructor(s) & Destructor
 RenderSystem::RenderSystem() {
+	gridMesh = MeshBuilder::GetInstance().GenerateWireframeCube("Grid Mesh", Color(0, 1, 0), 1.0f);
 }
 
 RenderSystem::~RenderSystem() {
 }
-
-//Private Function(s)
-/*void RenderSystem::RenderRecursion(GameObject& gameObject) {
-	//Get our transform.
-	Transform& transform = gameObject.GetComponent<Transform>();
-
-	//Get our modelStack from GraphicsManager.
-	MS& modelStack = GraphicsManager::GetInstance().modelStack;
-	modelStack.PushMatrix();
-		//Do our transformation.
-		modelStack.MultMatrix(transform.GetLocalTransformationMatrix());
-		//Check for MeshRenderer.
-		if (gameObject.HasComponent<MeshRenderer>()) {
-			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
-			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);
-		}
-		//Recursion in the children.
-		vector<GameObject*> children;
-		gameObject.GetChildren(children);
-		for (unsigned int i = 0; i < children.size(); ++i) {
-			RenderRecursion(*children[i]);
-		}
-	modelStack.PopMatrix();
-}*/
 
 void RenderSystem::RenderRecursion(GameObject& gameObject) {
 	//Get our transform.
@@ -68,10 +48,15 @@ void RenderSystem::RenderRecursion(GameObject& gameObject) {
 		modelStack.Scale(transform.GetLocalScale().x, transform.GetLocalScale().y, transform.GetLocalScale().z);*/
 		//Check for MeshRenderer.
 		if (gameObject.HasComponent<MeshRenderer>()) {
-			modelStack.MultMatrix(transform.GetTransformationMatrix());
-			MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
-			RenderHelper::GetInstance().RenderMesh(*meshRenderer.mesh, meshRenderer.textureList, meshRenderer.lightEnabled);
-		}		
+			if (gameObject.HasComponent<MeshHolder>()) {
+				modelStack.MultMatrix(transform.GetTransformationMatrix());
+				MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
+				MeshHolder& meshHolder = gameObject.GetComponent<MeshHolder>();
+				RenderHelper::GetInstance().RenderMesh(*meshHolder.mesh, meshHolder.textureList, meshRenderer.lightEnabled);
+			} else if (gameObject.HasComponent<LODMeshHolder>()) {
+				//Do Stuff
+			}
+		}
 	modelStack.PopMatrix();
 		
 	//Recursion in the children.
@@ -182,6 +167,8 @@ void RenderSystem::Render(const string& space) {
 		RenderRecursion(*nodePtr->GetGameObject());
 	}
 
+	//RenderGrid(space);
+
 	//Sprite Animation
 	/*set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
 	for (set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
@@ -232,4 +219,30 @@ void RenderSystem::Render(const string& space) {
 }
 
 void RenderSystem::RenderUI(const string& space) {
+}
+
+void RenderSystem::RenderGrid(const string& space) {
+	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(space);
+	if (sp == nullptr) {
+		return;
+	}
+	
+	//Get our modelStack from GraphicsManager.
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+	for (int x = 0; x < sp->GetxNumOfGrid(); ++x) {
+		for (int y = 0; y < sp->GetyNumOfGrid(); ++y) {
+			for (int z = 0; z < sp->GetzNumOfGrid(); ++z) {
+				modelStack.PushMatrix();
+					Grid& grid = sp->GetGrid(x, y, z);
+					Vector3 position = grid.GetPosition();
+					modelStack.Translate(position.x, position.y, position.z);
+					//cout << "Grid Size X: " << sp->GetxGridSize() << endl;
+					//cout << "Grid Size Y: " << sp->GetyGridSize() << endl;
+					//cout << "Grid Size Z: " << sp->GetzGridSize() << endl;
+					modelStack.Scale(sp->GetxGridSize(), sp->GetyGridSize(), sp->GetzGridSize());
+					RenderHelper::GetInstance().RenderMesh(*gridMesh);
+				modelStack.PopMatrix();
+			}
+		}
+	}	
 }

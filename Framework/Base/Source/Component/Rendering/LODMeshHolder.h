@@ -2,7 +2,6 @@
 #define LOD_MESH_HOLDER_H
 
 #include "../Component.h"
-#include "MeshRenderer.h"
 #include "../../Mesh/Mesh.h"
 #include "../../Texture/TextureList.h"
 #include "../../GameObject/GameObjectManager.h"
@@ -13,39 +12,35 @@ class LODMeshHolder : public Component {
 public:
 	enum DETAIL_LEVEL
 	{
-		NO_DETAILS = 0,
-		HIGH_DETAILS,
+		LOW_DETAILS,		
 		MID_DETAILS,
-		LOW_DETAILS,
+		HIGH_DETAILS,
 		NUM_DETAIL_LEVEL,
 	};
 
 	//Constructor(s) & Destructor
-	LODMeshHolder(GameObject& gameObject) : Component("LOD Mesh Holder", gameObject) 
-	{
-		if (GetGameObject().HasComponent<MeshRenderer>())
-			GetGameObject().RemoveComponent<MeshRenderer>();
-		
-		for (int i = 0; i < NUM_DETAIL_LEVEL; i++)
-			mesh[i] = nullptr;
-		lightEnabled = true;
-	}
-	virtual ~LODMeshHolder() {}
+	LODMeshHolder(GameObject& _gameObject);
+	virtual ~LODMeshHolder();
 
-	//functions
-	bool InitLOD(Mesh* meshName_High, Mesh* meshName_Mid, Mesh* meshName_Low);
+	//Mesh
+	bool SetLODMesh(Mesh* _meshLow, Mesh* _meshMid, Mesh* _meshHigh);
+	bool SetLODMesh(Mesh* _mesh, const DETAIL_LEVEL _detailLevel);
+	bool RemoveMesh(const DETAIL_LEVEL _detailLevel);
+	bool RemoveAllMeshes();
+	const Mesh* GetLODMesh(const DETAIL_LEVEL _detailLevel) const;
 
-	bool SetLODMesh(Mesh* theMesh, const DETAIL_LEVEL theDetailLevel);
-	Mesh* GetLODMesh(const DETAIL_LEVEL theDetailLevel) const;
-	/*bool SetDetailLevel(const DETAIL_LEVEL theDetailLevel);*/
+	//Textures
+	bool SetLODTextures(const TextureList& _textureListLow, const TextureList& _textureListMid, const TextureList& _textureListHigh);
+	bool SetLODTextures(const TextureList& _textureList, const DETAIL_LEVEL _detailLevel);
+	bool RemoveTextures(const DETAIL_LEVEL _detailLevel);
+	bool RemoveAllTextures();
+	const TextureList& GetTextureList(const DETAIL_LEVEL _detailLevel) const;
 
-	//light
-	bool lightEnabled;
-private:
+//private:
 	//Variable(s)
 	Mesh* mesh[NUM_DETAIL_LEVEL];
 	TextureList textureList[NUM_DETAIL_LEVEL];
-	//DETAIL_LEVEL theDetailLevel;
+
 };
 
 #endif

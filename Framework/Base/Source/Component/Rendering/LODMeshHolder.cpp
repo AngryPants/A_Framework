@@ -1,60 +1,132 @@
 #include "LODMeshHolder.h"
+#include "MeshHolder.h"
+#include "MeshRenderer.h"
 #include "../../Mesh/MeshBuilder.h"
 
-bool LODMeshHolder::InitLOD(Mesh* mesh_High, Mesh* mesh_Mid, Mesh* mesh_Low)
+//Constructor(s) & Destructor
+LODMeshHolder::LODMeshHolder(GameObject& _gameObject) : Component("LOD Mesh Holder", _gameObject)
 {
-	// If any of the mesh is not loaded, then return false and avoid setting the LOD to active
-	if ((mesh[HIGH_DETAILS] == nullptr) || (mesh[MID_DETAILS] == nullptr) || (mesh[LOW_DETAILS] == nullptr))
-		return false;
+	for (int i = 0; i < NUM_DETAIL_LEVEL; i++)
+	{
+		mesh[i] = nullptr;
+	}
 
-	// Retrieve the Meshes from MeshBuilder's library and assign to the 3 Mesh pointers
-	mesh[HIGH_DETAILS] = mesh_High;
-	mesh[MID_DETAILS] = mesh_Mid;
-	mesh[LOW_DETAILS] = mesh_Low;
+	if (GetGameObject().HasComponent<MeshHolder>())
+	{
+		GetGameObject().RemoveComponent<MeshHolder>();
+	}
+	if (!GetGameObject().HasComponent<MeshRenderer>())
+	{
+		GetGameObject().AddComponent<MeshRenderer>();
+	}	
+}
+
+LODMeshHolder::~LODMeshHolder() {
+}
+
+//Mesh
+bool LODMeshHolder::SetLODMesh(Mesh* _meshLow, Mesh* _meshMid, Mesh* _meshHigh)
+{
+	//If any of the mesh is not loaded, then return false and avoid setting the LOD to active
+	/*if ((mesh[HIGH_DETAILS] == nullptr) || (mesh[MID_DETAILS] == nullptr) || (mesh[LOW_DETAILS] == nullptr))
+	{
+		return false;
+	}*/
+
+	mesh[LOW_DETAILS] = _meshLow;
+	mesh[MID_DETAILS] = _meshMid;
+	mesh[HIGH_DETAILS] = _meshHigh;
 
 	return true;
 }
  
-bool LODMeshHolder::SetLODMesh(Mesh* theMesh, const LODMeshHolder::DETAIL_LEVEL theDetailLevel)
+bool LODMeshHolder::SetLODMesh(Mesh* _mesh, const LODMeshHolder::DETAIL_LEVEL _detailLevel)
 {
-	if (theDetailLevel >= HIGH_DETAILS && theDetailLevel < NUM_DETAIL_LEVEL)
+	if (_detailLevel < NUM_DETAIL_LEVEL)
 	{
-		mesh[theDetailLevel] = theMesh; 
+		mesh[_detailLevel] = _mesh;
 		return true;
 	}
 
 	return false;
 }
 
-//Mesh* LODMeshHolder::GetLODMesh() const
-//{
-//	if (theDetailLevel >= HIGH_DETAILS && theDetailLevel < NUM_DETAIL_LEVEL)
-//		return mesh[theDetailLevel];
-//
-//	return NULL;
-//}
-
-Mesh* LODMeshHolder::GetLODMesh(const LODMeshHolder::DETAIL_LEVEL theDetailLevel) const
+bool LODMeshHolder::RemoveMesh(const DETAIL_LEVEL _detailLevel)
 {
-	if (theDetailLevel >= HIGH_DETAILS && theDetailLevel < NUM_DETAIL_LEVEL)
-		return mesh[theDetailLevel];
-	
-	return NULL;
+	if (_detailLevel < NUM_DETAIL_LEVEL)
+	{
+		mesh[_detailLevel] = nullptr;
+		return true;
+	}
+
+	return false;
 }
 
-//
-//int LODMeshHolder::GetDetailLevel() const
-//{
-//	return theDetailLevel;
-//}
-//
-//bool LODMeshHolder::SetDetailLevel(const LODMeshHolder::DETAIL_LEVEL theDetailLevel)
-//{
-//	if ((theDetailLevel >= NO_DETAILS) && (theDetailLevel < NUM_DETAIL_LEVEL))
-//	{
-//		this->theDetailLevel = theDetailLevel;
-//		return true;
-//	}
-//
-//	return false;
-//}
+bool LODMeshHolder::RemoveAllMeshes()
+{
+	for (unsigned int i = 0; i < NUM_DETAIL_LEVEL; ++i) {
+		mesh[i] = nullptr;
+	}
+
+	return true;
+}
+
+const Mesh* LODMeshHolder::GetLODMesh(const LODMeshHolder::DETAIL_LEVEL _detailLevel) const
+{
+	if (_detailLevel < NUM_DETAIL_LEVEL)
+	{
+		return mesh[_detailLevel];
+	}		
+	
+	return nullptr;
+}
+
+//Textures
+bool LODMeshHolder::SetLODTextures(const TextureList& _textureListLow, const TextureList& _textureListMid, const TextureList& _textureListHigh)
+{
+	textureList[LOW_DETAILS] = _textureListLow;
+	textureList[MID_DETAILS] = _textureListMid;
+	textureList[HIGH_DETAILS] = _textureListHigh;
+
+	return true;
+}
+
+bool LODMeshHolder::SetLODTextures(const TextureList& _textureList, const DETAIL_LEVEL _detailLevel)
+{
+	if (_detailLevel < NUM_DETAIL_LEVEL)
+	{
+		textureList[_detailLevel] = _textureList;
+		return true;
+	}
+
+	return false;
+}
+
+bool LODMeshHolder::RemoveTextures(const DETAIL_LEVEL _detailLevel)
+{
+	if (_detailLevel < NUM_DETAIL_LEVEL)
+	{
+		textureList[_detailLevel].Reset();
+		return true;
+	}
+
+	return false;
+}
+
+bool LODMeshHolder::RemoveAllTextures()
+{
+	for (unsigned int i = 0; i < NUM_DETAIL_LEVEL; ++i) {
+		textureList[i].Reset();
+	}
+
+	return true;
+}
+
+const TextureList& LODMeshHolder::GetTextureList(const DETAIL_LEVEL _detailLevel) const {
+	if (_detailLevel < NUM_DETAIL_LEVEL)
+	{
+		return textureList[_detailLevel];
+	}		
+	
+	return TextureList();
+}
