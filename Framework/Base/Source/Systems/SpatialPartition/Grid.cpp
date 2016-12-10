@@ -159,7 +159,7 @@ void Grid::PrintSelf()
 				continue;
 			}		
 
-			cout << "\t" << i << " (" << go->GetID() << ")" << go->GetName() << "\t:\t" << go->GetComponent<Transform>().GetPosition() << endl;
+			cout << "\t" << i << ". [" << go->GetID() << "]" << go->GetName() << "\t:\t" << go->GetComponent<Transform>().GetPosition() << endl;
 		}
 
 		cout << "\t------------------------------------------------------------------------" << endl;

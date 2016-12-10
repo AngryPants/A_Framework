@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AGDEV\PivotScript.h" />
     <ClInclude Include="Source\AGDEV\PlayerCameraScript.h" />
     <ClInclude Include="Source\AGDEV\PlayerMovementScript.h" />
     <ClInclude Include="Source\AGDEV\RotateScript.h" />

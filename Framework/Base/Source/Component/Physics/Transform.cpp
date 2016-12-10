@@ -150,7 +150,7 @@ void Transform::CalculatePosition() {
 	if (parent == nullptr) {
 		position = localPosition;
 	} else {
-		Mtx44 mat = localTranslationMatrix * parent->GetComponent<Transform>().GetTransformationMatrix();
+		Mtx44 mat = parent->GetComponent<Transform>().GetTransformationMatrix() * localTranslationMatrix;
 		position.Set(mat.a[12], mat.a[13], mat.a[14]);
 	}
 }

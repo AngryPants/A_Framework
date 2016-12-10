@@ -193,6 +193,9 @@
     <ClInclude Include="Source\AGDEV\TranslateScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\PivotScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">

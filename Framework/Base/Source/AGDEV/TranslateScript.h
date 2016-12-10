@@ -21,7 +21,7 @@ public:
 	virtual void Update(double deltaTime) {
 		timePassed += deltaTime;
 		float offset = sin(timePassed);
-		GetGameObject().GetComponent<Transform>().Translate(offset * 0.3f, 0, 0);
+		GetGameObject().GetComponent<Transform>().SetLocalPosition(offset * 5.0f, 0, 0);
 	}
 
 };

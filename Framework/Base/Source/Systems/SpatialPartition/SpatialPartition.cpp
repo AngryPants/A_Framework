@@ -32,24 +32,22 @@ bool SpatialPartition::Set(const int _xGridSize, const int _yGridSize, const int
 		(_xNumOfGrid > 0) && (_yNumOfGrid > 0) && (_zNumOfGrid > 0))
 	{
 		//Get all the IDs from our existing grids.
-		vector<GameObjectID> ids;
+		vector<GameObjectID> ids;		
 		vector<GameObjectID> tempids;
 		for (int i = 0; i < xNumOfGrid; i++)
 		{
-			for (int k = 0; k < yNumOfGrid; k++)
+			for (int j = 0; j < yNumOfGrid; j++)
 			{
-				for (int j = 0; j < zNumOfGrid; j++)
+				for (int k = 0; k < zNumOfGrid; k++)
 				{
 					tempids = theGrid[i * yNumOfGrid * zNumOfGrid + j * zNumOfGrid + k].GetListOfObject();
 					ids.insert(std::end(ids), std::begin(tempids), std::end(tempids));
-					tempids.clear();
 				}
 			}
 		}
 		//Get the IDs from our extra grid.
 		tempids = theGrid[this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid].GetListOfObject();
 		ids.insert(std::end(ids), std::begin(tempids), std::end(tempids));
-		tempids.clear();
 
 		//Delete our existing grids.
 		if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0)
