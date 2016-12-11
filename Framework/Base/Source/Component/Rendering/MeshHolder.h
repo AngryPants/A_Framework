@@ -19,12 +19,12 @@ public:
 	//Mesh
 	bool SetMesh(Mesh* _mesh);
 	bool RemoveMesh();
-	const Mesh* GetMesh() const;
+	Mesh* GetMesh();
 
 	//Texture
 	bool SetTextures(const TextureList& _textureList);
 	bool RemoveTextureList();
-	const TextureList& GetTextureList() const;
+	TextureList& GetTextureList();
 
 };
 

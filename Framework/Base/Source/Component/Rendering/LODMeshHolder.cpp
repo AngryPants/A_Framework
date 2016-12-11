@@ -71,7 +71,7 @@ bool LODMeshHolder::RemoveAllMeshes()
 	return true;
 }
 
-const Mesh* LODMeshHolder::GetLODMesh(const LODMeshHolder::DETAIL_LEVEL _detailLevel) const
+Mesh* LODMeshHolder::GetLODMesh(const LODMeshHolder::DETAIL_LEVEL _detailLevel)
 {
 	if (_detailLevel < NUM_DETAIL_LEVEL)
 	{
@@ -122,7 +122,7 @@ bool LODMeshHolder::RemoveAllTextures()
 	return true;
 }
 
-const TextureList& LODMeshHolder::GetTextureList(const DETAIL_LEVEL _detailLevel) const {
+TextureList& LODMeshHolder::GetTextureList(const DETAIL_LEVEL _detailLevel) {
 	if (_detailLevel < NUM_DETAIL_LEVEL)
 	{
 		return textureList[_detailLevel];

@@ -26,7 +26,7 @@ bool MeshHolder::RemoveMesh() {
 	this->mesh = nullptr;
 	return true;
 }
-const Mesh* MeshHolder::GetMesh() const {
+Mesh* MeshHolder::GetMesh() {
 	return this->mesh;
 }
 
@@ -39,6 +39,6 @@ bool MeshHolder::RemoveTextureList() {
 	this->textureList.Reset();
 	return true;
 }
-const TextureList& MeshHolder::GetTextureList() const {
+TextureList& MeshHolder::GetTextureList() {
 	return this->textureList;
 }

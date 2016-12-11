@@ -1,3 +1,6 @@
+#ifndef TEXT_RENDERER_H
+#define TEXT_RENDERER_H
+
 #include "../Component.h"
 #include "../../Mesh/Mesh.h"
 #include "../../Texture/TextureList.h"
@@ -21,3 +24,5 @@ public:
 	virtual ~TextRenderer() {}
 
 };
+
+#endif

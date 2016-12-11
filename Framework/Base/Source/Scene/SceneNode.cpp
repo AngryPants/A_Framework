@@ -1,7 +1,6 @@
 #include "SceneNode.h"
 #include "SceneGraph.h"
 #include "../GameObject/GameObject.h"
-#include "../Systems/SpatialPartition/SPSystem.h"
 
 //Constructor(s) & Destructor
 SceneNode::SceneNode(const string& space, GameObject* gameObject) {
@@ -87,7 +86,7 @@ bool SceneNode::IsDestroyed() const {
 bool SceneNode::SetParent(SceneNode& sceneNode) {
 
 	if (IsRoot() == false) {
-		return sceneNode.AddChild(*this);
+	 return sceneNode.AddChild(*this);
 	}
 	return false;
 }
@@ -136,18 +135,14 @@ bool SceneNode::AddChild(SceneNode& sceneNode) {
 	sceneNode.parent = this;
 	//We need to add the child into our list.
 	children.insert(&sceneNode);
-	// if adding child is successful, check if parent is not root note, remove child
-	if (sceneNode.GetParent() != SceneGraph::GetInstance().GetRootNode(space))
-		SpatialPartitionSystem::GetInstance().GetSpatialPartition(sceneNode.GetSpace())->Remove(sceneNode.GetGameObject()->GetID());
 
+	
 	return true;
 }
 
 bool SceneNode::DetachChild(SceneNode& sceneNode) {
 	if (DetachChild_Private(sceneNode)) { //If this is a child, we remove it from our list.
 		sceneNode.parent = SceneGraph::GetInstance().GetRootNode(space); //Set the child's parent to the root node.
-		// Add sceneNode back to spatial partition
-		SpatialPartitionSystem::GetInstance().GetSpatialPartition(sceneNode.GetSpace())->Add(sceneNode.GetGameObject()->GetID());
 		return true;
 	}
 	return false;
