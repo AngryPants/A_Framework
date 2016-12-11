@@ -291,6 +291,9 @@
     <Filter Include="Files\Systems\SpacialPartition">
       <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files\Component\Others">
+      <UniqueIdentifier>{a80a2e6a-f49a-49f7-9aef-3eb1215015d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp">

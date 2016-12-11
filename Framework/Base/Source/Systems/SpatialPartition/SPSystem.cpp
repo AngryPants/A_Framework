@@ -13,7 +13,9 @@ void SpatialPartitionSystem::Update(const string& spaceName)
 {
 	SpatialPartition * sp = GetSpatialPartition(spaceName);
 	if (sp != nullptr)
+	{
 		sp->Update();
+	}		
 }
 
 SpatialPartition* SpatialPartitionSystem::CreateSpatialPartition(const string& spaceName)

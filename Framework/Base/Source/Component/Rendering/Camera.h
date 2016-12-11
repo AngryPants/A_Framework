@@ -4,6 +4,7 @@
 #include "Vector3.h"
 #include "MyMath.h"
 #include "../Component.h"
+#include "../../Component/Rendering/LODMeshHolder.h"
 
 struct AspectRatio {
 
@@ -40,6 +41,37 @@ public:
 
 };
 
+struct LODRange {
+private:
+	//Variable(s)
+	float lowerBounds, upperBounds;
+
+public:
+	//Constructor(s) & Destructor
+	LODRange() {
+		Set(0.0f, 1.0f);
+	}
+	LODRange(float _lowerBounds, float _upperBounds) {
+		Set(_lowerBounds, _upperBounds);
+	}
+	LODRange(const LODRange& _rhs) {
+		Set(_rhs.lowerBounds, _rhs.upperBounds);
+	}
+	virtual ~LODRange() {}
+
+	void Set(float _lowerBounds, float _upperBounds) {
+		this->lowerBounds = _lowerBounds;
+		this->upperBounds = _upperBounds;
+	}
+	float GetLowerBounds() const {
+		return lowerBounds;
+	}
+	float GetUpperBounds() const {
+		return upperBounds;
+	}
+
+};
+
 class Camera : public Component {
 
 protected:
@@ -47,15 +79,16 @@ protected:
 	float FOV;
 	float nearClippingPlane;
 	float farClippingPlane;
-
+	
 	//Orthographic
 	bool isOrtho;
-		
+	
 public:	
 	float depth;
 	float orthoSize;
 	AspectRatio aspectRatio;
-	
+	LODRange lodRange[LODMeshHolder::DETAIL_LEVEL::NUM_DETAIL_LEVEL]; //The lower bounds of LOW_DETAIL and upper bounds of HIGH_DETAIL are ignored.
+
 	//Constructor(s) & Destructor
 	Camera(GameObject& gameObject);
 	virtual ~Camera();

@@ -32,7 +32,7 @@ private:
 	//Private Function(s)
 	void AddGameObjects();
 	void RemoveGameObjects();
-	
+
 public:
 	//Interface Function(s)
 	GameObject& CreateGameObject(const string& space, const string& name = "GameObject");

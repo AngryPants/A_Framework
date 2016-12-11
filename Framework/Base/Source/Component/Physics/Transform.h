@@ -33,6 +33,9 @@ private:
 	//If true, our information is outdated.
 	bool isDirty;
 
+	//If true, we'll always be in the extra grid in spatial partition.
+	bool ignoresSpatialPartition;
+
 	///**************************Local (Relative To Parent)**************************///
 	//Transformations
 	Vector3 localPosition;
@@ -100,6 +103,10 @@ public:
 
 	//Check if our data is outdated.
 	bool IsDirty();
+
+	//Check if we ignore Spatial Partitioning.
+	bool IgnoresSpatialPartition();
+	void IgnoreSpatialPartition(const bool _ignore);
 
 	//Getter(s)
 	//Get the position, rotation and scale of the transform relative to the parent.

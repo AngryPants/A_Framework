@@ -25,6 +25,7 @@ The constructor of Transform.
 */
 /*******************************************************************************/
 Transform::Transform(GameObject& gameObject) : Component("Transform", gameObject) {
+	ignoresSpatialPartition = false;
 	SetLocalPosition(0, 0, 0);
 	SetLocalRotation(0, 0, 0);
 	SetLocalScale(1, 1, 1);
@@ -58,6 +59,14 @@ bool Transform::IsDirty() {
 	}
 
 	return isDirty;
+}
+
+bool Transform::IgnoresSpatialPartition() {
+	return ignoresSpatialPartition;
+}
+
+void Transform::IgnoreSpatialPartition(const bool _ignore) {
+	this->ignoresSpatialPartition = _ignore;
 }
 
 //Calculations

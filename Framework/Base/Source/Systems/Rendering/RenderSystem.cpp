@@ -26,36 +26,6 @@ RenderSystem::RenderSystem() {
 RenderSystem::~RenderSystem() {
 }
 
-void RenderSystem::RenderRecursion(GameObject& gameObject) {
-	//Get our transform.
-	Transform& transform = gameObject.GetComponent<Transform>();
-
-	//Get our modelStack from GraphicsManager.
-	MS& modelStack = GraphicsManager::GetInstance().modelStack;
-	modelStack.PushMatrix();
-		//Check for MeshRenderer.
-		if (gameObject.HasComponent<MeshRenderer>()) {
-			if (gameObject.HasComponent<MeshHolder>()) {
-				modelStack.MultMatrix(transform.GetTransformationMatrix());
-				MeshRenderer& meshRenderer = gameObject.GetComponent<MeshRenderer>();
-				MeshHolder& meshHolder = gameObject.GetComponent<MeshHolder>();
-				RenderHelper::GetInstance().RenderMesh(*meshHolder.mesh, meshHolder.textureList, meshRenderer.lightEnabled);
-			} else if (gameObject.HasComponent<LODMeshHolder>()) {
-				//Do Stuff
-			}
-		}
-	modelStack.PopMatrix();
-		
-	//Recursion in the children.
-	vector<GameObject*> children;
-	gameObject.GetChildren(children);
-	for (unsigned int i = 0; i < children.size(); ++i) {
-		RenderRecursion(*children[i]);
-	}	
-
-	//modelStack.PopMatrix();
-}
-
 //Interface Function(s)
 void RenderSystem::Update(const string& space, double deltaTime) {
 	//Sprite Animation
@@ -109,13 +79,6 @@ void RenderSystem::Render(const string& space) {
 	while (lightIndex < RenderHelper::GetInstance().GetNumLights()) {
 		RenderHelper::GetInstance().TurnOffLight(lightIndex++);
 	}
-	
-	/*SceneNode* rootNode = SceneGraph::GetInstance().GetRootNode(space);
-	set<SceneNode*>& rootChildren = rootNode->GetChildren();
-	for (set<SceneNode*>::iterator nodeIter = rootChildren.begin(); nodeIter != rootChildren.end(); ++nodeIter) {
-		SceneNode* nodePtr = *nodeIter;
-		RenderRecursion(*nodePtr->GetGameObject());
-	}*/
 
 	if (renderSpatialPartition) {
 		RenderGridBoundaries(space);
@@ -130,21 +93,37 @@ void RenderSystem::Render(const string& space) {
 				if (0 == grid.GetNumObjects()) {
 					continue;
 				}
-				/*if (false == sp->IsVisible(camTransform.GetPosition(), camTransform.GetForward(), x, y, z)) {					
-					continue;
-				}*/
-				float distanceToGrid = sp->CalculateDistance(camTransform.GetPosition(), x, y, z);
-				if (distanceToGrid > camPtr->GetFarClippingPlane()) {
+				if (false == sp->IsVisible(camTransform.GetPosition(), camTransform.GetForward(), x, y, z)) {
 					continue;
 				}
-				LODMeshHolder::DETAIL_LEVEL detailLevel = LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS;
-				float distanceRatio = distanceToGrid / camPtr->GetFarClippingPlane();
-				if (distanceRatio > 0.3f && distanceRatio < 0.7f) {
-					detailLevel = LODMeshHolder::DETAIL_LEVEL::MID_DETAILS;
-				} else if (distanceRatio > 0.7f && distanceRatio < 1.3f) {
-					detailLevel = LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS;
+				float distanceToGridSquare = sp->CalculateDistanceSquare(camTransform.GetPosition(), x, y, z);
+				if (distanceToGridSquare > camPtr->GetFarClippingPlane() * camPtr->GetFarClippingPlane()) {
+					continue;
 				}
-				RenderGrid(grid, detailLevel);
+
+				if (camPtr->IsOrtho()) {
+					RenderGrid(grid, LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS);
+				} else {
+					float maxGridSize = sp->GetxGridSize();
+					if (sp->GetyGridSize() > maxGridSize) {
+						maxGridSize = sp->GetyGridSize();
+					}
+					if (sp->GetzGridSize() > maxGridSize) {
+						maxGridSize = sp->GetzGridSize();
+					}
+					float angleEstimate = Math::RadianToDegree(atan2(static_cast<float>(maxGridSize), sqrt(distanceToGridSquare)));
+					float angleRatio = angleEstimate / camPtr->GetFOV();
+									
+					if (angleRatio <= camPtr->lodRange[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].GetUpperBounds()) {
+						RenderGrid(grid, LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS);
+					}
+					if (camPtr->lodRange[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].GetLowerBounds() <= angleRatio && angleRatio <= camPtr->lodRange[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].GetUpperBounds()) {
+						RenderGrid(grid, LODMeshHolder::DETAIL_LEVEL::MID_DETAILS);
+					}
+					if (camPtr->lodRange[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].GetLowerBounds() <= angleRatio) {
+						RenderGrid(grid, LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS);
+					}					
+				}
 			}
 		}
 	}

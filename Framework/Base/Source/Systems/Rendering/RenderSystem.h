@@ -32,10 +32,9 @@ private:
 	virtual ~RenderSystem();
 
 	//Private Function(s)
-	void RenderRecursion(GameObject& gameObject);	
-	//Debuging Stuff
-	void RenderGridBoundaries(const string& _space);
 	void RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLevel);
+	//Debuging Stuff
+	void RenderGridBoundaries(const string& _space);	
 
 	//Debugging Stuff
 	Mesh* gridMesh;
