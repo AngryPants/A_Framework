@@ -36,8 +36,8 @@ void Camera::SetFOV(const float& FOV) {
 
 	if (FOV < 1.0f) {
 		this->FOV = 1.0f;
-	} else if (FOV > 179.0f) {
-		this->FOV = 179.0f;
+	} else if (FOV > 90.0f) {
+		this->FOV = 90.0f;
 	}
 
 	this->FOV = FOV;

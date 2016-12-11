@@ -28,8 +28,8 @@ GameObject& GameObjectManager::CreateGameObject(const string& space, const strin
 	return *goPtr;
 }
 
-void GameObjectManager::RemoveGameObject(GameObject& gameObject) {
-	removeQueue.insert(&gameObject);
+void GameObjectManager::RemoveGameObject(GameObject& _gameObject, PassKey<GameObject> _key) {
+	removeQueue.insert(&_gameObject);
 }
 
 void GameObjectManager::AddGameObjects() {

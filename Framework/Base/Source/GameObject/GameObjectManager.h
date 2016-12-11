@@ -2,6 +2,7 @@
 #define GAMEOBJECT_MANAGER_H
 
 #include "SingletonTemplate.h"
+#include "PassKey.h"
 #include "../Others/IDGenerator.h"
 #include <map>
 #include <set>
@@ -35,7 +36,7 @@ private:
 public:
 	//Interface Function(s)
 	GameObject& CreateGameObject(const string& space, const string& name = "GameObject");
-	void RemoveGameObject(GameObject& gameObject);
+	void RemoveGameObject(GameObject& _gameObject, PassKey<GameObject> _key);
 	GameObject* GetGameObjectByID(GameObjectID id);
 	void Clear(const string& space);
 	void ClearAll();

@@ -53,7 +53,7 @@ bool SpatialPartition::Set(const int _xGridSize, const int _yGridSize, const int
 		if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0)
 		{
 			delete[] theGrid;
-		}			
+		}
 		else
 		{
 			delete theGrid;

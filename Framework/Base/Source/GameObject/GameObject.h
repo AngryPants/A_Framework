@@ -31,7 +31,7 @@ private:
 	Component* components[MAX_COMPONENTS];
 	SceneNode* node;
 	Script* scripts[8];	
-	bool destroyed;	
+	bool destroyed;
 	
 	//Destructor
 	virtual ~GameObject();

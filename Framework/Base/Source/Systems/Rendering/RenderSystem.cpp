@@ -201,7 +201,7 @@ void RenderSystem::RenderGridBoundaries(const string& _space) {
 					if (grid.GetNumObjects() != 0) {
 						RenderHelper::GetInstance().RenderMesh(*gridMesh);
 					} else {
-						//RenderHelper::GetInstance().RenderMesh(*gridMeshEmpty);
+						RenderHelper::GetInstance().RenderMesh(*gridMeshEmpty);
 					}					
 				modelStack.PopMatrix();
 			}

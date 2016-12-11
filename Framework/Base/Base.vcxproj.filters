@@ -285,14 +285,14 @@
     <Filter Include="Files\AGDEV\Script">
       <UniqueIdentifier>{59c5f599-8cfd-4feb-b933-5a9b402ee6fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Systems\SpacialPartition">
-      <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Component\Triggers">
       <UniqueIdentifier>{c18cf088-c9d3-45ed-b5e4-d3a868be6b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\SpacialPartition">
+      <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
