@@ -6,6 +6,10 @@
 
 class SpatialPartition
 {
+private:
+	//function(s)
+	void Local_Add();
+	void Local_Remove();
 protected:
 	// Variables
 	Grid* theGrid;
@@ -16,6 +20,9 @@ protected:
 
 	// LOD distances
 	float LevelOfDetails_Distances[2];
+	set<GameObjectID> allObjects;
+	set<GameObjectID> addQueue;
+	set<GameObjectID> removeQueue;
 
 public:
 	// The vector of objects due for migration to another grid

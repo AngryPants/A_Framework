@@ -1,13 +1,11 @@
 #ifndef COLLIDER_H
 #define COLLIDER_H
 
-#include "../../Component.h"
 #include "Vector3.h"
+#include "../Component.h"
 #include <vector>
-
-using namespace std;
-
-//Forward Declaration
+using std::vector;
+//Forward declaration
 class GameObject;
 
 //CollisionInfo
@@ -28,7 +26,7 @@ public:
 		gameObjects.clear();
 		collisionPoint.clear();
 		previousState = false;
-		currentState = false;		
+		currentState = false;
 	}
 	virtual ~CollisionInfo() {}
 
@@ -57,7 +55,7 @@ public:
 
 };
 
-//Collider
+//Colliders are supposed to be Simple and Cheap Contact Checks , MultiPurpose Not only for Collision
 class Collider : public Component {
 
 protected:
@@ -68,13 +66,22 @@ protected:
 
 public:
 	//Variable(s)
-	bool isTrigger;
-	Vector3 centre;
+	bool isTrigger; // Used for triggering events and ignored by physics engine if set to true 
+	Vector3 centre; 
+
 	CollisionInfo info;
+	//function(s)
+	// Scripts to define what happens when the colliders Enters/Stays/Exits 
+	virtual void OnTriggerEnter(){}
+	virtual void OnTriggerStay(){}
+	virtual void OnTriggerExit(){}
 
 	//Destructor
 	virtual ~Collider() {}
 
 };
+
+
+
 
 #endif

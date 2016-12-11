@@ -35,7 +35,12 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().SetNumLights(8);
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
-	
+
+	//SpatialPartition
+	int xGridSize = 20; int yGridSize = 20; int zGridSize = 20;
+	int xNumGrid = 16; int yNumGrid = 2; int zNumGrid = 16;
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
+
 	//Player
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
@@ -93,10 +98,6 @@ void SceneTest::Init() {
 	plane->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
 	plane->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
-	//SpatialPartition
-	int xGridSize = 20; int yGridSize = 20; int zGridSize = 20;
-	int xNumGrid = 16; int yNumGrid = 2; int zNumGrid = 16;
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 
 }
 

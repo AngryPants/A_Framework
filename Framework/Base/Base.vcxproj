@@ -23,10 +23,11 @@
     <ClInclude Include="Source\Animation\SpriteAnimation.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
+    <ClInclude Include="Source\Component\Colliders\BoxCollider.h" />
+    <ClInclude Include="Source\Component\Colliders\Collider.h" />
+    <ClInclude Include="Source\Component\Colliders\SphereCollider.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\ComponentManager.h" />
-    <ClInclude Include="Source\Component\Physics\Collision\Collider.h" />
-    <ClInclude Include="Source\Component\Physics\Collision\SphereCollider.h" />
     <ClInclude Include="Source\Component\Physics\Rigidbody.h" />
     <ClInclude Include="Source\Component\Physics\Transform.h" />
     <ClInclude Include="Source\Component\Rendering\Camera.h" />
@@ -36,8 +37,6 @@
     <ClInclude Include="Source\Component\Rendering\MeshRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\SpriteRenderer.h" />
     <ClInclude Include="Source\Component\Rendering\TextRenderer.h" />
-    <ClInclude Include="Source\Component\Triggers\AABBTrigger.h" />
-    <ClInclude Include="Source\Component\Triggers\SphereTrigger.h" />
     <ClInclude Include="Source\GameObject\GameObject.h" />
     <ClInclude Include="Source\GameObject\GameObjectFactory.h" />
     <ClInclude Include="Source\GameObject\GameObjectManager.h" />
@@ -86,9 +85,10 @@
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\main.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
+    <ClCompile Include="Source\Component\Colliders\BoxCollider.cpp" />
+    <ClCompile Include="Source\Component\Colliders\SphereCollider.cpp" />
     <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\ComponentManager.cpp" />
-    <ClCompile Include="Source\Component\Physics\Collision\SphereCollider.cpp" />
     <ClCompile Include="Source\Component\Physics\RigidBody.cpp" />
     <ClCompile Include="Source\Component\Physics\Transform.cpp" />
     <ClCompile Include="Source\Component\Rendering\Camera.cpp" />
@@ -96,8 +96,6 @@
     <ClCompile Include="Source\Component\Rendering\MeshHolder.cpp" />
     <ClCompile Include="Source\Component\Rendering\MeshRenderer.cpp" />
     <ClCompile Include="Source\Component\Rendering\SpriteRenderer.cpp" />
-    <ClCompile Include="Source\Component\Triggers\AABBTrigger.cpp" />
-    <ClCompile Include="Source\Component\Triggers\SphereTrigger.cpp" />
     <ClCompile Include="Source\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsManager.cpp" />
