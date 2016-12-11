@@ -109,12 +109,12 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo,INPUT_LOOK_DOWN,input.GetState());
 			break;
 		}
-		case KEYS::Q: {
-			SetInput(inputInfo,INPUT_ROLL_LEFT,input.GetState());
+		case KEYS::F1: {
+			SetInput(inputInfo,INPUT_RENDER_SPATIAL_PARTITION_ON,input.GetState());
 			break;
 		}
-		case KEYS::E: {
-			SetInput(inputInfo,INPUT_ROLL_RIGHT,input.GetState());
+		case KEYS::F2: {
+			SetInput(inputInfo,INPUT_RENDER_SPATIAL_PARTITION_OFF,input.GetState());
 			break;
 		}
 	}

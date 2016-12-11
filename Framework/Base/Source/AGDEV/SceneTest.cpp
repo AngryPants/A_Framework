@@ -15,6 +15,7 @@
 #include "PlayerMovementScript.h"
 #include "TranslateScript.h"
 #include "PivotScript.h"
+#include "DebugControlsScript.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -36,67 +37,53 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 	
-	{
-		//Player
-		player = &GameObjectFactory::CreateEmpty(name, "Player");
-		player->CreateScript<PlayerMovementScript>();
-		player->GetComponent<Transform>().SetLocalPosition(0, 0, -20);
+	//Player
+	player = &GameObjectFactory::CreateEmpty(name, "Player");
+	player->CreateScript<PlayerMovementScript>();
+	player->CreateScript<DebugControlsScript>();
+	player->GetComponent<Transform>().SetLocalPosition(0, 0, -5);
+	player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
 
-		//Player Camera
-		GameObject* camera = &GameObjectFactory::CreateCamera(name);
-		camera->SetParent(*player);
-		camera->GetComponent<Transform>().SetLocalPosition(0, 1.5f, 0);
-		camera->GetComponent<Camera>().SetFarClippingPlane(100.0f);
-		camera->GetComponent<Camera>().SetFOV(90.0f);
-		camera->CreateScript<PlayerCameraScript>();
-	}
+	//Camera
+	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Player Camera");
+	camera->SetParent(*player);
+	camera->GetComponent<Transform>().SetLocalPosition(0, 1.7f, 0);
+	camera->CreateScript<PlayerCameraScript>();
+	camera->GetComponent<Camera>().SetFarClippingPlane(100);
 
 	//Lights
-	//GameObject* light = &GameObjectFactory::CreateLight(name);
-	//light->GetComponent<Light>().type = Light::LIGHT_TYPE::LIGHT_DIRECTIONAL;
-	//light->GetComponent<Light>().power = 5.0f;
-	//light->GetComponent<Transform>().SetLocalPosition(0, 0, 5);
-	//light->GetComponent<Transform>().SetLocalRotation(45, 0, 0);
+	GameObject* light = &GameObjectFactory::CreateLight(name);
+	light->GetComponent<Light>().type = Light::LIGHT_TYPE::LIGHT_DIRECTIONAL;
+	light->GetComponent<Light>().power = 5.0f;
+	light->GetComponent<Transform>().SetLocalPosition(0, 0, 5);
+	light->GetComponent<Transform>().SetLocalRotation(45, 0, 0);
 
-	////Cube
-	//GameObject* cube = &GameObjectFactory::CreateCube(name, "Cube 1");
-	//cube->GetComponent<Transform>().SetLocalPosition(5, 15, 0);
-	//cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-	//cube->CreateScript<RotateScript>();
-	//cube->CreateScript<TranslateScript>();
+	//Cube
+	GameObject* cube = &GameObjectFactory::CreateCube(name, "Cube 1");
+	cube->GetComponent<Transform>().SetLocalPosition(5, 1, 0);
+	cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
+	cube->CreateScript<RotateScript>();
+	cube->CreateScript<TranslateScript>();
 
-	////Camera Pivot
-	//GameObject* camPivot = &GameObjectFactory::CreateEmpty(name, "Camera Pivot");
-	//camPivot->SetParent(*cube);
-	//camPivot->GetComponent<Transform>().SetLocalPosition(0, 1, 0);
-	//camPivot->CreateScript<PivotScript>();
+	//Cube 2
+	GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Cube 2");
+	cube2->SetParent(*cube);
+	cube2->GetComponent<Transform>().SetLocalPosition(0, 0, -2);
+	cube2->CreateScript<ScaleScript>();
+	cube2->CreateScript<RotateScript>();
 
-	////Camera2
-	//GameObject* camera2 = &GameObjectFactory::CreateCamera(name, "Camera 2");
-	//camera2->SetParent(*camPivot);
-	//camera2->GetComponent<Transform>().SetLocalPosition(0, 0, -2);
-	//camera2->GetComponent<Transform>().SetLocalRotation(30, 0, -2);
-	//camera2->GetComponent<Camera>().depth = -1.0f;
-
-	////Cube 2
-	//GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Cube 2");
-	//cube2->SetParent(*camPivot);
-	//cube2->GetComponent<Transform>().SetLocalPosition(0, 0, -2);
-	//cube2->CreateScript<ScaleScript>();
-	//cube2->CreateScript<RotateScript>();
-
-	////Cylinder
-	//GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Cylinder");
-	//cylinder->SetParent(*cube2);
-	//cylinder->GetComponent<Transform>().SetLocalPosition(2, -2, 4);
-	//cylinder->CreateScript<TranslateScript>();
-	//cylinder->CreateScript<RotateScript>();
+	//Cylinder
+	GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Cylinder");
+	cylinder->SetParent(*cube2);
+	cylinder->GetComponent<Transform>().SetLocalPosition(2, -2, 4);
+	cylinder->CreateScript<TranslateScript>();
+	cylinder->CreateScript<RotateScript>();
 
 	//Ground
-	//GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
-	//ground->GetComponent<Transform>().SetLocalPosition(1, 1, 1);
-	//ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
-	//ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
+	/*GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
+	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
+	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");*/
 
 	//LOD Sphere
 	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 4, 4, 0.5f);
@@ -104,12 +91,9 @@ void SceneTest::Init() {
 	Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 32, 32, 0.5f);
 	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
 	sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 35);
-	sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);	
-	sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
-	sphereLOD->GetComponent<MeshRenderer>().lightEnabled = false;
 	
 	//SpatialPartition
-	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
+	int xGridSize = 6; int yGridSize = 6; int zGridSize = 6;
 	int xNumGrid = 4; int yNumGrid = 4; int zNumGrid = 4;
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
@@ -142,7 +126,7 @@ void SceneTest::Render() {
 	RenderSystem::GetInstance().RenderUI(name);
 	if (debugCountdown <= 0)
 	{
-		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
 		debugCountdown = 2.f;
 	}
 }

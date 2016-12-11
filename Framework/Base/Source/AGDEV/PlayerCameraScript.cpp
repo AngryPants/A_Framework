@@ -20,12 +20,6 @@ void PlayerCameraScript::Update(double deltaTime) {
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_DOWN]) {
 		GetGameObject().GetComponent<Transform>().Rotate(deltaTime * rotationSpeed, 0, 0);
 	}
-	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_ROLL_LEFT]) {
-		GetGameObject().GetComponent<Camera>().isActive = false;
-	}
-	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_ROLL_RIGHT]) {
-		GetGameObject().GetComponent<Camera>().isActive = true;
-	}
 
 	if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x > 90.0f) {
 		GetGameObject().GetComponent<Transform>().SetLocalRotationX(90.0f);

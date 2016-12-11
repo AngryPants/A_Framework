@@ -33,12 +33,4 @@ void PlayerMovementScript::Update(double deltaTime) {
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_RIGHT]) {
 		transform.Rotate(0,-deltaTime * rotationSpeed, 0);
 	}
-	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_ROLL_LEFT]) {
-		//transform.Rotate(0, 0, -deltaTime * rotationSpeed);
-		//transform.Translate(movementSpeed * deltaTime * transform.GetLocalUp());
-	}
-	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_ROLL_RIGHT]) {
-		//transform.Rotate(0, 0, deltaTime * rotationSpeed);
-		//transform.Translate(movementSpeed * deltaTime * -transform.GetLocalUp());
-	}
 }

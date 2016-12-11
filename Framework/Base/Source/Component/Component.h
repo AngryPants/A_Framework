@@ -10,6 +10,8 @@ using std::endl;
 
 class GameObject;
 
+static const unsigned int MAX_COMPONENTS = 64;
+
 //NOTE: Any subclasses MUST have a constructor that only takes in an GameObject reference;
 class Component {
 	

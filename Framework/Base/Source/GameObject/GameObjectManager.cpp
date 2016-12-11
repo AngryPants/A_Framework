@@ -23,7 +23,8 @@ GameObject& GameObjectManager::CreateGameObject(const string& space, const strin
 	goVector[goPtr->GetID()] = goPtr;
 
 	//SpatialPartition
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID());
+	if (goPtr != SceneGraph::GetInstance().GetRootNode(space)->GetGameObject())
+		SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID());
 
 	return *goPtr;
 }
@@ -52,8 +53,9 @@ void GameObjectManager::RemoveGameObjects() {
 		GameObject* goPtr = *setIter;
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
 		mapIter->second.erase(goPtr);
-		goVector[goPtr->GetID()] = nullptr;
-		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+		goVector[goPtr->GetID()] = nullptr; 
+		if (goPtr != SceneGraph::GetInstance().GetRootNode(goPtr->GetSpace())->GetGameObject())
+			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 		//delete goPtr;
 		goPtr->Delete({});
 	}

@@ -101,7 +101,6 @@ bool SpatialPartition::Set(const int _xGridSize, const int _yGridSize, const int
 
 		// Create a migration list vector
 		migrationList.clear();
-
 		return true;
 	}
 	return false;
@@ -138,6 +137,8 @@ void SpatialPartition::Update()
 	//	}
 	//}
 
+	Local_Add();
+	Local_Remove();
 	for (int i = 0; i<xNumOfGrid; i++)
 	{
 		for (int j = 0; j < yNumOfGrid; j++)
@@ -161,6 +162,8 @@ void SpatialPartition::Update()
 
 		migrationList.clear();
 	}
+	Local_Add();
+	//Local_Remove();
 }
 
 /********************************************************************************
@@ -274,63 +277,163 @@ Add a new object model (Must take in account spatial partition position)
 ********************************************************************************/
 void SpatialPartition::Add(GameObjectID theObject)
 {
-	GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(theObject);
+	//GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(theObject);
 
-	if (go == nullptr)
-	{
-		return;
-	}	
+	//if (go == nullptr)
+	//{
+	//	return;
+	//}
 
-	// Get the indices of the object's position
-	int xIndex = -1;
-	int yIndex = -1;
-	int zIndex = -1;
-	if (xNumOfGrid != 0 && yNumOfGrid != 0 && zNumOfGrid != 0)
+	//// Get the indices of the object's position
+	//int xIndex = -1;
+	//int yIndex = -1;
+	//int zIndex = -1;
+	//if (xNumOfGrid != 0 && yNumOfGrid != 0 && zNumOfGrid != 0)
+	//{
+	//	xIndex = ((go->GetComponent<Transform>().GetPosition().x - xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
+	//	yIndex = ((go->GetComponent<Transform>().GetPosition().y - yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
+	//	zIndex = ((go->GetComponent<Transform>().GetPosition().z - zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
+	//}
+
+	//// Add them to each grid
+	//if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
+	//	((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
+	//	((zIndex >= 0) && (zIndex < zNumOfGrid)))
+	//{
+	//	theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Add(theObject);
+	//}
+	//else
+	//{
+	//	//Check for None initialized Spatial Partition
+	//	theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(theObject);
+	//}
+
+	addQueue.insert(theObject);
+}
+
+void SpatialPartition::Local_Add()
+{
+	for (set<GameObjectID>::iterator iter = addQueue.begin(); iter != addQueue.end(); iter++)
 	{
-		xIndex = ((go->GetComponent<Transform>().GetPosition().x - xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
-		yIndex = ((go->GetComponent<Transform>().GetPosition().y - yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
-		zIndex = ((go->GetComponent<Transform>().GetPosition().z - zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
+		GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*iter);
+
+		if (go == nullptr)
+		{
+			return;
+		}
+
+		// Get the indices of the object's position
+		int xIndex = -1;
+		int yIndex = -1;
+		int zIndex = -1;
+		if (xNumOfGrid != 0 && yNumOfGrid != 0 && zNumOfGrid != 0)
+		{
+			float xIndex_Float = ((go->GetComponent<Transform>().GetPosition().x - xPosition + (xSize >> 1)) / xGridSize);
+			float yIndex_Float = ((go->GetComponent<Transform>().GetPosition().y - yPosition + (ySize >> 1)) / yGridSize);
+			float zIndex_Float = ((go->GetComponent<Transform>().GetPosition().z - zPosition + (zSize >> 1)) / zGridSize);
+
+			if (xIndex_Float >= 0.0f) {
+				xIndex = static_cast<int>(xIndex_Float);
+			}
+			if (yIndex_Float >= 0.0f) {
+				yIndex = static_cast<int>(yIndex_Float);
+			}
+			if (zIndex_Float >= 0.0f) {
+				zIndex = static_cast<int>(zIndex_Float);
+			}
+		}
+
+		// Add them to each grid
+		if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
+			((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
+			((zIndex >= 0) && (zIndex < zNumOfGrid)))
+		{
+			theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Add(*iter);
+		}
+		else
+		{
+			//Check for None initialized Spatial Partition
+			theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(*iter);
+		}
+		allObjects.insert(*iter);
 	}
-	
-	// Add them to each grid
-	if (((xIndex >= 0) && (xIndex < xNumOfGrid)) && 
-		((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
-		((zIndex >= 0) && (zIndex < zNumOfGrid)))
-	{
-		theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Add(theObject);
-	}
-	else
-	{
-		//Check for None initialized Spatial Partition
-		theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(theObject);
-	}
+	addQueue.clear();
 }
 
 // Remove but not delete object from this grid
 void SpatialPartition::Remove(GameObjectID theObject)
 {
-	GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(theObject);
+	//GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(theObject);
 
-	if (go == nullptr)
-	{
-		return;
-	}
+	//if (go == nullptr)
+	//{
+	//	return;
+	//}
 
-	// Get the indices of the object's position
-	int xIndex = ((go->GetComponent<Transform>().GetPosition().x - xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
-	int yIndex = ((go->GetComponent<Transform>().GetPosition().y - yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
-	int zIndex = ((go->GetComponent<Transform>().GetPosition().z - zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
+	//// Get the indices of the object's position
+	//int xIndex = ((go->GetComponent<Transform>().GetPosition().x - xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
+	//int yIndex = ((go->GetComponent<Transform>().GetPosition().y - yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
+	//int zIndex = ((go->GetComponent<Transform>().GetPosition().z - zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
 
-	// Add them to each grid
-	if (((xIndex >= 0) && (xIndex<xNumOfGrid)) &&
-		((yIndex >= 0) && (yIndex<yNumOfGrid)) &&
-		((zIndex >= 0) && (zIndex<zNumOfGrid)))
-	{
-		theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Remove(theObject);
-	}
-	
+	//// Add them to each grid
+	//if (((xIndex >= 0) && (xIndex <= xNumOfGrid)) &&
+	//	((yIndex >= 0) && (yIndex <= yNumOfGrid)) &&
+	//	((zIndex >= 0) && (zIndex <= zNumOfGrid)))
+	//{
+	//	theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Remove(theObject);
+	//}
+
+	removeQueue.insert(theObject);
 }
 
+void SpatialPartition::Local_Remove()
+{
+	for (set<GameObjectID>::iterator iter = removeQueue.begin(); iter != removeQueue.end(); iter++)
+	{
+		for (set<GameObjectID>::iterator iter2 = allObjects.begin(); iter2 != allObjects.end(); iter2++)
+		{
+			if (*iter != *iter2)
+				continue;
+
+			GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*iter);
+
+			if (go == nullptr)
+			{
+				return;
+			}
+
+			// Get the indices of the object's position
+			int xIndex = -1;
+			int yIndex = -1;
+			int zIndex = -1;
+
+			float xIndex_Float = ((go->GetComponent<Transform>().GetPosition().x - xPosition + (xSize >> 1)) / xGridSize);
+			float yIndex_Float = ((go->GetComponent<Transform>().GetPosition().y - yPosition + (ySize >> 1)) / yGridSize);
+			float zIndex_Float = ((go->GetComponent<Transform>().GetPosition().z - zPosition + (zSize >> 1)) / zGridSize);
+
+			if (xIndex_Float >= 0.0f) {
+				xIndex = static_cast<int>(xIndex_Float);
+			}
+			if (yIndex_Float >= 0.0f) {
+				yIndex = static_cast<int>(yIndex_Float);
+			}
+			if (zIndex_Float >= 0.0f) {
+				zIndex = static_cast<int>(zIndex_Float);
+			}
+
+			// Add them to each grid
+			if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
+				((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
+				((zIndex >= 0) && (zIndex < zNumOfGrid)))
+			{
+				theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Remove(*iter);
+				iter2 = allObjects.erase(allObjects.find(*iter2));
+				break;
+			}
+		}
+	}
+	removeQueue.clear();
+}
 /********************************************************************************
 Calculate the squared distance from camera to a grid's centrepoint
 ********************************************************************************/

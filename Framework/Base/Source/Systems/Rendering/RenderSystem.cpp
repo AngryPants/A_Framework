@@ -18,6 +18,7 @@ using std::stack;
 
 //Constructor(s) & Destructor
 RenderSystem::RenderSystem() {
+	renderSpatialPartition = false;
 	gridMesh = MeshBuilder::GetInstance().GenerateWireframeCube("Grid Mesh", Color(1, 0, 0), 1.0f);
 	gridMeshEmpty = MeshBuilder::GetInstance().GenerateWireframeCube("Grid Mesh Empty", Color(0, 1, 0), 1.0f);
 }
@@ -116,7 +117,9 @@ void RenderSystem::Render(const string& space) {
 		RenderRecursion(*nodePtr->GetGameObject());
 	}*/
 
-	RenderGridBoundaries(space);
+	if (renderSpatialPartition) {
+		RenderGridBoundaries(space);
+	}	
 
 	Transform& camTransform = camPtr->GetGameObject().GetComponent<Transform>();
 	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(space);
@@ -127,9 +130,9 @@ void RenderSystem::Render(const string& space) {
 				if (0 == grid.GetNumObjects()) {
 					continue;
 				}
-				if (false == sp->IsVisible(camTransform.GetPosition(), camTransform.GetForward(), x, y, z)) {					
+				/*if (false == sp->IsVisible(camTransform.GetPosition(), camTransform.GetForward(), x, y, z)) {					
 					continue;
-				}
+				}*/
 				float distanceToGrid = sp->CalculateDistance(camTransform.GetPosition(), x, y, z);
 				if (distanceToGrid > camPtr->GetFarClippingPlane()) {
 					continue;

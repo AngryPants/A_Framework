@@ -18,8 +18,7 @@
 #include "../Component/Rendering/MeshHolder.h"
 #include "../Component/Rendering/LODMeshHolder.h"
 #include "../Component/Rendering/SpriteRenderer.h"
-#include "../Component/Rendering/TextRenderer.h"
-#include "../Component/Physics/Collision/SphereCollider.h"
+#include "../Component/Rendering/TextRenderer.h" 
 
 class GameObjectFactory {
 

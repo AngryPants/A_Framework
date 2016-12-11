@@ -17,7 +17,6 @@ typedef long int GameObjectID; //Unique ID for every GameObject.
 
 static const long int INVALID_COMPONENT_ID = -1;
 static const long int INVALID_GAMEOBJECT_ID = -1;
-static const unsigned int MAX_COMPONENTS = 64;
 
 //Handles ID Generation
 class IDGenerator : public Singleton<IDGenerator> {

@@ -1,8 +1,11 @@
 #include "CollisionSystem.h"
 #include "../../Component/ComponentManager.h"
 #include "../../Component/Physics/Transform.h"
-#include "../../Component/Physics/Collision/SphereCollider.h"
 #include "../../GameObject/GameObject.h"
+#include "../../Component/Colliders/BoxCollider.h"
+#include "../../Component/Colliders/SphereCollider.h"
+#include "../../Component/Physics/Rigidbody.h"
+
 
 /*float CollisionSystem::CircleCircle(Vector2 circlePositionA, Vector2 circlePositionB, float circleRadiusA, float circleRadiusB, Vector2 circleVelocityA, Vector2 circleVelocityB, bool directionCheck)
 {
@@ -32,27 +35,67 @@ float CollisionSystem::LineCircle(Vector2 linePosition, Vector2 circlePosition, 
 return CircleCircle(linePosition, circlePosition, 0, circleRadius, lineVelocity, circleVelocity, directionCheck);
 }*/
 
+// Trigger Check only Happens when
+/*
+0. The Object must be Active (of course)
+1. The Object must have a Collider (of course x2)
+2. The Other Rigidbody it collides with must fufill (0 && 1) as well
+
+*/
+
+// Trigger Response
+/*
+
+*/
+
+// Collision Check only Happens when
+/*
+0. The Object must be Active (of course)
+1. The Object Must have a RigidBody
+2. The RigidBody must have a Collider
+3. The RigidBody must be awake (to show that it will hit something, something else hitting it doesnt count)
+4. The Other Rigidbody it collides with must fufill (0 && 1 && 2) as well
+5. Both Object must not be kinematic
+6. Both Objects collider must not be a trigger
+*/
+
+// Collision Response
+/*
+1. All affected by collision will check, if their velocity > certain amount, set it to awake
+*/
+
 void CollisionSystem::CheckCollision(const string& space, double deltaTime) {
 
-	set<Component*>& sphereColliders = ComponentManager::GetInstance().GetComponents<SphereCollider>(space);
+	set<Component*>& rigidBodies = ComponentManager::GetInstance().GetComponents<Rigidbody>(space);
 
 	// First loop to check first GameObject
-	for (set<Component*>::iterator setIter = sphereColliders.begin(); setIter != sphereColliders.end(); ++setIter) {
-		SphereCollider* sphereCollider = static_cast<SphereCollider*>(*setIter);
-		if (!sphereCollider->isActive || sphereCollider->GetGameObject().HasComponent<Transform>() == false) {
+	for (set<Component*>::iterator setIter = rigidBodies.begin(); setIter != rigidBodies.end(); ++setIter) {
+		if (!(*setIter)->isActive)
+		{
 			continue;
 		}
-		// Second loop to check second GameObject
-		for (set<Component*>::iterator setIterTwo = next(setIter, 1); setIterTwo != sphereColliders.end(); ++setIterTwo) {
-			SphereCollider* sphereCollider2 = static_cast<SphereCollider*>(*setIterTwo);
+		Rigidbody* rigidbody = static_cast<Rigidbody*>(*setIter);
+		if (rigidbody->IsSleeping() || !rigidbody->GetGameObject().HasComponent<Collider>() || rigidbody->isKinematic || rigidbody->GetGameObject().GetComponent<Collider>().isTrigger)
+		{
+			continue;
+		}
 
-			if (!sphereCollider2->isActive || sphereCollider2->GetGameObject().HasComponent<Transform>() == false) {
+		// Second loop to check second GameObject
+		for (set<Component*>::iterator setIterTwo = next(setIter, 1); setIterTwo != rigidBodies.end(); ++setIterTwo) {
+			if (!(*setIterTwo)->isActive)
+			{
 				continue;
 			}
-			// Collision check
-			// 1
-			Transform& transformOne = sphereCollider->GetGameObject().GetComponent<Transform>();
-			Transform& transformTwo = sphereCollider2->GetGameObject().GetComponent<Transform>();
+
+			Rigidbody* rigidbody2 = static_cast<Rigidbody*>(*setIter);
+			if (!rigidbody->GetGameObject().HasComponent<Collider>() || rigidbody->isKinematic || rigidbody->GetGameObject().GetComponent<Collider>().isTrigger)
+			{
+				continue;
+			}
+
+			// Collision check HERE <TERRY HELP CODE HERE ONEGAISHIMASU!>
+			/*Transform& transformOne = rigidbody->GetGameObject().GetComponent<Transform>();
+			Transform& transformTwo = rigidbody2->GetGameObject().GetComponent<Transform>();
 
 			float lengthSquared = (transformOne.GetPosition() - transformTwo.GetPosition()).LengthSquared();
 			float combinedRadSq = (sphereCollider->GetRadius() + sphereCollider2->GetRadius()) * (sphereCollider->GetRadius() + sphereCollider2->GetRadius());
@@ -60,7 +103,7 @@ void CollisionSystem::CheckCollision(const string& space, double deltaTime) {
 			if (lengthSquared < combinedRadSq) {
 				sphereCollider->info.Collide(sphereCollider2->GetGameObject(), transformOne.GetPosition());
 				sphereCollider2->info.Collide(sphereCollider->GetGameObject(), transformTwo.GetPosition());
-			}
+			}*/
 			//
 			// 2
 			/*float lengthSquared = (sphereCollider->centre - sphereCollider2->centre).LengthSquared();
@@ -74,6 +117,32 @@ void CollisionSystem::CheckCollision(const string& space, double deltaTime) {
 	}
 }
 
+// Incomplete, not priority 
+void CollisionSystem::CheckTrigger(const string& space, double deltaTime)
+{
+	set<Component*>& rigidBodies = ComponentManager::GetInstance().GetComponents<Rigidbody>(space);
+
+	// First loop to check first GameObject
+	for (set<Component*>::iterator setIter = rigidBodies.begin(); setIter != rigidBodies.end(); ++setIter) {
+		if (!(*setIter)->isActive)
+		{
+			continue;
+		}
+		Rigidbody * rigidbody = static_cast<Rigidbody*>(*setIter);
+		if (!rigidbody->GetGameObject().HasComponent<Collider>() || !rigidbody->GetGameObject().GetComponent<Collider>().isTrigger)
+			continue;
+
+		// Second loop to check second GameObject
+		for (set<Component*>::iterator setIterTwo = next(setIter, 1); setIterTwo != rigidBodies.end(); ++setIterTwo) {
+			if (!(*setIterTwo)->isActive)
+			{
+				continue;
+			}
+			// Collision check HERE <TERRY HELP CODE HERE ONEGAISHIMASU!>
+		}
+	}
+}
+
 void CollisionSystem::Reset(const string& space) {
 	set<Component*>& sphereColliders = ComponentManager::GetInstance().GetComponents<SphereCollider>(space);
 
@@ -81,5 +150,17 @@ void CollisionSystem::Reset(const string& space) {
 	for (set<Component*>::iterator setIter = sphereColliders.begin(); setIter != sphereColliders.end(); ++setIter) {
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(*setIter);
 		sphereCollider->info.Reset();
+	}
+}
+
+void CollisionSystem::UpdateAllRigidBodies(const string& space)
+{
+	set<Component*>& rigidbodies = ComponentManager::GetInstance().GetComponents<Rigidbody>(space);
+	for (set<Component*>::iterator setIter = rigidbodies.begin(); setIter != rigidbodies.end(); ++setIter) {
+		Rigidbody * rigidbody = static_cast<Rigidbody*>(*setIter);
+		if (rigidbody->GetVelocity().IsZero())
+			rigidbody->Sleep();
+		else
+			rigidbody->WakeUp();
 	}
 }

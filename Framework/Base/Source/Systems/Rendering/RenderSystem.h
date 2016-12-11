@@ -42,6 +42,9 @@ private:
 	Mesh* gridMeshEmpty;
 
 public:
+	//Variable(s)
+	bool renderSpatialPartition;
+
 	//Interface Function(s)
 	virtual void Update(const string& space, double deltaTime);
 	virtual void Render(const string& space);

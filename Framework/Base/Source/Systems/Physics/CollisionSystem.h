@@ -10,6 +10,7 @@
 
 using namespace std;
 
+// Effectively our Physics Engine
 class CollisionSystem : public Singleton<CollisionSystem>
 {
 	friend class Singleton<CollisionSystem>;
@@ -22,8 +23,10 @@ public:
 	//static float CircleCircle(Vector2 circlePositionA, Vector2 circlePositionB, float circleRadiusA, float circleRadiusB, Vector2 circleVelocityA, Vector2 circleVelocityB, bool directionCheck = false);
 	//static float LineCircle(Vector2 linePosition, Vector2 circlePosition, float circleRadius, Vector2 lineVelocity, Vector2 circleVelocity, bool directionCheck = false);
 	void CheckCollision(const string& space, double deltaTime);
+	void CheckTrigger(const string& space, double deltaTime);
 	void Reset(const string& space);
-
+	//Functions
+	void UpdateAllRigidBodies(const string& space);
 };
 
 #endif

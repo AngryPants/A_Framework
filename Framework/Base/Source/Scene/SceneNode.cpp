@@ -84,8 +84,9 @@ bool SceneNode::IsDestroyed() const {
 
 //Parent
 bool SceneNode::SetParent(SceneNode& sceneNode) {
+
 	if (IsRoot() == false) {
-		return sceneNode.AddChild(*this);
+	 return sceneNode.AddChild(*this);
 	}
 	return false;
 }
@@ -134,6 +135,8 @@ bool SceneNode::AddChild(SceneNode& sceneNode) {
 	sceneNode.parent = this;
 	//We need to add the child into our list.
 	children.insert(&sceneNode);
+
+	
 	return true;
 }
 

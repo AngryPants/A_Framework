@@ -7,12 +7,6 @@
     <ClInclude Include="Source\Audio\AudioManager.h">
       <Filter>Files\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\Physics\Collision\Collider.h">
-      <Filter>Files\Component\Physics\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Physics\Collision\SphereCollider.h">
-      <Filter>Files\Component\Physics\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\Rendering\Camera.h">
       <Filter>Files\Component\Rendering</Filter>
     </ClInclude>
@@ -181,12 +175,6 @@
     <ClInclude Include="Source\Systems\Physics\CollisionUtility.h">
       <Filter>Files\Systems\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component\Triggers\AABBTrigger.h">
-      <Filter>Files\Component\Triggers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Triggers\SphereTrigger.h">
-      <Filter>Files\Component\Triggers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\Rendering\MeshHolder.h">
       <Filter>Files\Component\Rendering</Filter>
     </ClInclude>
@@ -194,6 +182,18 @@
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\AGDEV\PivotScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Colliders\SphereCollider.h">
+      <Filter>Files\Component\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Colliders\BoxCollider.h">
+      <Filter>Files\Component\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Colliders\Collider.h">
+      <Filter>Files\Component\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\DebugControlsScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
   </ItemGroup>
@@ -246,9 +246,6 @@
     <Filter Include="Files\Component\Rendering">
       <UniqueIdentifier>{295e9fb2-e259-42a4-8b56-bc8e89cb53f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Component\Physics\Collision">
-      <UniqueIdentifier>{0d993572-6cbe-45de-be21-44dfd5044dc1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Graphics\Shaders\Phong">
       <UniqueIdentifier>{cc605ef7-6fae-431f-8ce6-cc12779d2f47}</UniqueIdentifier>
     </Filter>
@@ -288,7 +285,7 @@
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Component\Triggers">
+    <Filter Include="Files\Component\Colliders">
       <UniqueIdentifier>{c18cf088-c9d3-45ed-b5e4-d3a868be6b95}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Systems\SpacialPartition">
@@ -304,9 +301,6 @@
     </ClCompile>
     <ClCompile Include="Source\Audio\AudioManager.cpp">
       <Filter>Files\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\Physics\Collision\SphereCollider.cpp">
-      <Filter>Files\Component\Physics\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\Rendering\Camera.cpp">
       <Filter>Files\Component\Rendering</Filter>
@@ -437,17 +431,17 @@
     <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp">
       <Filter>Files\Systems\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\Triggers\SphereTrigger.cpp">
-      <Filter>Files\Component\Triggers</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\Triggers\AABBTrigger.cpp">
-      <Filter>Files\Component\Triggers</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Component\Rendering\MeshRenderer.cpp">
       <Filter>Files\Component\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Source\Component\Rendering\MeshHolder.cpp">
       <Filter>Files\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Colliders\SphereCollider.cpp">
+      <Filter>Files\Component\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Colliders\BoxCollider.cpp">
+      <Filter>Files\Component\Colliders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
