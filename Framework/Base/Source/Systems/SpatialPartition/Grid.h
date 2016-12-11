@@ -70,6 +70,8 @@ public:
 
 	GridIndex GetIndex() const;
 	Vector3 GetPosition() const;
+	Vector3 GetMin() const;
+	Vector3 GetMax() const;
 
 	// Update the grid
 	void Update(vector<GameObjectID>* migrationList);
@@ -85,7 +87,7 @@ public:
 	bool IsHere(GameObjectID theObject) const;
 
 	// Get list of objects in this grid
-	vector<GameObjectID> GetListOfObject();
+	vector<GameObjectID> GetListOfObjects();
 
 	//Get the number of objects in this grid.
 	int GetNumObjects() const;

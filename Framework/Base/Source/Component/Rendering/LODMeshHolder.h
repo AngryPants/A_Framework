@@ -27,14 +27,14 @@ public:
 	bool SetLODMesh(Mesh* _mesh, const DETAIL_LEVEL _detailLevel);
 	bool RemoveMesh(const DETAIL_LEVEL _detailLevel);
 	bool RemoveAllMeshes();
-	const Mesh* GetLODMesh(const DETAIL_LEVEL _detailLevel) const;
+	Mesh* GetLODMesh(const DETAIL_LEVEL _detailLevel);
 
 	//Textures
 	bool SetLODTextures(const TextureList& _textureListLow, const TextureList& _textureListMid, const TextureList& _textureListHigh);
 	bool SetLODTextures(const TextureList& _textureList, const DETAIL_LEVEL _detailLevel);
 	bool RemoveTextures(const DETAIL_LEVEL _detailLevel);
 	bool RemoveAllTextures();
-	const TextureList& GetTextureList(const DETAIL_LEVEL _detailLevel) const;
+	TextureList& GetTextureList(const DETAIL_LEVEL _detailLevel);
 
 //private:
 	//Variable(s)

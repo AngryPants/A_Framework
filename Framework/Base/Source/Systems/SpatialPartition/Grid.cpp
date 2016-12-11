@@ -39,6 +39,14 @@ Vector3 Grid::GetPosition() const {
 	return position;
 }
 
+Vector3 Grid::GetMin() const {
+	return min;
+}
+
+Vector3 Grid::GetMax() const {
+	return max;
+}
+
 // Update the grid
 void Grid::Update(vector<GameObjectID>* migrationList)
 {
@@ -87,11 +95,6 @@ bool Grid::Add(GameObjectID theObject)
 // Remove but not delete all objects from this grid
 void Grid::RemoveAll()
 {
-	for (size_t i = 0; i < listOfObjects.size(); i++)
-	{
-		// Do not delete the objects as they are stored in GameObjectManager and will be deleted there.
-		listOfObjects[i] = NULL;
-	}
 	listOfObjects.clear();
 }
 
@@ -132,7 +135,7 @@ bool Grid::IsHere(GameObjectID theObject) const
 }
 
 // Get list of objects in this grid
-vector<GameObjectID> Grid::GetListOfObject()
+vector<GameObjectID> Grid::GetListOfObjects()
 {
 	return listOfObjects;
 }
