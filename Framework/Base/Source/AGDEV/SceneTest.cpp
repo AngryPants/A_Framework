@@ -31,6 +31,7 @@ void SceneTest::Init() {
 	//Initialise some GraphicsManager stuff.
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::BLENDING>();
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::CULLING>();
+	//GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::CULLING>();
 
 	//Initialise the Shader.
 	RenderHelper::GetInstance().LoadShader(SHADERS::PHONG);
@@ -39,18 +40,24 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 	
+	//SpatialPartition
+	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
+	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
+	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
+
 	//Player
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
 	player->CreateScript<PlayerPickUpActionScript>();
-	player->GetComponent<Transform>().SetLocalPosition(0, 0, -5);
-	player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
+	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
 	
 	//Camera
 	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Player Camera");
 	camera->SetParent(*player);
-	camera->GetComponent<Transform>().SetLocalPosition(0, 1.7f, 0);
+	camera->GetComponent<Transform>().SetLocalPosition(0, 0.f, 0);
 	camera->CreateScript<PlayerCameraScript>();
 	camera->GetComponent<Camera>().SetFarClippingPlane(100);
 
@@ -89,6 +96,11 @@ void SceneTest::Init() {
 	//ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
 	//ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
+	//SkyBox
+	GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
+	skyBox->SetParent(*camera);
+	//skyBox->GetComponent<Transform>().SetLocalScale(100, 100, 100);
+	
 	////LOD Sphere
 	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
 	//Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
@@ -107,20 +119,19 @@ void SceneTest::Init() {
 	//enemy->GetComponent<Transform>().SetLocalPosition(5, 1, 5);
 	//enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD,enemyMeshMidLOD,enemyMeshHighLOD);
 
-	//Create Rifle
-	//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Rifle Mesh Low LOD", Color(1, 0, 0));
-	//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Rifle Mesh Mid LOD", Color(0, 1, 0));
-	//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Rifle Mesh High LOD", Color(0, 0, 1));
+	////Create Rifle
+	//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M4A1//M4A1.obj");
+	//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M4A1//M4A1.obj");
+	//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M4A1//M4A1.obj");
+
 	//GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
 	//playerRifle->GetComponent<Transform>().SetLocalPosition(10, 1, 10);
 	//playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
-	//playerRifle->GetComponent<LODMeshHolder>().SetLODTextures(, , );
-	
-	//SpatialPartition
-	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
-	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
-	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
+	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture","Image//Game//M4A1//M4A1.tga");
+	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+
+
 }
 
 void SceneTest::Update(double deltaTime) {	
