@@ -86,14 +86,18 @@ void SceneTest::Init() {
 	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
 	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
+	ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
 	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
-	////LOD Sphere
-	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 4, 4, 0.5f);
-	//Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
-	//Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 32, 32, 0.5f);
-	//GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
-	//sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 35);
+	//LOD Sphere
+	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
+	Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
+	Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 64, 64, 0.5f);
+	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
+	sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
+	sphereLOD->GetComponent<MeshRenderer>().lightEnabled = true;
+	sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
+	sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 20);
 	
 	//Create Enemy Here
 	//GameObject* enemy = &GameObjectFactory::CreateEnemy(name);
@@ -105,8 +109,8 @@ void SceneTest::Init() {
 	//go.GetComponent<LODMeshHolder>().SetLODTextures();
 
 	//SpatialPartition
-	int xGridSize = 6; int yGridSize = 6; int zGridSize = 6;
-	int xNumGrid = 4; int yNumGrid = 4; int zNumGrid = 4;
+	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
+	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
 
@@ -138,7 +142,7 @@ void SceneTest::Render() {
 	RenderSystem::GetInstance().RenderUI(name);
 	if (debugCountdown <= 0)
 	{
-		SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
+		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
 		debugCountdown = 2.f;
 	}
 }

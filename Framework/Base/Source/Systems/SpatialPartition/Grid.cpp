@@ -64,7 +64,8 @@ void Grid::Update(vector<GameObjectID>* migrationList)
 		
 		Vector3 position = go->GetComponent<Transform>().GetPosition();
 
-		if (((min.x <= position.x) && (position.x <= max.x)) &&
+		if (!go->GetComponent<Transform>().IgnoresSpatialPartition() &&
+			((min.x <= position.x) && (position.x <= max.x)) &&
 			((min.y <= position.y) && (position.y <= max.y)) &&
 			((min.z <= position.z) && (position.z <= max.z)))
 		{

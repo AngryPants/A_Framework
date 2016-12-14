@@ -8,6 +8,7 @@ class PlayerCameraScript : public Script {
 public:
 	//Variable(s)
 	float rotationSpeed;
+	float fov;
 
 	//Constructor(s) & Destructor
 	PlayerCameraScript(GameObject& gameObject);

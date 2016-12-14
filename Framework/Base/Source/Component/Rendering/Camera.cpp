@@ -25,6 +25,10 @@ Camera::Camera(GameObject& gameObject) : Component("Camera", gameObject) {
 	this->farClippingPlane = 1000.0f;
 	SetFOV(60.0f);
 	this->orthoSize = 5.0f;
+
+	lodRange[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].Set(0.0f, 0.2f);
+	lodRange[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].Set(0.2f, 0.5f);
+	lodRange[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].Set(0.5f, 1.0f);
 }
 
 Camera::~Camera() {

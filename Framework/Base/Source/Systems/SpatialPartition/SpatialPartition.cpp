@@ -108,35 +108,6 @@ bool SpatialPartition::Set(const int _xGridSize, const int _yGridSize, const int
 
 void SpatialPartition::Update()
 {
-	//for (int i = 0; i< xNumOfGrid; i++)
-	//{
-	//	for (int j = 0; j < zNumOfGrid; j++)
-	//	{
-	//		theGrid[i * zNumOfGrid + j].Update(&migrationList);
-	//		/////////////////THIS CHECK SHOULD BE DONE IN RENDERSYSTEM////////////////////
-	//		//// Check visibility
-	//		//if (IsVisible(theCamera->GetCameraPos(),theCamera->GetCameraTarget() - theCamera->GetCameraPos(), i, j))
-	//		//{
-	//		//	// Calculate LOD for this CGrid
-	//		//	float distance = CalculateDistanceSquare(&(theCamera->GetCameraPos()), i, j);
-	//		//	if (distance < LevelOfDetails_Distances[0])
-	//		//	{
-	//		//		theGrid[i*zNumOfGrid + j].SetDetailLevel(LODMeshHolder::HIGH_DETAILS);
-	//		//	}
-	//		//	else if (distance < LevelOfDetails_Distances[1])
-	//		//	{
-	//		//		theGrid[i*zNumOfGrid + j].SetDetailLevel(LODMeshHolder::MID_DETAILS);
-	//		//	}
-	//		//	else
-	//		//	{
-	//		//		theGrid[i*zNumOfGrid + j].SetDetailLevel(LODMeshHolder::LOW_DETAILS);
-	//		//	}
-	//		//}
-	//		//else
-	//		//	theGrid[i*zNumOfGrid + j].SetDetailLevel(LODMeshHolder::NO_DETAILS);
-	//	}
-	//}
-
 	Local_Add();
 	Local_Remove();
 	for (int i = 0; i<xNumOfGrid; i++)
@@ -149,7 +120,7 @@ void SpatialPartition::Update()
 			}
 		}
 	}
-	theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid].Update(&migrationList); //Dude Teck Lee you forgot to update this one.
+	theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid].Update(&migrationList);
 
 	// If there are objects due for migration, then process them
 	if (!migrationList.empty())
@@ -344,7 +315,8 @@ void SpatialPartition::Local_Add()
 		}
 
 		// Add them to each grid
-		if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
+		if (!go->GetComponent<Transform>().IgnoresSpatialPartition() &&
+			((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
 			((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
 			((zIndex >= 0) && (zIndex < zNumOfGrid)))
 		{
@@ -473,15 +445,14 @@ bool SpatialPartition::IsVisible(Vector3 _theCameraPosition, Vector3 _theCameraD
 	Vector3 max = grid.GetMax();
 	if (_theCameraPosition.x >= min.x && _theCameraPosition.y >= min.y && _theCameraPosition.z >= min.z &&
 		_theCameraPosition.x <= max.x && _theCameraPosition.y <= max.y && _theCameraPosition.z <= max.z)
-	{		
+	{
 		return true;
 	}
-	if (_theCameraDirection.Dot(min) <= 0.0f && _theCameraDirection.Dot(max) <= 0.0f)
+	if (_theCameraDirection.Dot(min - _theCameraPosition) > 0.0f && _theCameraDirection.Dot(max - _theCameraPosition) > 0.0f)
 	{
-		return false;
+		return true;
 	}
-
-	return true;
+	return false;
 }
 
 /********************************************************************************

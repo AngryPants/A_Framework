@@ -109,6 +109,10 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo,INPUT_LOOK_DOWN,input.GetState());
 			break;
 		}
+		case KEYS::Z: {
+			SetInput(inputInfo,INPUT_LOOK_ZOOM,input.GetState());
+			break;
+		}
 		case KEYS::F1: {
 			SetInput(inputInfo,INPUT_RENDER_SPATIAL_PARTITION_ON,input.GetState());
 			break;

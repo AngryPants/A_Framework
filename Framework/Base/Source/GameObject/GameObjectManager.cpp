@@ -14,17 +14,18 @@ GameObjectManager::~GameObjectManager() {
 GameObject& GameObjectManager::CreateGameObject(const string& space, const string& name) {
 	//Create the GameObject.
 	GameObject* goPtr = new GameObject(space, name, {});
+
 	//Add to the addQueue.
 	addQueue.insert(goPtr);
+	
 	//Add to our goVector
 	if (goPtr->GetID() >= goVector.size()) {
 		goVector.resize(goPtr->GetID() + 1, nullptr);
 	}
 	goVector[goPtr->GetID()] = goPtr;
-
+	
 	//SpatialPartition
-	if (goPtr != SceneGraph::GetInstance().GetRootNode(space)->GetGameObject())
-		SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID());
+	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID());
 
 	return *goPtr;
 }
@@ -54,9 +55,7 @@ void GameObjectManager::RemoveGameObjects() {
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
 		mapIter->second.erase(goPtr);
 		goVector[goPtr->GetID()] = nullptr; 
-		if (goPtr != SceneGraph::GetInstance().GetRootNode(goPtr->GetSpace())->GetGameObject())
-			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
-		//delete goPtr;
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 		goPtr->Delete({});
 	}
 	removeQueue.clear();
@@ -88,7 +87,7 @@ void GameObjectManager::Clear(const string& space) {
 		if (goPtr->GetSpace() == space) {
 			setIter = addQueue.erase(setIter);
 			goVector[goPtr->GetID()] = nullptr;
-			//delete goPtr;
+			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 			goPtr->Delete({});
 		} else {
 			++setIter;
@@ -102,7 +101,7 @@ void GameObjectManager::Clear(const string& space) {
 		while (setIter != mapIter->second.end()) {
 			GameObject* goPtr = *setIter;
 			goVector[goPtr->GetID()] = nullptr;
-			//delete goPtr;
+			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 			goPtr->Delete({});
 			++setIter;
 		}

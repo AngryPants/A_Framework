@@ -7,6 +7,7 @@
 //Constructor(s) & Destructor
 PlayerCameraScript::PlayerCameraScript(GameObject& gameObject) : Script(gameObject) {
 	rotationSpeed = 60.0f;
+	fov = GetGameObject().GetComponent<Camera>().GetFOV();
 }
 
 PlayerCameraScript::~PlayerCameraScript() {
@@ -20,6 +21,13 @@ void PlayerCameraScript::Update(double deltaTime) {
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_DOWN]) {
 		GetGameObject().GetComponent<Transform>().Rotate(deltaTime * rotationSpeed, 0, 0);
 	}
+
+	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_ZOOM]) {
+		fov = Math::Max(20.0f, fov - static_cast<float>(deltaTime) * 360.0f);
+	} else {
+		fov = Math::Min(89.0f, fov + static_cast<float>(deltaTime) * 360.0f);
+	}
+	GetGameObject().GetComponent<Camera>().SetFOV(fov);
 
 	if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x > 90.0f) {
 		GetGameObject().GetComponent<Transform>().SetLocalRotationX(90.0f);
