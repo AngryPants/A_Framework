@@ -90,13 +90,13 @@ public:
 	LODRange lodRange[LODMeshHolder::DETAIL_LEVEL::NUM_DETAIL_LEVEL]; //The lower bounds of LOW_DETAIL and upper bounds of HIGH_DETAIL are ignored.
 
 	//Constructor(s) & Destructor
-	Camera(GameObject& gameObject);
+	Camera(GameObject& _gameObject, PassKey<ComponentManager> _key);
 	virtual ~Camera();
 
-	void SetFOV(const float& FOV);
+	void SetFOV(const float& _FOV);
 	float GetFOV() const;
 
-	void SetOrthoSize(const float& orthoSize);
+	void SetOrthoSize(const float& _orthoSize);
 	float GetOrthoSize() const;
 	float GetOrthoWidth() const;
 
@@ -104,13 +104,13 @@ public:
 	void SetPerspective();
 	bool IsOrtho() const;
 
-	void SetNearClippingPlane(const float& nearClippingPlane);
-	void SetFarClippingPlane(const float& nearClippingPlane);
+	void SetNearClippingPlane(const float& _nearClippingPlane);
+	void SetFarClippingPlane(const float& _farClippingPlane);
 	float GetNearClippingPlane() const;
 	float GetFarClippingPlane() const;
-	void SetPosition(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-	void LookAt(Vector3 target, Vector3 up = Vector3(0, 1, 0));
-	void SetRotation(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+	void SetPosition(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f);
+	void LookAt(Vector3 _target, Vector3 _up = Vector3(0, 1, 0));
+	void SetRotation(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f);
 	
 };
 

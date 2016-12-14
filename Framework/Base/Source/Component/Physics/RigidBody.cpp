@@ -1,20 +1,32 @@
 #include "Rigidbody.h"
+#include "../ComponentManager.h"
+#include "../../Systems/Physics/PhysicsSystem.h"
 
-Rigidbody::Rigidbody(GameObject& gameObject)
-	: Component("rigidBody", gameObject)
-	, mass(0.f)
+//Constructor(s) & Destructor
+Rigidbody::Rigidbody(GameObject& _gameObject, PassKey<ComponentManager> _key)
+	: Component("rigidBody", _gameObject, _key)
+	, mass(1.0f)
+	, elasticity(0.8f)
 	, velocity(0,0,0)
-	, gravity(0,0,0)
-	, useGravity(false)
-	, isKinematic(false)
-	, sleeping(true)
-	, mode(Force)
+	, deltaTime(Math::EPSILON)
+	, gravity(DEFAULT_GRAVITY)
+	, useGravity(true)
+	, sleeping(false)
 {
 }
 
 Rigidbody::~Rigidbody()
 {
+}
 
+void Rigidbody::SetVelocity(Vector3 _velocity)
+{
+	this->velocity = _velocity;
+}
+
+void Rigidbody::SetVelocity(float _x, float _y, float _z)
+{
+	this->velocity.Set(_x, _y, _z);
 }
 
 Vector3 Rigidbody::GetVelocity() const
@@ -22,26 +34,39 @@ Vector3 Rigidbody::GetVelocity() const
 	return velocity;
 }
 
-void Rigidbody::AddForce(float x, float y, float z, unsigned int forceMode)
-{
-	Vector3 newForce(x, y, z);
-	velocity += newForce;
-	if (forceMode >= Force && forceMode <= VelocityChange)
-		mode = ForceMode(forceMode);
-	//should make use of mode to determine the way it works, does nothing for now
+void Rigidbody::AddRelativeForce(float _x, float _y, float _z, FORCE_MODE _mode) {
+	AddRelativeForce(Vector3(_x, _y, _z), _mode);
 }
 
-void Rigidbody::AddForce(Vector3 force, unsigned int forceMode)
-{
-	velocity += force;
-	if (forceMode >= Force && forceMode <= VelocityChange)
-		mode = ForceMode(forceMode);
-	//should make use of mode to determine the way it works, does nothing for now
+void Rigidbody::AddRelativeForce(Vector3 _force, FORCE_MODE _mode) {
+
+	switch (_mode) {
+		case FORCE_MODE::FM_FORCE: {
+			this->velocity += (_force * (1.0f / this->mass)) * deltaTime;
+		}
+		break;
+		case FORCE_MODE::FM_ACCELERATION: {
+			this->velocity += _force * deltaTime;
+		}
+		break;
+		case FORCE_MODE::FM_IMPULSE: {
+			this->velocity += _force * (1.0f / this->mass);
+		}
+		break;
+		case FORCE_MODE::FM_VELOCITY: {
+			this->velocity += _force;
+		}
+		break;
+		default: {
+			//Do nothing
+		}			
+	}
+
 }
 
-void Rigidbody::SetMass(float mass)
+void Rigidbody::SetMass(float _mass)
 {
-	this->mass = mass;
+	this->mass = Math::Max(0.001f, _mass);
 }
 
 float Rigidbody::GetMass()
@@ -49,17 +74,6 @@ float Rigidbody::GetMass()
 	return mass;
 }
 
-void Rigidbody::Sleep()
-{
-	sleeping = true;
-}
-
-void Rigidbody::WakeUp()
-{
-	sleeping = false;
-}
-
-bool Rigidbody::IsSleeping()
-{
-	return sleeping;
+void Rigidbody::SetDeltaTime(double _deltaTime, PassKey<PhysicsSystem> _key) {
+	this->deltaTime = _deltaTime;
 }

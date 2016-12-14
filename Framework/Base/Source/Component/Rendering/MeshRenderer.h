@@ -12,7 +12,7 @@ public:
 	bool lightEnabled;
 	
 	//Constructor(s) & Destructor
-	MeshRenderer(GameObject& gameObject);
+	MeshRenderer(GameObject& _gameObject, PassKey<ComponentManager> _key);
 	virtual ~MeshRenderer();
 
 };

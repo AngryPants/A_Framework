@@ -64,8 +64,10 @@ public:
 	int GetzNumOfGrid() const; 
 
 	// Get a particular grid
-	Grid GetGrid(const int _xIndex, const int _yIndex, const int _zIndex) const; 
-	Grid GetExtraGrid() const;
+	Grid& GetGrid(const int _xIndex, const int _yIndex, const int _zIndex) const; 
+	Grid& GetExtraGrid() const;
+	vector<Grid*> GetSurroundingGrids(const int _xIndex, const int _yIndex, const int _zIndex);
+
 	// Get vector of objects from this Spatial Partition
 	vector<GameObjectID> GetObjects(Vector3 _position, const float _radius);
 

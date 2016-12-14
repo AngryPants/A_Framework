@@ -294,10 +294,58 @@ bool CollisionUtility::CheckCollisionSpherePoint(Vector3 positionA, float radius
 	return (distBetweenVectors < radiusA*radiusA);
 }
 
-bool CollisionUtility::CheckCollisionSphereSphere(Vector3 positionA, float radiusA, Vector3 positionB, float radiusB)
+//Cheap Empirical
+bool CollisionUtility::CheckCollisionSphereSphere_Empirical(Vector3 positionA, float radiusA, Vector3 positionB, float radiusB)
 {
 	float distBetweenVectors = (positionA - positionB).LengthSquared();
 	return (distBetweenVectors < radiusA*radiusA + radiusB*radiusB);
+}
+
+bool CollisionUtility::CheckCollisionSphereSphere_Mathematical(const Vector3& _positionA, const Vector3& _velocityA, float _radiusA,
+															   const Vector3& _positionB, const Vector3& _velocityB, float _radiusB,
+															   Vector3& _collisionPoint, Vector3& _collisionNormal, float& _separation) {
+	//The direction from A to B
+	Vector3 dirToB = _positionB - _positionA;
+	//Assume B is stationary
+	Vector3 relativeVelocity = _velocityA - _velocityB;
+	
+	//Make sure A is moving to B
+	if (dirToB.Dot(relativeVelocity) <= Math::EPSILON) {
+		return false;
+	}
+
+	Vector3 projection;
+	if (relativeVelocity.LengthSquared() > Math::EPSILON) {
+		projection = dirToB.Projection(relativeVelocity);
+	}
+	//Vector3 projection = dirToB.Projection(relativeVelocity);
+
+	Vector3 closestPt = _positionA + projection;
+	//Assume A is a line and add the radius to B.
+	float combinedRadius = _radiusA + _radiusB;
+	
+	float distSquared = (_positionB - closestPt).LengthSquared();
+	if (distSquared > combinedRadius * combinedRadius) {
+		return false;
+	}
+	 
+	//How far the cloeset point is to the collisionPoint
+	float distanceToCollisionPoint = sqrt(distSquared + combinedRadius * combinedRadius);
+	if (!dirToB.IsZero()) {
+		_collisionPoint = closestPt - distanceToCollisionPoint * (dirToB.Normalized());
+	} else {
+		_collisionPoint = closestPt;
+	}
+
+	try {
+		_collisionNormal = (_collisionPoint - _positionB).Normalize();
+		_separation = combinedRadius;
+	} catch (DivideByZero e) {
+		_collisionNormal.Set(0, 0, 1);
+		_separation = 0.0f;
+	}
+
+	return true;
 }
 
 bool CollisionUtility::CheckCollisionSphereAABBMinMax(Vector3 positionSphere, float radiusSphere, Vector3 minPosBox, Vector3 maxPosBox)

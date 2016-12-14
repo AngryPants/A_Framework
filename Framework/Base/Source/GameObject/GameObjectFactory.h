@@ -14,11 +14,17 @@
 #include "../Component/Rendering/Camera.h"
 #include "../Component/Rendering/Light.h"
 #include "../Component/Physics/Transform.h"
+#include "../Component/Physics/Rigidbody.h"
 #include "../Component/Rendering/MeshRenderer.h"
 #include "../Component/Rendering/MeshHolder.h"
 #include "../Component/Rendering/LODMeshHolder.h"
 #include "../Component/Rendering/SpriteRenderer.h"
 #include "../Component/Rendering/TextRenderer.h" 
+#include "../Component/Physics/Collision/ColliderGroup.h"
+
+//Include Colliders
+#include "../Collider/SphereCollider.h"
+#include "../Collider/AABBCollider.h"
 
 class GameObjectFactory {
 

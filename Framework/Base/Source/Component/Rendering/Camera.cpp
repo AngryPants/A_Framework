@@ -12,13 +12,14 @@ CPP file for Camera.
 #include "Camera.h"
 #include "Mtx44.h"
 #include <iostream>
+#include "../ComponentManager.h"
 
 using std::cout;
 using std::endl;
 
 //Constructor(s) & Destructor
 
-Camera::Camera(GameObject& gameObject) : Component("Camera", gameObject) {
+Camera::Camera(GameObject& _gameObject, PassKey<ComponentManager> _key) : Component("Camera", _gameObject, _key) {
 	depth = 0.0f;
 	isOrtho = false;
 	this->nearClippingPlane = 0.3f;
@@ -36,15 +37,15 @@ Camera::~Camera() {
 
 //FOV
 
-void Camera::SetFOV(const float& FOV) {
+void Camera::SetFOV(const float& _FOV) {
 
-	if (FOV < 1.0f) {
+	if (_FOV < 1.0f) {
 		this->FOV = 1.0f;
-	} else if (FOV > 90.0f) {
-		this->FOV = 90.0f;
+	} else if (_FOV > 179.0f) {
+		this->FOV = 179.0f;
 	}
 
-	this->FOV = FOV;
+	this->FOV = _FOV;
 
 }
 
@@ -55,9 +56,9 @@ float Camera::GetFOV() const {
 }
 
 //Ortho size
-void Camera::SetOrthoSize(const float& orthoSize) {
+void Camera::SetOrthoSize(const float& _orthoSize) {
 
-	this->orthoSize = orthoSize;
+	this->orthoSize = _orthoSize;
 
 }
 
@@ -104,24 +105,24 @@ bool Camera::IsOrtho() const {
 
 //Clipping Planes
 
-void Camera::SetNearClippingPlane(const float& nearClippingPlane) {
+void Camera::SetNearClippingPlane(const float& _nearClippingPlane) {
 	
-	if (nearClippingPlane > this->farClippingPlane) {
+	if (_nearClippingPlane > this->farClippingPlane) {
 		this->nearClippingPlane = this->farClippingPlane - 0.01f;
-	} else if (nearClippingPlane < 0.01f && isOrtho == false) {
+	} else if (_nearClippingPlane < 0.01f && isOrtho == false) {
 		this->nearClippingPlane = 0.01f;
 	} else {
-		this->nearClippingPlane = nearClippingPlane;
+		this->nearClippingPlane = _nearClippingPlane;
 	}
 
 }
 
-void Camera::SetFarClippingPlane(const float& farClippingPlane) {
+void Camera::SetFarClippingPlane(const float& _farClippingPlane) {
 
-	if (farClippingPlane < this->nearClippingPlane) {
+	if (_farClippingPlane < this->nearClippingPlane) {
 		this->farClippingPlane = this->nearClippingPlane + 0.01f;
 	} else {
-		this->farClippingPlane = farClippingPlane;
+		this->farClippingPlane = _farClippingPlane;
 	}
 
 }

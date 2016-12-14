@@ -21,6 +21,8 @@ typedef std::bitset<MAX_COMPONENTS> ComponentBitset;
 
 class GameObjectManager;
 
+static const int MAX_SCRIPTS = 8;
+
 class GameObject {
 
 private:
@@ -30,7 +32,7 @@ private:
 	ComponentBitset componentBitset;
 	Component* components[MAX_COMPONENTS];
 	SceneNode* node;
-	Script* scripts[8];	
+	Script* scripts[MAX_SCRIPTS];
 	bool destroyed;
 	
 	//Destructor
@@ -43,7 +45,7 @@ public:
 
 	//Variable(s)
 	string name;
-	string tag;
+	set<string> tags;
 	
 	//Name
 	void SetName(const string& name);
@@ -55,6 +57,15 @@ public:
 	template <class Type>
 	bool HasComponent() const {
 		return componentBitset[IDGenerator::GetInstance().GetComponentTypeID<Type>()];
+	}
+
+	template <class Type>
+	bool HasActiveComponent() const {
+		if (!HasComponent<Type>()) {
+			return false;
+		}
+
+		return GetComponent<Type>().IsActive();
 	}
 
 	template <class Type>
@@ -154,6 +165,7 @@ public:
 	}
 
 	void RemoveScript(unsigned int index);
+	Script* GetScript(unsigned int index);
 	void UpdateScripts(double deltaTime, PassKey<GameObjectManager> _key);
 
 	//Parent

@@ -13,7 +13,7 @@ public:
 	TextureList textureList;
 	
 	//Constructor(s) & Destructor
-	MeshHolder(GameObject& _gameObject);
+	MeshHolder(GameObject& _gameObject, PassKey<ComponentManager> _key);
 	virtual ~MeshHolder();
 
 	//Mesh

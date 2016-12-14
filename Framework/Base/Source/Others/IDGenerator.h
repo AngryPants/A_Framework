@@ -12,11 +12,11 @@
 
 using namespace std;
 
-typedef long int ComponentTypeID; //The ID of the Component TYPE.
+typedef int ComponentTypeID; //The ID of the Component TYPE.
 typedef long int GameObjectID; //Unique ID for every GameObject.
 
-static const long int INVALID_COMPONENT_ID = -1;
-static const long int INVALID_GAMEOBJECT_ID = -1;
+static const ComponentTypeID INVALID_COMPONENT_TYPE_ID = -1;
+static const GameObjectID INVALID_GAMEOBJECT_ID = -1;
 
 //Handles ID Generation
 class IDGenerator : public Singleton<IDGenerator> {

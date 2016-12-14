@@ -47,7 +47,7 @@ public:
 	template <class Type>
 	Type& CreateComponent(GameObject& gameObject) {
 		//Create the component.
-		Type* componentPtr = new Type(gameObject);
+		Type* componentPtr = new Type(gameObject, {});
 		addQueue[IDGenerator::GetInstance().GetComponentTypeID<Type>()].insert(componentPtr);
 		return *componentPtr;
 	}

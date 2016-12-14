@@ -1,9 +1,10 @@
 #include "MeshHolder.h"
 #include "MeshRenderer.h"
 #include "LODMeshHolder.h"
+#include "../ComponentManager.h"
 
 //Constructor(s) & Destructor
-MeshHolder::MeshHolder(GameObject& _gameObject) : Component("Mesh Holder", _gameObject) {
+MeshHolder::MeshHolder(GameObject& _gameObject, PassKey<ComponentManager> _key) : Component("Mesh Holder", _gameObject, _key) {
 	mesh = nullptr;
 
 	if (GetGameObject().HasComponent<LODMeshHolder>()) {
