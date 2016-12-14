@@ -134,6 +134,7 @@
     <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp" />
     <ClCompile Include="Source\Script\PlayerShootingScript.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />
+    <ClCompile Include="Source\Script\ShootingScript.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp" />
     <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp" />

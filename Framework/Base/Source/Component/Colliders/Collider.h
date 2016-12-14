@@ -4,6 +4,7 @@
 #include "Vector3.h"
 #include "../Component.h"
 #include <vector>
+#include "../../GameObject/GameObject.h"
 using std::vector;
 //Forward declaration
 class GameObject;
@@ -62,6 +63,7 @@ protected:
 	//Constructor(s)
 	Collider(const string& name, GameObject& gameObject) : Component(name, gameObject) {
 		isTrigger = false;
+		centre = GetGameObject().GetComponent<Transform>().GetPosition();
 	}
 
 public:

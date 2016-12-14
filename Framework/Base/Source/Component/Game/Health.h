@@ -28,7 +28,7 @@ public:
 	{
 		if (health > 0 && health < maxHealth)
 			healthpoints = health;
-		else if (maxHealth = 0)
+		else if (maxHealth == 0)
 			maxHealth = healthpoints = health;
 	}
 

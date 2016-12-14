@@ -5,42 +5,45 @@
 AIMovementScript::AIMovementScript(GameObject& gameObject) : Script(gameObject)
 {
 	waypoints.clear();
-	current = 0;
-	moveSpeed = 5.f;
+	current = nullptr;
+	moveSpeed = 0.05f;
 }
 
 AIMovementScript::~AIMovementScript()
 {
-
 }
 
 //Function(s)
 void AIMovementScript::Update(double deltaTime)
 {
 	// if gameobject is within target waypoint,shift waypoint to next one
-	//if (GetGameObject().GetComponent<Transform>().GetPosition < GameObjectManager::GetInstance().GetGameObjectByID(current)->get)
-	//{
-	//	GameObjectManager::GetInstance().GetGameObjectByID(current)->GetComponent<WayPointComponent>() = GameObjectManager::GetInstance().GetGameObjectByID(current)->GetComponent<WayPointComponent>().next;
-	//}
+	if (current->GetComponent<WayPointComponent>().trigger)
+	{
+		current = &current->GetComponent<WayPointComponent>().next->GetGameObject();
+	}
 	GetGameObject().GetComponent<Transform>().Translate(GetDirectionToNext()* moveSpeed);
 }
 
 void AIMovementScript::CreateWayPoint(const Vector3& waypointPosition, const float& radius)
 {
-	GameObject& temp = GameObjectFactory::CreateWayPoint(GetGameObject().GetSpace(), "waypoint", waypointPosition, radius);
-	waypoints.push_back(temp.GetID());
+	GameObject& temp = GameObjectFactory::CreateWayPointBase(GetGameObject().GetSpace());
+	temp.GetComponent<Transform>().SetLocalPosition(waypointPosition);
+	temp.GetComponent<SphereCollider>().isTrigger = true;
+	temp.GetComponent<SphereCollider>().centre = waypointPosition;
+	temp.GetComponent<SphereCollider>().radius = radius;
+	waypoints.push_back(&temp);
 	UpdateWayPoint();
 }
 
-bool AIMovementScript::SetWayPoint(WayPointComponent* current, int position)
+bool AIMovementScript::SetNewWayPoint(WayPointComponent* current, int position)
 {
 	if (position - 1 > waypoints.size() || position < 0)
 		return false;
 
 	int pos = 0;
-	for (vector<GameObjectID>::iterator iter = waypoints.begin(); iter != waypoints.end(); iter++)
+	for (vector<GameObject*>::iterator iter = waypoints.begin(); iter != waypoints.end(); iter++)
 	{
-		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(*iter);
+		GameObject* temp = *iter;
 
 		if (pos == position)
 		{
@@ -59,37 +62,47 @@ bool AIMovementScript::SetWayPoint(WayPointComponent* current, int position)
 
 void AIMovementScript::UpdateWayPoint()
 {
+	if (current == nullptr)
+		current = *waypoints.begin();
+
 	if (waypoints.size() > 1)
 	{
-		vector<GameObjectID>::iterator start, end;
+		vector<GameObject*>::iterator start, end;
 		start = waypoints.begin();
-		end = waypoints.end();
+		end = waypoints.end() - 1;
 
+		(*start)->GetComponent<WayPointComponent>().next = (&(*(end))->GetComponent<WayPointComponent>());
+		(*end)->GetComponent<WayPointComponent>().prev = &((*start)->GetComponent<WayPointComponent>());
+/*
 		GameObject* temp1 = GameObjectManager::GetInstance().GetGameObjectByID(*start);
 		GameObject* temp2 = GameObjectManager::GetInstance().GetGameObjectByID(*end);
 
 		temp1->GetComponent<WayPointComponent>().prev = &temp2->GetComponent<WayPointComponent>();
-		temp2->GetComponent<WayPointComponent>().next = &temp1->GetComponent<WayPointComponent>();
-	}
+		temp2->GetComponent<WayPointComponent>().next = &temp1->GetComponent<WayPointComponent>();*/
 
-	for (vector<GameObjectID>::iterator iter = waypoints.begin(); iter != waypoints.end(); iter++)
-	{
-		GameObject* temp1 = GameObjectManager::GetInstance().GetGameObjectByID(*iter);
-		GameObject* temp2 = GameObjectManager::GetInstance().GetGameObjectByID(*(iter + 1));
-
-		if (iter + 1 <= waypoints.end())
+		for (vector<GameObject*>::iterator iter = waypoints.begin(); iter != waypoints.end(); ++iter)
 		{
-			temp1->GetComponent<WayPointComponent>().next = &temp2->GetComponent<WayPointComponent>();
-			temp2->GetComponent<WayPointComponent>().prev = &temp1->GetComponent<WayPointComponent>();
+			if (iter + 1 < waypoints.end())
+			{
+				(*iter)->GetComponent<WayPointComponent>().next = (&(*(iter + 1))->GetComponent<WayPointComponent>());
+				(*(iter + 1))->GetComponent<WayPointComponent>().prev = &((*iter)->GetComponent<WayPointComponent>());
+
+				//GameObject* temp1 = GameObjectManager::GetInstance().GetGameObjectByID((*iter)->GetID());
+				//GameObject* temp2 = GameObjectManager::GetInstance().GetGameObjectByID((*(iter + 1))->GetID());
+
+				//temp1->GetComponent<WayPointComponent>().next = &temp2->GetComponent<WayPointComponent>();
+				//temp2->GetComponent<WayPointComponent>().prev = &temp1->GetComponent<WayPointComponent>();/**/
+			}
 		}
 	}
+	 
+
 }
 
 Vector3 AIMovementScript::GetDirectionToNext()
 {
-	GameObject * temp = GameObjectManager::GetInstance().GetGameObjectByID(current); 
-	if (temp != nullptr)
-		return ( (temp->GetComponent<Transform>().GetPosition() - GetGameObject().GetComponent<Transform>().GetPosition()).Normalized() );
+	if (current != nullptr)
+		return ( (current->GetComponent<Transform>().GetPosition() - GetGameObject().GetComponent<Transform>().GetPosition()).Normalized() );
 
 	return Vector3(0, 0, 0);
 }

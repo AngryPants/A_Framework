@@ -59,6 +59,7 @@ void Grid::Update(vector<GameObjectID>* migrationList)
 		
 		if (go == nullptr)
 		{
+			it = listOfObjects.erase(it);
 			continue;
 		}			
 		

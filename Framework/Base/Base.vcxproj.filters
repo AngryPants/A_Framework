@@ -491,5 +491,8 @@
     <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Script\ShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

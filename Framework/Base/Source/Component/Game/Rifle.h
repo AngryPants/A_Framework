@@ -11,15 +11,14 @@ class RifleComponent : public Component
 private:
 	float rateOfFire;// time between firing each round
 public:
-	//variables
-	Vector3 rifleSize;
+	//variables 
 	float reloadTime;// time between reloading a clip
 	unsigned int currentClipSize;// current Number of bullets
 	unsigned int clipSize; // number of bullets per clip
 	unsigned int magazineSize; // number of totalBullets
 	bool isReloading;
 	bool fired;
-
+	bool isHeld;// whether gun is being hold
 	//Constructors
 	RifleComponent(GameObject& gameObject)
 		: Component("rifle", gameObject)
@@ -30,7 +29,7 @@ public:
 		, magazineSize(0)
 		, isReloading(false)
 		, fired(false)
-		, rifleSize(Vector3(1,1,1))
+		, isHeld(false)
 	{
 		if (!gameObject.HasComponent<BoxCollider>())
 			gameObject.AddComponent<BoxCollider>();

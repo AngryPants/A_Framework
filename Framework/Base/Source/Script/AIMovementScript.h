@@ -12,8 +12,8 @@ class AIMovementScript : public Script
 {
 public:
 	//Variables
-	vector<GameObjectID> waypoints;
-	GameObjectID current;
+	vector<GameObject*> waypoints;
+	GameObject* current;
 	float moveSpeed;
 
 	//constructor and destructor
@@ -23,7 +23,7 @@ public:
 	//Function(s)
 	virtual void Update(double deltaTime);
 	void CreateWayPoint(const Vector3& waypointPosition,const float& radius);
-	bool SetWayPoint(WayPointComponent* current, int position);
+	bool SetNewWayPoint(WayPointComponent* current, int position);
 	void UpdateWayPoint();
 	Vector3 GetDirectionToNext();
 };

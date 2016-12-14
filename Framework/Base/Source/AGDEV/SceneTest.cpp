@@ -43,7 +43,7 @@ void SceneTest::Init() {
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
-	player->CreateScript<PlayerPickUpActionScript>(); // to pick up stuff
+	player->CreateScript<PlayerPickUpActionScript>();
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, -5);
 	player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
 	
@@ -61,12 +61,12 @@ void SceneTest::Init() {
 	light->GetComponent<Transform>().SetLocalPosition(0, 0, 5);
 	light->GetComponent<Transform>().SetLocalRotation(45, 0, 0);
 
-	//Cube
-	GameObject* cube = &GameObjectFactory::CreateCube(name, "Cube 1");
-	cube->GetComponent<Transform>().SetLocalPosition(5, 1, 0);
-	cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-	cube->CreateScript<RotateScript>();
-	cube->CreateScript<TranslateScript>();
+	////Cube
+	//GameObject* cube = &GameObjectFactory::CreateCube(name, "Cube 1");
+	//cube->GetComponent<Transform>().SetLocalPosition(5, 1, 0);
+	//cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
+	//cube->CreateScript<RotateScript>();
+	//cube->CreateScript<TranslateScript>();
 
 	////Cube 2
 	//GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Cube 2");
@@ -83,37 +83,44 @@ void SceneTest::Init() {
 	//cylinder->CreateScript<RotateScript>();
 
 	//Ground
-	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
-	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
-	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
-	ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
-	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
+	//GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
+	//ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+	//ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
+	//ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
+	//ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
-	//LOD Sphere
-	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
-	Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
-	Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 64, 64, 0.5f);
-	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
-	sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
-	sphereLOD->GetComponent<MeshRenderer>().lightEnabled = true;
-	sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
-	sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 20);
+	////LOD Sphere
+	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
+	//Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
+	//Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 64, 64, 0.5f);
+	//GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
+	//sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
+	//sphereLOD->GetComponent<MeshRenderer>().lightEnabled = true;
+	//sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
+	//sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 20);
 	
-	//Create Enemy Here
-	//GameObject* enemy = &GameObjectFactory::CreateEnemy(name);
-	
+	////Create Enemy Here
+	//Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+	//Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+	//Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+	//GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
+	//enemy->GetComponent<Transform>().SetLocalPosition(5, 1, 5);
+	//enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD,enemyMeshMidLOD,enemyMeshHighLOD);
+
 	//Create Rifle
-	GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
-	playerRifle->GetComponent<Transform>().SetLocalPosition(10, 0, 10);
-	//go.GetComponent<LODMeshHolder>().SetLODMesh();
-	//go.GetComponent<LODMeshHolder>().SetLODTextures();
-
+	//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Rifle Mesh Low LOD", Color(1, 0, 0));
+	//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Rifle Mesh Mid LOD", Color(0, 1, 0));
+	//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Rifle Mesh High LOD", Color(0, 0, 1));
+	//GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
+	//playerRifle->GetComponent<Transform>().SetLocalPosition(10, 1, 10);
+	//playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
+	//playerRifle->GetComponent<LODMeshHolder>().SetLODTextures(, , );
+	
 	//SpatialPartition
 	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
 	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
-
 }
 
 void SceneTest::Update(double deltaTime) {	
@@ -124,9 +131,6 @@ void SceneTest::Update(double deltaTime) {
 		Application::GetInstance().Quit();
 	}
 	RenderSystem::GetInstance().Update(name, deltaTime);
-
-	debugCountdown -= deltaTime;
-	
 }
 
 void SceneTest::Render() {

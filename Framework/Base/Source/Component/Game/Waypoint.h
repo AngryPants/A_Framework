@@ -12,12 +12,13 @@ public:
 		: Component("wayPointMovement", gameObject)
 	{
 		prev = next = nullptr;
+		trigger = false;
 	}
 	virtual ~WayPointComponent()
 	{
 	}
 	//variables
-	Vector3 position;
+	bool trigger;
 	WayPointComponent *prev, *next;
 };
 

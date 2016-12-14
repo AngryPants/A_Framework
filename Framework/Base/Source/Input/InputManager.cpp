@@ -122,7 +122,7 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			break;
 		}
 		// Shooting
-		case KEYS::SPACE :
+		case KEYS::Q:
 		{
 			SetInput(inputInfo, INPUT_PLAYERSHOOT, input.GetState());
 			break;

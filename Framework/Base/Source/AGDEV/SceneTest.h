@@ -25,8 +25,7 @@ public:
 	virtual void Exit();
 
 	//Temporary Stuff
-	float debugCountdown = 0.0f;
-
+	float debugCountdown = 3.0f;
 };
 
 #endif
