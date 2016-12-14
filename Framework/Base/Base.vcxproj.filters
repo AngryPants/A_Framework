@@ -196,6 +196,39 @@
     <ClInclude Include="Source\AGDEV\DebugControlsScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Game\Health.h">
+      <Filter>Files\Component\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Game\Rifle.h">
+      <Filter>Files\Component\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Game\Bullet.h">
+      <Filter>Files\Component\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\ShootingScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\HealthScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\AIMovementScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\AIShootingScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\PlayerShootingScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\BulletScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Game\Waypoint.h">
+      <Filter>Files\Component\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\PlayerPickUpActionScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -442,6 +475,18 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Colliders\BoxCollider.cpp">
       <Filter>Files\Component\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\AIShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\PlayerShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\AIMovementScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

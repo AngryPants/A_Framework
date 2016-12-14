@@ -29,6 +29,10 @@
     <ClInclude Include="Source\Component\Colliders\SphereCollider.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\ComponentManager.h" />
+    <ClInclude Include="Source\Component\Game\Bullet.h" />
+    <ClInclude Include="Source\Component\Game\Health.h" />
+    <ClInclude Include="Source\Component\Game\Rifle.h" />
+    <ClInclude Include="Source\Component\Game\Waypoint.h" />
     <ClInclude Include="Source\Component\Physics\Rigidbody.h" />
     <ClInclude Include="Source\Component\Physics\Transform.h" />
     <ClInclude Include="Source\Component\Rendering\Camera.h" />
@@ -64,7 +68,14 @@
     <ClInclude Include="Source\Scene\SceneGraph.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneNode.h" />
+    <ClInclude Include="Source\Script\AIShootingScript.h" />
+    <ClInclude Include="Source\Script\BulletScript.h" />
+    <ClInclude Include="Source\Script\HealthScript.h" />
+    <ClInclude Include="Source\Script\AIMovementScript.h" />
+    <ClInclude Include="Source\Script\PlayerPickUpActionScript.h" />
+    <ClInclude Include="Source\Script\PlayerShootingScript.h" />
     <ClInclude Include="Source\Script\Script.h" />
+    <ClInclude Include="Source\Script\ShootingScript.h" />
     <ClInclude Include="Source\Systems\Physics\CollisionSystem.h" />
     <ClInclude Include="Source\Systems\Physics\CollisionUtility.h" />
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
@@ -118,6 +129,10 @@
     <ClCompile Include="Source\Scene\SceneGraph.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\SceneNode.cpp" />
+    <ClCompile Include="Source\Script\AIMovementScript.cpp" />
+    <ClCompile Include="Source\Script\AIShootingScript.cpp" />
+    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp" />
+    <ClCompile Include="Source\Script\PlayerShootingScript.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp" />

@@ -117,6 +117,18 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo,INPUT_RENDER_SPATIAL_PARTITION_OFF,input.GetState());
 			break;
 		}
+		// Shooting
+		case KEYS::SPACE :
+		{
+			SetInput(inputInfo, INPUT_PLAYERSHOOT, input.GetState());
+			break;
+		}
+		//Pickup
+		case KEYS::G :
+		{
+			SetInput(inputInfo, INPUT_PLAYERPICKUP, input.GetState());
+			break;
+		}
 	}
 }
 

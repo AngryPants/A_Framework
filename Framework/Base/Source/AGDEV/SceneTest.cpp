@@ -16,6 +16,8 @@
 #include "TranslateScript.h"
 #include "PivotScript.h"
 #include "DebugControlsScript.h"
+#include "../Script/PlayerShootingScript.h"
+#include "../Script/PlayerPickUpActionScript.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -41,9 +43,10 @@ void SceneTest::Init() {
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
+	player->CreateScript<PlayerPickUpActionScript>(); // to pick up stuff
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, -5);
 	player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
-
+	
 	//Camera
 	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Player Camera");
 	camera->SetParent(*player);
@@ -65,33 +68,42 @@ void SceneTest::Init() {
 	cube->CreateScript<RotateScript>();
 	cube->CreateScript<TranslateScript>();
 
-	//Cube 2
-	GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Cube 2");
-	cube2->SetParent(*cube);
-	cube2->GetComponent<Transform>().SetLocalPosition(0, 0, -2);
-	cube2->CreateScript<ScaleScript>();
-	cube2->CreateScript<RotateScript>();
+	////Cube 2
+	//GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Cube 2");
+	//cube2->SetParent(*cube);
+	//cube2->GetComponent<Transform>().SetLocalPosition(0, 0, -2);
+	//cube2->CreateScript<ScaleScript>();
+	//cube2->CreateScript<RotateScript>();
 
-	//Cylinder
-	GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Cylinder");
-	cylinder->SetParent(*cube2);
-	cylinder->GetComponent<Transform>().SetLocalPosition(2, -2, 4);
-	cylinder->CreateScript<TranslateScript>();
-	cylinder->CreateScript<RotateScript>();
+	////Cylinder
+	//GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Cylinder");
+	//cylinder->SetParent(*cube2);
+	//cylinder->GetComponent<Transform>().SetLocalPosition(2, -2, 4);
+	//cylinder->CreateScript<TranslateScript>();
+	//cylinder->CreateScript<RotateScript>();
 
 	//Ground
-	/*GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
+	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
 	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
-	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");*/
+	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
-	//LOD Sphere
-	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 4, 4, 0.5f);
-	Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
-	Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 32, 32, 0.5f);
-	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
-	sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 35);
+	////LOD Sphere
+	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 4, 4, 0.5f);
+	//Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
+	//Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 32, 32, 0.5f);
+	//GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
+	//sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 35);
 	
+	//Create Enemy Here
+	//GameObject* enemy = &GameObjectFactory::CreateEnemy(name);
+	
+	//Create Rifle
+	GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
+	playerRifle->GetComponent<Transform>().SetLocalPosition(10, 0, 10);
+	//go.GetComponent<LODMeshHolder>().SetLODMesh();
+	//go.GetComponent<LODMeshHolder>().SetLODTextures();
+
 	//SpatialPartition
 	int xGridSize = 6; int yGridSize = 6; int zGridSize = 6;
 	int xNumGrid = 4; int yNumGrid = 4; int zNumGrid = 4;
