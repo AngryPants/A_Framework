@@ -259,7 +259,7 @@ void RenderSystem::RenderColliders(const string& _space) {
 				modelStack.Translate(goTransform.GetPosition().x + collider->centre.x,
 									 goTransform.GetPosition().y + collider->centre.y,
 									 goTransform.GetPosition().z + collider->centre.z);
-				modelStack.Scale(collider->GetRadius(), collider->GetRadius(), collider->GetRadius());
+				modelStack.Scale(collider->GetRadius() * 2.0f, collider->GetRadius() * 2.0f, collider->GetRadius() * 2.0f);
 				RenderHelper::GetInstance().RenderMesh(*sphereColliderMesh);
 			modelStack.PopMatrix();
 		}
