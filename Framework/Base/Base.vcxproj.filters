@@ -247,6 +247,12 @@
     <ClInclude Include="Source\Others\Skybox.h">
       <Filter>Files\Others</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\SceneAsn1.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\CutsceneTriggerScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -556,6 +562,12 @@
     </ClCompile>
     <ClCompile Include="Source\Others\Skybox.cpp">
       <Filter>Files\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\SceneAsn1.cpp">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\CutsceneTriggerScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

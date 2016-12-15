@@ -143,6 +143,73 @@ Mesh* MeshBuilder::GenerateQuad(const std::string &meshName, Color color, float 
 
 }
 
+Mesh* MeshBuilder::GeneratePlane(const std::string &meshName, Color color, float length, int uRepeat, int vRepeat) {
+
+	Mesh* mesh = GetMesh(meshName);
+	if (mesh != nullptr) {
+		return mesh;
+	}
+
+	std::vector<Vertex> vertex_buffer_data;
+	std::vector<GLuint> index_buffer_data;
+	
+	if (uRepeat < 1) {
+		uRepeat = 1;
+	}
+	if (vRepeat < 1) {
+		vRepeat = 1;
+	}
+
+	Vertex v;
+	v.color.Set(color.r, color.g, color.b);
+	v.normal.Set(0, 1, 0);
+
+	v.pos.Set(-0.5f * length, 0, 0.5f * length);
+	v.texCoord.Set(0, 0);
+	vertex_buffer_data.push_back(v);
+
+	v.pos.Set(0.5f * length, 0, 0.5f * length);	
+	v.texCoord.Set(1.0f * uRepeat, 0);
+	vertex_buffer_data.push_back(v);
+	
+	v.pos.Set(-0.5f * length, 0, -0.5f * length);
+	v.texCoord.Set(0, 1.0f * vRepeat);
+	vertex_buffer_data.push_back(v);
+
+	v.pos.Set(0.5f * length, 0, -0.5f * length);
+	v.texCoord.Set(1.0f * uRepeat, 1.0f * vRepeat);
+	vertex_buffer_data.push_back(v);
+	
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(3);
+	
+	mesh = new Mesh(meshName);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0); //Unbind the VBO
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); //Unbind the EBO
+
+	mesh->vertexSize = vertex_buffer_data.size();
+	mesh->indexSize = index_buffer_data.size();
+	mesh->mode = Mesh::DRAW_TRIANGLE_STRIP;
+
+	//TexCoords
+	/*for (size_t i = 0; i < vertex_buffer_data.size(); ++i) {
+		mesh->texCoords.push_back(vertex_buffer_data[i].texCoord);
+	}*/
+
+	meshMap.insert(pair<string, Mesh*>(meshName, mesh));
+
+	return mesh;
+
+}
+
 /******************************************************************************/
 /*!
 \brief

@@ -31,6 +31,7 @@
 //Include Scene(s)
 #include "../AGDEV/SceneTest.h"
 #include "../AGDEV/SceneEmpty.h"
+#include "../AGDEV/SceneAsn1.h"
 
 GLFWwindow* m_window;
 const unsigned char maxFPS = 60; //Maximum FPS of this game.
@@ -73,7 +74,8 @@ void Application::InitScenes() {
 	//Add Scenes Here!
 	SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
 	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
-	SceneManager::GetInstance().SetActiveScene("Test Scene");
+	SceneManager::GetInstance().CreateScene<SceneAsn1>("Assignment 1 Scene");
+	SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
 }
 
 void Application::Init() {

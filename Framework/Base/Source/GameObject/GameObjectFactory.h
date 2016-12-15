@@ -14,6 +14,7 @@
 #include "../Script/PlayerShootingScript.h"
 #include "../Script/AIShootingScript.h"
 #include "../Script/AIMovementScript.h"
+#include "../AGDEV/CutsceneTriggerScript.h"
 
 //Include Components
 #include "../Component/Rendering/Camera.h"
@@ -117,6 +118,18 @@ public:
 	static GameObject& CreateCylinder(const string& space,const string& name = "Cylinder") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
 		go.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Default Cylinder","OBJ//Default//Cylinder.obj");
+
+		return go;
+	}
+
+	static GameObject& CreateGrass(const string& space, const string& name = "Grass") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
+		go.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Grass Low", "OBJ//Game//Grass//Low.obj"),
+													MeshBuilder::GetInstance().GenerateOBJ("Grass Mid", "OBJ//Game//Grass//Mid.obj"),
+													MeshBuilder::GetInstance().GenerateOBJ("Grass High", "OBJ//Game//Grass//High.obj")),
+		go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Grass", "Image//Game//Model_Textures//Grass//Grass.tga");
+		go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Grass", "Image//Game//Model_Textures//Grass//Grass.tga");
+		go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Grass", "Image//Game//Model_Textures//Grass//Grass.tga");
 
 		return go;
 	}
@@ -284,6 +297,15 @@ public:
 		waypoint->CreateWayPoint(Vector3(20, 1, -20), 10.f);
 		waypoint->CreateWayPoint(Vector3(-20, 1, -20), 10.f);
 		waypoint->LinkWayPoint();
+		return go;
+	}
+
+	static GameObject& CreateCutsceneTrigger(const string& space, const string& name = "Cutscene Trigger") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(20.0f);
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
+		go.CreateScript<CutsceneTriggerScript>();
+
 		return go;
 	}
 };

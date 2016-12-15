@@ -26,7 +26,7 @@ void PlayerCameraScript::Update(double deltaTime) {
 		GetGameObject().GetComponent<Transform>().Rotate(deltaTime * rotationSpeed, 0, 0);
 	}
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_ZOOM]) {
-		fov = Math::Max(20.0f, fov - static_cast<float>(deltaTime) * 360.0f);
+		fov = Math::Max(5.0f, fov - static_cast<float>(deltaTime) * 360.0f);
 	} else {
 		fov = Math::Min(60.0f, fov + static_cast<float>(deltaTime) * 360.0f);
 	}

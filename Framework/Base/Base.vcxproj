@@ -11,12 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AGDEV\CutsceneTriggerScript.h" />
     <ClInclude Include="Source\AGDEV\DebugControlsScript.h" />
     <ClInclude Include="Source\AGDEV\PivotScript.h" />
     <ClInclude Include="Source\AGDEV\PlayerCameraScript.h" />
     <ClInclude Include="Source\AGDEV\PlayerMovementScript.h" />
     <ClInclude Include="Source\AGDEV\RotateScript.h" />
     <ClInclude Include="Source\AGDEV\ScaleScript.h" />
+    <ClInclude Include="Source\AGDEV\SceneAsn1.h" />
     <ClInclude Include="Source\AGDEV\SceneEmpty.h" />
     <ClInclude Include="Source\AGDEV\SceneTest.h" />
     <ClInclude Include="Source\AGDEV\TranslateScript.h" />
@@ -95,8 +97,10 @@
     <ClInclude Include="Source\Texture\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AGDEV\CutsceneTriggerScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp" />
+    <ClCompile Include="Source\AGDEV\SceneAsn1.cpp" />
     <ClCompile Include="Source\AGDEV\SceneTest.cpp" />
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Animation\SpriteAnimation.cpp" />
