@@ -12,11 +12,13 @@ public:
 	//variables 
 	float lifeTime;
 	float bulletImpulse;
+	unsigned int bulletDamage;
 	//Constructors
 	BulletComponent(GameObject& gameObject, PassKey<ComponentManager> _key)
 		: Component("Bullet Component", gameObject, _key)
 		, lifeTime(5.f)
-		, bulletImpulse(50.f) 
+		, bulletImpulse(50.f)
+		, bulletDamage(0)
 	{
 		if (!gameObject.HasComponent<Rigidbody>())
 		{

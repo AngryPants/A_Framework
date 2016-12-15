@@ -75,8 +75,10 @@
     <ClInclude Include="Source\Scene\SceneNode.h" />
     <ClInclude Include="Source\Script\AIShootingScript.h" />
     <ClInclude Include="Source\Script\BulletScript.h" />
+    <ClInclude Include="Source\Script\EnemyBulletScript.h" />
     <ClInclude Include="Source\Script\HealthScript.h" />
     <ClInclude Include="Source\Script\AIMovementScript.h" />
+    <ClInclude Include="Source\Script\PlayerBulletScript.h" />
     <ClInclude Include="Source\Script\PlayerPickUpActionScript.h" />
     <ClInclude Include="Source\Script\PlayerShootingScript.h" />
     <ClInclude Include="Source\Script\Script.h" />

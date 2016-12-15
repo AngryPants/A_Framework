@@ -1,5 +1,6 @@
 #include "PlayerShootingScript.h"
 #include "../GameObject/GameObjectFactory.h"
+#include "../Script/PlayerBulletScript.h"
 
 PlayerShootingScript::PlayerShootingScript(GameObject& gameObject)
 	: ShootingScript(gameObject)
@@ -18,10 +19,13 @@ void PlayerShootingScript::ShootBullet()
 	temp.GetComponent<Transform>().SetLocalRotation(forwardRotation);
 	temp.GetComponent<BulletComponent>().bulletImpulse = 50.f;
 	temp.GetComponent<BulletComponent>().lifeTime = 5.f;
+	temp.GetComponent<BulletComponent>().bulletDamage = 10.f;
 	temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
 	temp.GetComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player's Bullet", "OBJ//Default//Sphere.obj");
 	temp.GetComponent<Rigidbody>().SetMass(0.01f);
 	temp.GetComponent<Rigidbody>().AddRelativeForce(GetGameObject().GetComponent<Transform>().GetForward() * temp.GetComponent<BulletComponent>().bulletImpulse, FORCE_MODE::FM_IMPULSE);
+	temp.CreateScript<PlayerBulletScript>();
+	
 }
 
 bool PlayerShootingScript::ExtraCondition()

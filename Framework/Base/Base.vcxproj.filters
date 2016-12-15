@@ -238,8 +238,14 @@
     <ClInclude Include="Source\AGDEV\ScaleScript.h">
       <Filter>Files\AGDEV\Script\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Script\EnemyBulletScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\PlayerBulletScript.h">
+      <Filter>Files\AGDEV\Script</Filter> 
+    </ClInclude>
     <ClInclude Include="Source\Others\Skybox.h">
-      <Filter>Files\Others</Filter>
+      <Filter>Files\Others</Filter> 
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
