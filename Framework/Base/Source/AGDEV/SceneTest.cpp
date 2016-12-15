@@ -108,24 +108,24 @@ void SceneTest::Init() {
 	sphereLOD->GetComponent<Transform>().SetLocalPosition(SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->GetGrid(5, 1, 8).GetPosition());
 
 	//Physics Balls
-	for (unsigned int n = 0; n < 1; ++n) {
+	for (unsigned int n = 0; n < 5; ++n) {
 		GameObject& ball = GameObjectFactory::CreateSphere(name, "Physics Ball");
-		ball.GetComponent<Transform>().SetLocalPosition(0 + (n % 2) * 2.0f, n, 20);
+		ball.GetComponent<Transform>().SetLocalPosition(0 + (n % 2) * 2.0f, n + 0.1f, 20.1);
 		//ball.GetComponent<Transform>().SetLocalPosition(Math::RandFloatMinMax(-100, 100), Math::RandFloatMinMax(0, 100), Math::RandFloatMinMax(-100, 100));
 		//ball.GetComponent<Transform>().IgnoreSpatialPartition(true);
-		ball.AddComponent<Rigidbody>().velocity.Set(5, 0, 0);
+		ball.AddComponent<Rigidbody>().velocity.Set(10, 0, 0);
 		ball.AddComponent<Rigidbody>().useGravity = false;
 		ball.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = false;
 		ball.CreateScript<TriggerTestScript>();
 	}
 	
-	for (unsigned int n = 0; n < 1; ++n) {
+	for (unsigned int n = 0; n < 5; ++n) {
 		GameObject& ball2 = GameObjectFactory::CreateSphere(name, "Physics Ball");
 		ball2.GetComponent<Transform>().SetLocalPosition(20 + (n % 2) * 2.0f, n, 20);
 		//ball2.GetComponent<Transform>().SetLocalPosition(Math::RandFloatMinMax(-100, 100), Math::RandFloatMinMax(0, 100), Math::RandFloatMinMax(-100, 100));
 		//ball2.GetComponent<Transform>().IgnoreSpatialPartition(true);
-		ball2.AddComponent<Rigidbody>().velocity.Set(-5, 0, 0);
-		ball2.AddComponent<Rigidbody>().useGravity = false;
+		//ball2.AddComponent<Rigidbody>().velocity.Set(-1, 0, 0);
+		//ball2.AddComponent<Rigidbody>().useGravity = false;
 		ball2.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = false;
 		ball2.CreateScript<TriggerTestScript>();
 	}

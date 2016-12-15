@@ -303,47 +303,97 @@ bool CollisionUtility::CheckCollisionSphereSphere_Empirical(Vector3 positionA, f
 
 bool CollisionUtility::CheckCollisionSphereSphere_Mathematical(const Vector3& _positionA, const Vector3& _velocityA, float _radiusA,
 															   const Vector3& _positionB, const Vector3& _velocityB, float _radiusB,
-															   double deltaTime,
+															   double _deltaTime,
 															   Vector3& _collisionPoint, Vector3& _collisionNormal, float& _separation) {
 	//The direction from A to B
-	Vector3 dirToB = _positionB - _positionA;
+	Vector3 relativeDisplacement = _positionB - _positionA;
 	//Assume B is stationary
 	Vector3 relativeVelocity = _velocityA - _velocityB;
-	
+	float combinedRadius = _radiusA + _radiusB;
+
 	//Make sure A is moving to B
-	if (dirToB.Dot(relativeVelocity) <= Math::EPSILON) {
+	if (relativeDisplacement.Dot(relativeVelocity) <= Math::EPSILON) {
 		return false;
 	}
 
-	Vector3 projection;
-	if (relativeVelocity.LengthSquared() > Math::EPSILON) {
-		projection = dirToB.Projection(relativeVelocity);
-	}
-	//Vector3 projection = dirToB.Projection(relativeVelocity);
+	{
+		//Check for time to collision
+		float a = relativeVelocity.Dot(relativeVelocity); //Or we can use relativeVelocity.LengthSquared();
+		float b = 2.0f * relativeDisplacement.Dot(relativeVelocity);
+		float c = relativeDisplacement.LengthSquared() - combinedRadius * combinedRadius;
 
-	Vector3 closestPt = _positionA + projection;
-	//Assume A is a line and add the radius to B.
-	float combinedRadius = _radiusA + _radiusB;	
-	float distSquared = (_positionB - closestPt).LengthSquared();
-	if (distSquared > combinedRadius * combinedRadius) {
-		return false;
-	}
-	 
-	//How far the cloeset point is to the collisionPoint
-	float distanceToCollisionPoint = sqrt(distSquared + combinedRadius * combinedRadius);
-	if (!dirToB.IsZero()) {
-		_collisionPoint = closestPt - distanceToCollisionPoint * (dirToB.Normalized());
-	} else {
-		_collisionPoint = closestPt;
+		/*
+		Now we test the discriminant to see if there is a collision in the first place.
+		Let the discriminant be d.
+		If d < 0. There is no collision. If d >= 0, there is a collision.
+		d = b^2 - 4ac
+		*/
+
+		float d = (b*b) - (4.0f*a*c);
+
+		if (d < 0.0f) {
+			return false; //There is no collision.
+		}
+
+		//Since there is collision, time to find the timeToCollision.
+
+		//Since there are 2 possible answers, we take the smaller one first.
+		float timeToCollision = (-b - sqrt(d)) / (2.0f * a);
+
+		//We reject it if it is < 0. As time cannot be < 0, the smaller timing is impossible.
+		if (timeToCollision < 0.0f) {
+			timeToCollision = (-b + sqrt(d)) / (2.0f * a); //Then we take the second one.
+		}
+		//The reason we check the smaller answer instead of just taking the larger timing is that both could be positive,
+		//and it means that the line collided first at the smaller timing.
+
+		if (timeToCollision < _deltaTime) {
+			return false;
+		}
+
+		//Now that we know that there's a collision, find additional info.
+		_collisionPoint = _positionA + (timeToCollision * relativeVelocity);
+
+		try {
+			_collisionNormal = (_collisionPoint - _positionB).Normalize();
+			_separation = combinedRadius;
+		} catch (DivideByZero e) {
+			_collisionNormal.Set(0, 0, 1);
+			_separation = 0.0f;
+		}
 	}
 
-	try {
-		_collisionNormal = (_collisionPoint - _positionB).Normalize();
-		_separation = combinedRadius;
-	} catch (DivideByZero e) {
-		_collisionNormal.Set(0, 0, 1);
-		_separation = 0.0f;
-	}
+	/*{
+		//Now that we know that there's a collision, find additional info.
+		Vector3 projection;
+		if (relativeVelocity.LengthSquared() > Math::EPSILON) {
+			projection = relativeDisplacement.Projection(relativeVelocity);
+		}
+		//Vector3 projection = relativeDisplacement.Projection(relativeVelocity);
+
+		Vector3 closestPt = _positionA + projection;
+		//Assume A is a line and add the radius to B.
+		float distSquared = (_positionB - closestPt).LengthSquared();
+		if (distSquared > combinedRadius * combinedRadius) {
+			return false;
+		}
+
+		//How far the cloeset point is to the collisionPoint
+		float distanceToCollisionPoint = sqrt(distSquared + combinedRadius * combinedRadius);
+		if (!relativeDisplacement.IsZero()) {
+			_collisionPoint = closestPt - distanceToCollisionPoint * (relativeDisplacement.Normalized());
+		} else {
+			_collisionPoint = closestPt;
+		}
+
+		try {
+			_collisionNormal = (_collisionPoint - _positionB).Normalize();
+			_separation = combinedRadius;
+		} catch (DivideByZero e) {
+			_collisionNormal.Set(0, 0, 1);
+			_separation = 0.0f;
+		}
+	}*/
 
 	return true;
 }
