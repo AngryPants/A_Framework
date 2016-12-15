@@ -199,9 +199,6 @@
     <ClInclude Include="Source\Component\Game\Waypoint.h">
       <Filter>Files\Component\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Script\PlayerPickUpActionScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\Physics\Collision\ColliderGroup.h">
       <Filter>Files\Component\Physics\Collision</Filter>
     </ClInclude>
@@ -247,6 +244,12 @@
     <ClInclude Include="Source\Others\Skybox.h">
       <Filter>Files\Others</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Script\PlayerHealthScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Script\PlayerActionScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -264,8 +267,14 @@
     <Filter Include="Files\Animation">
       <UniqueIdentifier>{b8f3479b-300b-49d6-8ef6-0e132e345305}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files\Scene">
+      <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Files\Texture">
       <UniqueIdentifier>{02e80f52-fb51-4f50-9119-7a1155c63cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems">
+      <UniqueIdentifier>{e57160ba-ae31-412b-a9c8-3e7acb0f9ad2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Input">
       <UniqueIdentifier>{f3f6ba48-634b-4673-a140-723b24bdc1c5}</UniqueIdentifier>
@@ -315,6 +324,12 @@
     <Filter Include="Files\Input\InputManager">
       <UniqueIdentifier>{fca4aabd-1a05-4d57-814b-0bbcc534622f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files\Systems\Rendering">
+      <UniqueIdentifier>{eb12ed44-967b-4d53-83c9-bcbca06c547e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\Physics">
+      <UniqueIdentifier>{af3e5794-0af2-49af-a131-bf78d05eb0f2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Files\AGDEV\Scene">
       <UniqueIdentifier>{1156f533-1e19-4db9-b31c-3c72c79d4a7d}</UniqueIdentifier>
     </Filter>
@@ -323,6 +338,9 @@
     </Filter>
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\SpacialPartition">
+      <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Component\Others">
       <UniqueIdentifier>{a80a2e6a-f49a-49f7-9aef-3eb1215015d5}</UniqueIdentifier>
@@ -335,21 +353,6 @@
     </Filter>
     <Filter Include="Files\AGDEV\Script\Debug">
       <UniqueIdentifier>{06cec172-6959-42ac-a096-605bc3685956}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Scene">
-      <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Systems">
-      <UniqueIdentifier>{e57160ba-ae31-412b-a9c8-3e7acb0f9ad2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Systems\Rendering">
-      <UniqueIdentifier>{eb12ed44-967b-4d53-83c9-bcbca06c547e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Systems\Physics">
-      <UniqueIdentifier>{af3e5794-0af2-49af-a131-bf78d05eb0f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Systems\SpacialPartition">
-      <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -503,9 +506,6 @@
     <ClCompile Include="Source\Script\AIMovementScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Script\ShootingScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
@@ -556,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="Source\Others\Skybox.cpp">
       <Filter>Files\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\PlayerActionScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

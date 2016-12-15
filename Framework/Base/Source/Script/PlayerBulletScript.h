@@ -16,10 +16,11 @@ public:
 	virtual void OnCollisionStay(const CollisionInfo& _collider)
 	{
 		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObject);
+		cout << temp->name << endl;
 		if (temp->name == "Enemy")
 		{
 			temp->GetComponent<HealthComponent>().TakeDamage(GetGameObject().GetComponent<BulletComponent>().bulletDamage);
-			cout << temp->GetComponent<HealthComponent>().GetCurrentHealth() << endl;
+			cout << "Enemy Health : " << temp->GetComponent<HealthComponent>().GetCurrentHealth() << endl;
 			GetGameObject().Destroy();
 		}
 	}

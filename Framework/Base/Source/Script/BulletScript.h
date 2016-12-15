@@ -21,7 +21,9 @@ public:
 		GetGameObject().GetComponent<BulletComponent>().lifeTime -= deltaTime;
 		// if bullet time is up
 		if (GetGameObject().GetComponent<BulletComponent>().lifeTime <= 0.f)
+		{
 			GetGameObject().Destroy();
+		}
 	}
 };
 

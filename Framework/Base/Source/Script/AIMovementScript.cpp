@@ -6,7 +6,7 @@ AIMovementScript::AIMovementScript(GameObject& gameObject) : Script(gameObject)
 {
 	waypoints.clear();
 	current = nullptr;
-	moveSpeed = 0.25f;
+	moveSpeed = 1.f;
 	reachedDestination = false;
 }
 

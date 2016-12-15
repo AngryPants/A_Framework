@@ -52,16 +52,8 @@ private:
 	static GameObject& CreateRifleBase(const string& space, const string& name = "rifle")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		// collider 0 is the hitbox for picking up the gun
-		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
-		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
-		go.AddComponent<RifleComponent>();
 		go.AddComponent<LODMeshHolder>();
-		go.GetComponent<RifleComponent>().clipSize = 30;
-		go.GetComponent<RifleComponent>().currentClipSize = 30;
-		go.GetComponent<RifleComponent>().magazineSize = 150;
-		go.GetComponent<RifleComponent>().reloadTime = 1.f;
-		go.GetComponent<RifleComponent>().SetRateOfFire(10.f);
+		go.AddComponent<RifleComponent>();
 
 		return go;
 	}
@@ -215,6 +207,14 @@ public:
 	static GameObject& CreateEnemyRifle(const string& space, const string& name = "Enemy_Rifle")
 	{
 		GameObject& go = CreateRifleBase(space, name);
+		// collider 0 is the hitbox for enemy Range
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(10.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
+		go.GetComponent<RifleComponent>().clipSize = 10;
+		go.GetComponent<RifleComponent>().currentClipSize = 10;
+		go.GetComponent<RifleComponent>().magazineSize = 80;
+		go.GetComponent<RifleComponent>().reloadTime = 3.f;
+		go.GetComponent<RifleComponent>().SetRateOfFire(5.f);
 		go.CreateScript<AIShootingScript>();
 
 		return go;
@@ -223,6 +223,14 @@ public:
 	static GameObject& CreateEquippableRifle(const string& space, const string& name = "Normal_Rifle")
 	{
 		GameObject& go = CreateRifleBase(space, name);
+		// collider 0 is the hitbox for picking up the gun
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
+		go.GetComponent<RifleComponent>().clipSize = 30;
+		go.GetComponent<RifleComponent>().currentClipSize = 30;
+		go.GetComponent<RifleComponent>().magazineSize = 150;
+		go.GetComponent<RifleComponent>().reloadTime = 0.5f;
+		go.GetComponent<RifleComponent>().SetRateOfFire(8.f);
 		go.CreateScript<PlayerShootingScript>();
 
 		return go;
@@ -236,7 +244,7 @@ public:
 		go.AddComponent<ColliderGroup<SphereCollider>>();
 		go.AddComponent<LODMeshHolder>();
 		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(2);
-		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
 		//Health Script
 		go.CreateScript<HealthScript>();
 		return go;
@@ -259,13 +267,11 @@ public:
 		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 		enemyRifle.SetParent(go);*/
-		/*GameObject& enemyRifle = CreateEnemyRifle(space);
-		enemyRifle.GetComponent<RifleComponent>().clipSize = 10;
-		enemyRifle.GetComponent<RifleComponent>().currentClipSize = 10;
-		enemyRifle.GetComponent<RifleComponent>().magazineSize = 60;
-		enemyRifle.GetComponent<RifleComponent>().reloadTime = 3.f;
-		enemyRifle.GetComponent<RifleComponent>().SetRateOfFire(2.f);
-		enemyRifle.GetComponent<RifleComponent>().isHeld = true;*/
+
+		GameObject& enemyRifle = CreateEnemyRifle(space);
+		enemyRifle.GetComponent<RifleComponent>().isHeld = true;
+
+		enemyRifle.SetParent(go);
 
 		return go;
 	}

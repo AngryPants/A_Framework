@@ -5,11 +5,16 @@
 
 class AIShootingScript : public ShootingScript
 {
+
 public:
+	bool toShoot;
+	Vector3 playerPosition;
 	AIShootingScript(GameObject& gameObject);
 	virtual ~AIShootingScript();
 
 	virtual void OnTriggerStay(const Collider& _collider);
+
+	virtual void Update(double deltaTime);
 
 	virtual void ShootBullet();
 

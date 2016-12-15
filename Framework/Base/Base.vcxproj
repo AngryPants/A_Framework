@@ -79,7 +79,8 @@
     <ClInclude Include="Source\Script\HealthScript.h" />
     <ClInclude Include="Source\Script\AIMovementScript.h" />
     <ClInclude Include="Source\Script\PlayerBulletScript.h" />
-    <ClInclude Include="Source\Script\PlayerPickUpActionScript.h" />
+    <ClInclude Include="Source\Script\PlayerHealthScript.h" />
+    <ClInclude Include="Source\Script\PlayerActionScript.h" />
     <ClInclude Include="Source\Script\PlayerShootingScript.h" />
     <ClInclude Include="Source\Script\Script.h" />
     <ClInclude Include="Source\Script\ShootingScript.h" />
@@ -145,7 +146,7 @@
     <ClCompile Include="Source\Scene\SceneNode.cpp" />
     <ClCompile Include="Source\Script\AIMovementScript.cpp" />
     <ClCompile Include="Source\Script\AIShootingScript.cpp" />
-    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp" />
+    <ClCompile Include="Source\Script\PlayerActionScript.cpp" />
     <ClCompile Include="Source\Script\PlayerShootingScript.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Script\ShootingScript.cpp" />
