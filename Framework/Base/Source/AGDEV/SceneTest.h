@@ -4,12 +4,14 @@
 #include "../Scene/Scene.h"
 #include "../Graphics/RenderHelper.h"
 #include "../GameObject/GameObjectFactory.h"
+#include "../Others/Skybox.h"
 
 class SceneTest : public Scene {
 
 private:
 	//Variable(s)
 	GameObject* player;
+	Skybox skybox;
 
 public:
 	//Constructor(s) & Destructor

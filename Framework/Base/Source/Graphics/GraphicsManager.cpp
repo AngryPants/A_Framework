@@ -174,9 +174,11 @@ ShaderProgram* GraphicsManager::GetActiveShader() {
 
 //Others
 void GraphicsManager::ClearColor() {
-	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
 
+void GraphicsManager::ClearDepth() {
+	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void GraphicsManager::SetBackgroundColor(float red, float green, float blue, float alpha) {

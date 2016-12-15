@@ -58,6 +58,7 @@ public:
 
 	//Others
 	void ClearColor();
+	void ClearDepth();
 	void SetBackgroundColor(float red, float green, float blue, float alpha);
 	
 	//Enable Modes

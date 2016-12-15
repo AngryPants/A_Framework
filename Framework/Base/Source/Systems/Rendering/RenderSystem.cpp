@@ -39,11 +39,14 @@ void RenderSystem::Update(const string& space, double deltaTime) {
 	}
 }
 
-void RenderSystem::Render(const string& space) {
+void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 	
+	GraphicsManager::GetInstance().ClearColor();
+	GraphicsManager::GetInstance().ClearDepth();
+
 	//Cameras
 	Camera* camPtr = nullptr;
-	set<Component*>& cameras = ComponentManager::GetInstance().GetComponents<Camera>(space);
+	set<Component*>& cameras = ComponentManager::GetInstance().GetComponents<Camera>(_space);
 	for (set<Component*>::iterator setIter = cameras.begin(); setIter != cameras.end(); ++setIter) {
 		Camera* camPtr2 = static_cast<Camera*>(*setIter);
 		if (camPtr2->IsActive() == false) {
@@ -65,11 +68,18 @@ void RenderSystem::Render(const string& space) {
 	}
 	
 	//Set to the camera's view.
+	Transform& camTransform = camPtr->GetGameObject().GetComponent<Transform>();
+
 	camPtr->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
 	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
 
+	//Render Skybox
+	if (_skybox != nullptr) {
+		RenderSkybox(camTransform.GetPosition(), _skybox);
+	}
+
 	//Lights
-	set<Component*>& lights = ComponentManager::GetInstance().GetComponents<Light>(space);
+	set<Component*>& lights = ComponentManager::GetInstance().GetComponents<Light>(_space);
 	unsigned int lightIndex = 0;
 	for (set<Component*>::iterator setIter = lights.begin(); setIter != lights.end() && lightIndex < RenderHelper::GetInstance().GetNumLights(); ++setIter) {
 		Light* lightPtr = static_cast<Light*>(*setIter);
@@ -82,12 +92,11 @@ void RenderSystem::Render(const string& space) {
 	}
 
 	if (renderSpatialPartition) {
-		RenderGridBoundaries(space);
+		RenderGridBoundaries(_space);
 	}	
 
-	//Render out grid by grid.
-	Transform& camTransform = camPtr->GetGameObject().GetComponent<Transform>();
-	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(space);
+	//Render out grid by grid.	
+	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(_space);
 	for (int x = 0; x < sp->GetxNumOfGrid(); ++x) {
 		for (int y = 0; y < sp->GetyNumOfGrid(); ++y) {
 			for (int z = 0; z < sp->GetzNumOfGrid(); ++z) {
@@ -172,6 +181,32 @@ void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLeve
 }
 
 void RenderSystem::RenderUI(const string& space) {
+}
+
+void RenderSystem::RenderSkybox(const Vector3& position, const Skybox* _skybox) {
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+	modelStack.PushMatrix();	
+		modelStack.Translate(position.x, position.y, position.z);
+		modelStack.PushMatrix();
+			modelStack.Translate(0, 0.49f, 0);
+			modelStack.Rotate(90, 1, 0, 0);
+			RenderHelper::GetInstance().RenderMesh(*_skybox->GetMesh(), _skybox->textureLists[Skybox::TEXTURES::SKYBOX_TOP], false);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+			modelStack.Translate(0, -0.49f, 0);
+			modelStack.Rotate(180, 0, 1, 0);
+			modelStack.Rotate(-90, 1, 0, 0);
+			RenderHelper::GetInstance().RenderMesh(*_skybox->GetMesh(), _skybox->textureLists[Skybox::TEXTURES::SKYBOX_BOTTOM], false);
+		modelStack.PopMatrix();
+		for (unsigned int s = 0; s < 4; ++s) {
+			modelStack.PushMatrix();		
+				modelStack.Rotate(static_cast<float>(s) * 90.0f, 0.0f, 1.0f, 0.0f);
+				modelStack.Translate(0, 0, -0.49f);
+				RenderHelper::GetInstance().RenderMesh(*_skybox->GetMesh(), _skybox->textureLists[Skybox::TEXTURES::SKYBOX_BACK + s], false);
+			modelStack.PopMatrix();
+		}
+	modelStack.PopMatrix();
+	GraphicsManager::GetInstance().ClearDepth();
 }
 
 //Render the grid boundaries for debuging purposes.

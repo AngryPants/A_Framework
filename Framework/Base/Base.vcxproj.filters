@@ -238,6 +238,9 @@
     <ClInclude Include="Source\AGDEV\ScaleScript.h">
       <Filter>Files\AGDEV\Script\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Others\Skybox.h">
+      <Filter>Files\Others</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -544,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="Source\Script\ShootingScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Others\Skybox.cpp">
+      <Filter>Files\Others</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

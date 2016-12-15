@@ -10,6 +10,8 @@
 using namespace std;
 
 MeshBuilder::MeshBuilder() {
+	//Generate reserved meshes
+	GenerateQuad("Skybox");
 }
 
 MeshBuilder::~MeshBuilder() {

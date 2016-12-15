@@ -67,6 +67,7 @@
     <ClInclude Include="Source\Mesh\MeshBuilder.h" />
     <ClInclude Include="Source\Mesh\Vertex.h" />
     <ClInclude Include="Source\Others\IDGenerator.h" />
+    <ClInclude Include="Source\Others\Skybox.h" />
     <ClInclude Include="Source\Others\Utility.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
     <ClInclude Include="Source\Scene\SceneGraph.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="Source\Mesh\LoadOBJ.cpp" />
     <ClCompile Include="Source\Mesh\Mesh.cpp" />
     <ClCompile Include="Source\Mesh\MeshBuilder.cpp" />
+    <ClCompile Include="Source\Others\Skybox.cpp" />
     <ClCompile Include="Source\Others\Utility.cpp" />
     <ClCompile Include="Source\Scene\SceneGraph.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />

@@ -5,6 +5,7 @@
 #include "../Input/InputManager.h"
 #include "../Mesh/MeshBuilder.h"
 #include "../Texture/TextureManager.h"
+#include "../Texture/TextureList.h"
 #include "../Systems/Rendering//RenderSystem.h"
 #include "../Systems/SpatialPartition/SPSystem.h"
 #include "../Systems/Physics/PhysicsSystem.h"
@@ -33,6 +34,7 @@ void SceneTest::Init() {
 	//Initialise some GraphicsManager stuff.
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::BLENDING>();
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::CULLING>();
+	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	//GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::CULLING>();
 
 	//Initialise the Shader.
@@ -42,6 +44,14 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 	
+	//Set Skybox Textures
+	skybox.textureLists[Skybox::TEXTURES::SKYBOX_TOP].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Top", "Image//Skybox//Mountains//Top.tga");
+	skybox.textureLists[Skybox::TEXTURES::SKYBOX_BOTTOM].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Bottom", "Image//Skybox//Mountains//Bottom.tga");
+	skybox.textureLists[Skybox::TEXTURES::SKYBOX_BACK].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Back", "Image//Skybox//Mountains//Back.tga");
+	skybox.textureLists[Skybox::TEXTURES::SKYBOX_LEFT].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Left", "Image//Skybox//Mountains//Left.tga");
+	skybox.textureLists[Skybox::TEXTURES::SKYBOX_FRONT].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Front", "Image//Skybox//Mountains//Front.tga");
+	skybox.textureLists[Skybox::TEXTURES::SKYBOX_RIGHT].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Right", "Image//Skybox//Mountains//Right.tga");
+
 	//SpatialPartition 
 	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
 	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;  
@@ -99,8 +109,8 @@ void SceneTest::Init() {
 	//ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
 	//SkyBox
-	GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
-	skyBox->SetParent(*camera);
+	//GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
+	//skyBox->SetParent(*camera);
 	//skyBox->GetComponent<Transform>().SetLocalScale(100, 100, 100);
 	 
 	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
@@ -110,7 +120,7 @@ void SceneTest::Init() {
 	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 
 	//LOD Sphere
-	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 4, 4, 0.5f);
+	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
 	Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
 	Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 32, 32, 0.5f);
 	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
@@ -202,10 +212,9 @@ void SceneTest::Update(double _deltaTime) {
 }
 
 void SceneTest::Render() {
-	GraphicsManager::GetInstance().ClearColor();
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
-
-	RenderSystem::GetInstance().Render(name);
+	//RenderSystem::GetInstance().Render(name);
+	RenderSystem::GetInstance().Render(name, &skybox);	
 
 	//Render Entities UI
 	GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::DEPTH_TEST>();

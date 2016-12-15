@@ -100,7 +100,7 @@ void RenderHelper::RenderMesh(Mesh& mesh, const bool enableLight) {
 	RenderMesh(mesh, texture, enableLight);
 }
 
-void RenderHelper::RenderMesh(Mesh& mesh, TextureList& textureList, const bool enableLight) {
+void RenderHelper::RenderMesh(Mesh& mesh, const TextureList& textureList, const bool enableLight) {
 	switch (currentShader) {
 		case SHADERS::PHONG:
 			PhongShader::RenderMesh(mesh, textureList, enableLight, phongUniforms);
@@ -108,7 +108,7 @@ void RenderHelper::RenderMesh(Mesh& mesh, TextureList& textureList, const bool e
 	}
 }
 
-void RenderHelper::RenderText(Mesh& mesh, TextureList& textureList, const string& text, Color color) {
+void RenderHelper::RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color) {
 	switch (currentShader) {
 		case SHADERS::PHONG:
 			PhongShader::RenderText(mesh, textureList, text, color, phongUniforms);
