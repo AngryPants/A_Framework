@@ -60,7 +60,7 @@ private:
 		go.GetComponent<RifleComponent>().clipSize = 30;
 		go.GetComponent<RifleComponent>().currentClipSize = 30;
 		go.GetComponent<RifleComponent>().magazineSize = 150;
-		go.GetComponent<RifleComponent>().reloadTime = 5.f;
+		go.GetComponent<RifleComponent>().reloadTime = 1.f;
 		go.GetComponent<RifleComponent>().SetRateOfFire(10.f);
 
 		return go;
@@ -235,9 +235,15 @@ public:
 		go.AddComponent<HealthComponent>();
 		go.AddComponent<ColliderGroup<SphereCollider>>();
 		go.AddComponent<LODMeshHolder>();
+		//Mesh* MeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ(" Enemy Mesh Low LOD", "OBJ// Game //Enemy//EnemyLow.obj");
+		//Mesh* MeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Enemy Mesh Mid LOD", "OBJ// Game //Enemy//EnemyMid.obj");
+		//Mesh* MeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Enemy Mesh High LOD", "OBJ//Game// Enemy//EnemyHigh.obj");
+		//go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Enemy Texture", "Image//Game//Enemy//EnemyLow.tga");
+		//go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture(" Enemy Texture", "Image//Game//Enemy//EnemyMid.tga");
+		//go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture(" Enemy Texture", "Image//Game//Enemy//EnemyHigh.tga");
 		//Collider 0 is enemy hitBox 
 		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(2);
-		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
 		//Health Script
 		go.CreateScript<HealthScript>();
 		return go;
@@ -250,9 +256,23 @@ public:
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(10.f);
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
 		//Create Rifle for enemy
-		GameObject& enemyRifle = CreateEnemyRifle(space);
-		enemyRifle.SetParent(go);
-		//enemyRifle.GetComponent<RifleComponent>().isHeld = true;
+		/*Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD", "OBJ//Game//M4A1//M4A1.obj");
+		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M4A1//M4A1.obj");
+		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M4A1//M4A1.obj");
+		
+		enemyRifle.GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
+		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+		enemyRifle.SetParent(go);*/
+
+		/*GameObject& enemyRifle = CreateEnemyRifle(space);
+		enemyRifle.GetComponent<RifleComponent>().clipSize = 10;
+		enemyRifle.GetComponent<RifleComponent>().currentClipSize = 10;
+		enemyRifle.GetComponent<RifleComponent>().magazineSize = 60;
+		enemyRifle.GetComponent<RifleComponent>().reloadTime = 3.f;
+		enemyRifle.GetComponent<RifleComponent>().SetRateOfFire(2.f);
+		enemyRifle.GetComponent<RifleComponent>().isHeld = true;*/
 
 		return go;
 	}

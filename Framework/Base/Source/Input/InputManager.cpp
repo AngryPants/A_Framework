@@ -53,6 +53,23 @@ void SetInput(InputInfo& inputInfo, const std::size_t index, KEY_STATE state = K
 	}
 }
 
+void SetInput(InputInfo& inputInfo, const std::size_t index, bool state = true, float value = 1.0f) {
+	switch (state) {
+	case false: {
+		inputInfo.keyDown[index] = false;
+		inputInfo.keyReleased[index] = true;
+		inputInfo.keyValue[index] = 0.0f;
+	}
+	break;
+	case true: {
+		inputInfo.keyDown[index] = true;
+		inputInfo.keyReleased[index] = false;
+		inputInfo.keyValue[index] = value;
+	}
+	break;
+	}
+}
+
 void ProcessInput(InputInfo& inputInfo, const Key& input) {
 	/*********************************************************************************************************/
 	//This is where we start customising the controls for our game. It might get a little tedious.
@@ -234,7 +251,7 @@ void ProcessInput(InputInfo& inputInfo, const Gamepad& input) {
 
 }
 
-void ProcessInput(InputInfo& inputInfo, const Mouse& mouse) {
+void ProcessInput(InputInfo& inputInfo,Mouse& mouse) {
 	/****************************************/
 	//This is where we start customising the controls for our game. It might get a little tedious.
 	//For the sake of standardisation, ensure that keyValue is between 0.0f to 1.0f.
@@ -252,6 +269,15 @@ void ProcessInput(InputInfo& inputInfo, const Mouse& mouse) {
 		inputInfo.axis[IAXIS_LOOK_VERTICAL] = mouse.GetTravelDistanceY();
 	} else {
 		inputInfo.axis[IAXIS_LOOK_VERTICAL] = 0.0f;
+	}
+
+	if (mouse.IsKeyPressed(0))
+	{
+		SetInput(inputInfo, INPUT_PLAYERSHOOT, true);
+	}
+	else
+	{
+		SetInput(inputInfo, INPUT_PLAYERSHOOT,false);
 	}
 }
 

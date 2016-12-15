@@ -15,6 +15,7 @@ public:
 	}
 	virtual ~BulletScript(){};
 
+	//virtual void OnCollisionStay(const CollisionInfo& _collisionInfo){};
 	virtual void Update(double deltaTime)
 	{
 		GetGameObject().GetComponent<BulletComponent>().lifeTime -= deltaTime;
@@ -23,11 +24,6 @@ public:
 			GetGameObject().Destroy();
 	}
 };
-
-
-
-
-
 
 
 #endif

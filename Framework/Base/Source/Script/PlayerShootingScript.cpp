@@ -17,11 +17,12 @@ void PlayerShootingScript::ShootBullet()
 	Vector3 forwardRotation = LookAt(GetGameObject().GetComponent<Transform>().GetForward(), GetGameObject().GetComponent<Transform>().GetUp());
 	temp.GetComponent<Transform>().SetLocalPosition(GetGameObject().GetComponent<Transform>().GetPosition());
 	temp.GetComponent<Transform>().SetLocalRotation(forwardRotation);
-	temp.GetComponent<BulletComponent>().bulletImpulse = 50.f;
+	temp.GetComponent<BulletComponent>().bulletImpulse = 1.0f;
 	temp.GetComponent<BulletComponent>().lifeTime = 5.f;
 	temp.GetComponent<BulletComponent>().bulletDamage = 10.f;
 	temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
 	temp.GetComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player's Bullet", "OBJ//Default//Sphere.obj");
+	temp.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Bullet Texture", "Image//Game//Bullet//Bullet.tga");
 	temp.GetComponent<Rigidbody>().SetMass(0.01f);
 	temp.GetComponent<Rigidbody>().AddRelativeForce(GetGameObject().GetComponent<Transform>().GetForward() * temp.GetComponent<BulletComponent>().bulletImpulse, FORCE_MODE::FM_IMPULSE);
 	temp.CreateScript<PlayerBulletScript>();

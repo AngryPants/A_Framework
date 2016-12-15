@@ -13,9 +13,9 @@ public:
 	}
 	virtual ~EnemyBulletScript(){}
 
-	virtual void OnCollisionStay(const Collider& _collider)
+	virtual void OnCollisionStay(const CollisionInfo& _collider)
 	{
-		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID);
+		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObject);
 		if (temp->name == "Player")
 		{
 			temp->GetComponent<HealthComponent>().SetHealth(temp->GetComponent<HealthComponent>().GetCurrentHealth() - GetGameObject().GetComponent<BulletComponent>().bulletDamage);
