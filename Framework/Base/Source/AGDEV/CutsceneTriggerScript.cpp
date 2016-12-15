@@ -14,7 +14,7 @@ CutsceneTriggerScript::CutsceneTriggerScript(GameObject& gameObject) : Script(ga
 	camera = &GameObjectFactory::CreateCamera(GetGameObject().GetSpace(), "Cutscene Camera");
 	camera->SetParent(*camPivot);
 	camera->GetComponent<Transform>().SetLocalPosition(0, 1, -3);
-	camera->GetComponent<Transform>().SetLocalRotation(40, 0, 0);
+	camera->GetComponent<Transform>().SetLocalRotation(30, 0, 0);
 	camera->GetComponent<Camera>().depth = 10.0f;
 	camera->GetComponent<Camera>().SetInActive();
 }

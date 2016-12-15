@@ -20,7 +20,6 @@
 #include "DebugControlsScript.h" 
 #include "TriggerTestScript.h" 
 #include "../Script/PlayerShootingScript.h"
-#include "../Script/PlayerPickUpActionScript.h"
 
 //Constructor(s) & Destructor
 SceneAsn1::SceneAsn1(const string& name) : Scene(name) {
@@ -61,7 +60,6 @@ void SceneAsn1::Init() {
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
-	player->CreateScript<PlayerPickUpActionScript>();
 	player->CreateScript<HealthScript>();
 	player->AddComponent<HealthComponent>();
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
@@ -177,11 +175,6 @@ void SceneAsn1::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	RenderSystem::GetInstance().Render(name, &skybox);
 
-	//Render Entities UI
-	GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::DEPTH_TEST>();
-	GraphicsManager::GetInstance().SetToUI();
-
-	RenderSystem::GetInstance().RenderUI(name);
 	if (debugCountdown <= 0)
 	{
 		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
