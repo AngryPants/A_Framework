@@ -435,7 +435,7 @@ void PhysicsSystem::Response_AABB_AABB(AABBCollider* _colliderA, Rigidbody* _rig
 		}
 
 		//Collision Response
-		_rigidbodyA->velocity *= -_rigidbodyA->elasticity;
+		//_rigidbodyA->velocity *= -_rigidbodyA->elasticity;
 
 		Vector3 bottom = _positionA - Vector3(0, _colliderA->size.y * 0.5f, 0);
 		Vector3 top = _positionA + Vector3(0, _colliderA->size.y * 0.5f, 0);

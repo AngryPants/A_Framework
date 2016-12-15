@@ -128,6 +128,15 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo,INPUT_RENDER_SPATIAL_PARTITION_OFF,input.GetState());
 			break;
 		}
+		case KEYS::F3: {
+			SetInput(inputInfo,INPUT_RENDER_COLLIDERS_ON,input.GetState());
+			break;
+		}
+		case KEYS::F4: {
+			SetInput(inputInfo,INPUT_RENDER_COLLIDERS_OFF,input.GetState());
+			break;
+		}
+
 		// Shooting
 		case KEYS::Q:
 		{

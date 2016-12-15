@@ -22,8 +22,9 @@ RenderSystem::RenderSystem() {
 	gridMesh = MeshBuilder::GetInstance().GenerateWireframeCube("Grid Mesh", Color(1, 0, 0), 1.0f);
 	gridMeshEmpty = MeshBuilder::GetInstance().GenerateWireframeCube("Grid Mesh Empty", Color(0, 1, 0), 1.0f);
 
+	renderColliders = false;
 	aabbColliderMesh = MeshBuilder::GetInstance().GenerateWireframeCube("AABB Collider Mesh", Color(0, 0, 0), 1.0f);
-	//sphereColliderMesh = MeshBuilder::GetInstance().GenerateWireframeCube("AABB Collider Mesh", Color(0, 1, 1), 1.0f);;
+	sphereColliderMesh = MeshBuilder::GetInstance().GenerateWireframeSphere("Sphere Collider Mesh", Color(0, 0, 0), 8, 8, 0.5f);
 }
 
 RenderSystem::~RenderSystem() {
@@ -97,7 +98,9 @@ void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 	if (renderSpatialPartition) {
 		RenderGridBoundaries(_space);
 	}	
-	RenderColliders(_space);
+	if (renderColliders) {
+		RenderColliders(_space);
+	}	
 
 	//Render out grid by grid.	
 	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(_space);
@@ -245,13 +248,22 @@ void RenderSystem::RenderColliders(const string& _space) {
 
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 
-	/*set<Component*>& sphereColliders = ComponentManager::GetInstance().GetComponents<ColliderGroup<SphereCollider>>(_space);	
+	set<Component*>& sphereColliders = ComponentManager::GetInstance().GetComponents<ColliderGroup<SphereCollider>>(_space);	
 	for (set<Component*>::iterator setIter = sphereColliders.begin(); setIter != sphereColliders.end(); ++setIter) {
 		ColliderGroup<SphereCollider>* sphereColliderPtr = static_cast<ColliderGroup<SphereCollider>*>(*setIter);
 		for (vector<SphereCollider>::iterator vecIter = sphereColliderPtr->colliders.begin(); vecIter != sphereColliderPtr->colliders.end(); ++vecIter) {
-
+			SphereCollider* collider = &(*vecIter);
+			GameObject& go = sphereColliderPtr->GetGameObject();
+			Transform& goTransform = go.GetComponent<Transform>();
+			modelStack.PushMatrix();
+				modelStack.Translate(goTransform.GetPosition().x + collider->centre.x,
+									 goTransform.GetPosition().y + collider->centre.y,
+									 goTransform.GetPosition().z + collider->centre.z);
+				modelStack.Scale(collider->GetRadius(), collider->GetRadius(), collider->GetRadius());
+				RenderHelper::GetInstance().RenderMesh(*sphereColliderMesh);
+			modelStack.PopMatrix();
 		}
-	}*/
+	}
 
 	set<Component*>& aabbColliders = ComponentManager::GetInstance().GetComponents<ColliderGroup<AABBCollider>>(_space);	
 	for (set<Component*>::iterator setIter = aabbColliders.begin(); setIter != aabbColliders.end(); ++setIter) {

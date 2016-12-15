@@ -483,6 +483,11 @@ bool SpatialPartition::IsVisible(Vector3 _theCameraPosition, Vector3 _theCameraD
 	{
 		return true;
 	}
+	
+	if ((grid.GetPosition() - _theCameraPosition).LengthSquared() < Vector3(xGridSize, yGridSize, zGridSize).LengthSquared()) {
+		return true;
+	}
+
 	return false;
 }
 
