@@ -65,13 +65,12 @@ void SceneTest::Init() {
 	player->CreateScript<PlayerPickUpActionScript>();
 	player->CreateScript<HealthScript>();
 	player->AddComponent<HealthComponent>();
-	player->AddComponent<Rigidbody>().useGravity = false;
+	player->AddComponent<Rigidbody>().elasticity = 0.0f;
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
-	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
-	player->AddComponent<Rigidbody>().elasticity = 0.0f;
-	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
 	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
  
 	//Camera
@@ -131,10 +130,10 @@ void SceneTest::Init() {
 	//testBox->AddComponent<Rigidbody>().elasticity = 0.1f;
 	//testBox->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1, 1, 1);
 
-	GameObject* testBox2 = &GameObjectFactory::CreateCube(name, "Test Box 2");
-	testBox2->GetComponent<Transform>().SetLocalPosition(1, 1.1, 5);
-	testBox2->AddComponent<Rigidbody>().elasticity = 0.1f;
-	testBox2->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1, 1, 1);
+	//GameObject* testBox2 = &GameObjectFactory::CreateCube(name, "Test Box 2");
+	//testBox2->GetComponent<Transform>().SetLocalPosition(1, 1.1, 5);
+	//testBox2->AddComponent<Rigidbody>().elasticity = 0.1f;
+	//testBox2->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1, 1, 1);
 
 	////Platforms
 	//for (int p = 0; p < 4; ++p) {
@@ -245,8 +244,7 @@ void SceneTest::Update(double _deltaTime) {
 
 void SceneTest::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
-	//RenderSystem::GetInstance().Render(name);
-	RenderSystem::GetInstance().Render(name, &skybox);	
+	RenderSystem::GetInstance().Render(name, &skybox);
 
 	//Render Entities UI
 	GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::DEPTH_TEST>();

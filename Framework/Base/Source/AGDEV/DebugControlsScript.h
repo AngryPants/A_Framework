@@ -21,6 +21,13 @@ public:
 		if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_RENDER_SPATIAL_PARTITION_OFF]) {
 			RenderSystem::GetInstance().renderSpatialPartition = false;
 		}
+
+		if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_RENDER_COLLIDERS_ON]) {
+			RenderSystem::GetInstance().renderColliders = false;
+		}
+		if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_RENDER_COLLIDERS_OFF]) {
+			RenderSystem::GetInstance().renderColliders = true;
+		}
 	}
 
 };

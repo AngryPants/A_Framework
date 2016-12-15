@@ -242,10 +242,10 @@
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\Script\PlayerBulletScript.h">
-      <Filter>Files\AGDEV\Script</Filter> 
+      <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\Others\Skybox.h">
-      <Filter>Files\Others</Filter> 
+      <Filter>Files\Others</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +336,9 @@
     <Filter Include="Files\AGDEV\Script\Debug">
       <UniqueIdentifier>{06cec172-6959-42ac-a096-605bc3685956}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files\Scene">
+      <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Files\Systems">
       <UniqueIdentifier>{e57160ba-ae31-412b-a9c8-3e7acb0f9ad2}</UniqueIdentifier>
     </Filter>
@@ -347,9 +350,6 @@
     </Filter>
     <Filter Include="Files\Systems\SpacialPartition">
       <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Scene">
-      <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -56,6 +56,7 @@ private:
 public:	
 	//Variable(s)
 	bool renderSpatialPartition;
+	bool renderColliders;
 
 	//Interface Function(s)
 	virtual void Update(const string& space, double deltaTime);
