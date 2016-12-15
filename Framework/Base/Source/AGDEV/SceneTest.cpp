@@ -124,8 +124,8 @@ void SceneTest::Init() {
 	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
 	sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
 	sphereLOD->GetComponent<MeshRenderer>().lightEnabled = true;
-	sphereLOD->GetComponent<Transform>().SetLocalScale(10, 10, 10);
-	sphereLOD->GetComponent<Transform>().SetLocalPosition(SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->GetGrid(5, 1, 8).GetPosition());
+	sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
+	sphereLOD->GetComponent<Transform>().SetLocalPosition(SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->GetGrid(5, 2, 8).GetPosition());
 
 	//Physics Balls
 	//for (unsigned int n = 0; n < 5; ++n) {
