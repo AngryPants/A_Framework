@@ -63,14 +63,17 @@ void SceneTest::Init() {
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
 	player->CreateScript<PlayerPickUpActionScript>();
+	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(5.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
  
-	
 	//Camera
 	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Player Camera");
 	camera->SetParent(*player);
-	camera->GetComponent<Transform>().SetLocalPosition(0, 0.f, 0);
+	camera->GetComponent<Transform>().SetLocalPosition(0, 1.7f, 0);
 	camera->CreateScript<PlayerCameraScript>();
 
 	//Lights
@@ -107,11 +110,6 @@ void SceneTest::Init() {
 	//ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
 	//ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
 	//ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
-
-	//SkyBox
-	//GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
-	//skyBox->SetParent(*camera);
-	//skyBox->GetComponent<Transform>().SetLocalScale(100, 100, 100);
 	 
 	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
 	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
@@ -130,27 +128,27 @@ void SceneTest::Init() {
 	sphereLOD->GetComponent<Transform>().SetLocalPosition(SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->GetGrid(5, 1, 8).GetPosition());
 
 	//Physics Balls
-	for (unsigned int n = 0; n < 5; ++n) {
-		GameObject& ball = GameObjectFactory::CreateSphere(name, "Physics Ball");
-		ball.GetComponent<Transform>().SetLocalPosition(0 + (n % 2) * 2.0f, n + 0.1f, 20.1);
-		//ball.GetComponent<Transform>().SetLocalPosition(Math::RandFloatMinMax(-100, 100), Math::RandFloatMinMax(0, 100), Math::RandFloatMinMax(-100, 100));
-		//ball.GetComponent<Transform>().IgnoreSpatialPartition(true);
-		ball.AddComponent<Rigidbody>().velocity.Set(10, 0, 0);
-		ball.AddComponent<Rigidbody>().useGravity = false;
-		ball.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = false;
-		ball.CreateScript<TriggerTestScript>();
-	}
-	
-	for (unsigned int n = 0; n < 5; ++n) {
-		GameObject& ball2 = GameObjectFactory::CreateSphere(name, "Physics Ball");
-		ball2.GetComponent<Transform>().SetLocalPosition(20 + (n % 2) * 2.0f, n, 20);
-		//ball2.GetComponent<Transform>().SetLocalPosition(Math::RandFloatMinMax(-100, 100), Math::RandFloatMinMax(0, 100), Math::RandFloatMinMax(-100, 100));
-		//ball2.GetComponent<Transform>().IgnoreSpatialPartition(true);
-		//ball2.AddComponent<Rigidbody>().velocity.Set(-1, 0, 0);
-		//ball2.AddComponent<Rigidbody>().useGravity = false;
-		ball2.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = false;
-		ball2.CreateScript<TriggerTestScript>();
-	}
+	//for (unsigned int n = 0; n < 5; ++n) {
+	//	GameObject& ball = GameObjectFactory::CreateSphere(name, "Physics Ball");
+	//	ball.GetComponent<Transform>().SetLocalPosition(0 + (n % 2) * 2.0f, n + 0.1f, 20.1);
+	//	//ball.GetComponent<Transform>().SetLocalPosition(Math::RandFloatMinMax(-100, 100), Math::RandFloatMinMax(0, 100), Math::RandFloatMinMax(-100, 100));
+	//	//ball.GetComponent<Transform>().IgnoreSpatialPartition(true);
+	//	ball.AddComponent<Rigidbody>().velocity.Set(10, 0, 0);
+	//	ball.AddComponent<Rigidbody>().useGravity = false;
+	//	ball.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = false;
+	//	ball.CreateScript<TriggerTestScript>();
+	//}
+	//
+	//for (unsigned int n = 0; n < 5; ++n) {
+	//	GameObject& ball2 = GameObjectFactory::CreateSphere(name, "Physics Ball");
+	//	ball2.GetComponent<Transform>().SetLocalPosition(20 + (n % 2) * 2.0f, n, 20);
+	//	//ball2.GetComponent<Transform>().SetLocalPosition(Math::RandFloatMinMax(-100, 100), Math::RandFloatMinMax(0, 100), Math::RandFloatMinMax(-100, 100));
+	//	//ball2.GetComponent<Transform>().IgnoreSpatialPartition(true);
+	//	//ball2.AddComponent<Rigidbody>().velocity.Set(-1, 0, 0);
+	//	//ball2.AddComponent<Rigidbody>().useGravity = false;
+	//	ball2.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = false;
+	//	ball2.CreateScript<TriggerTestScript>();
+	//}
 
 	//SkyBox
 	//GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
@@ -167,25 +165,25 @@ void SceneTest::Init() {
 	//sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
 	//sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 20);
 	
-	////Create Enemy Here
-	//Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
-	//Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
-	//Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
-	//GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
-	//enemy->GetComponent<Transform>().SetLocalPosition(5, 1, 5);
-	//enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD,enemyMeshMidLOD,enemyMeshHighLOD);
+	//Create Enemy Here
+	Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+	Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+	Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+	GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
+	enemy->GetComponent<Transform>().SetLocalPosition(5, 1, 5);
+	enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD,enemyMeshMidLOD,enemyMeshHighLOD);
 
-	////Create Rifle
-	//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M4A1//M4A1.obj");
-	//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M4A1//M4A1.obj");
-	//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M4A1//M4A1.obj");
+	//Create Rifle
+	Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M4A1//M4A1.obj");
+	Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M4A1//M4A1.obj");
+	Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M4A1//M4A1.obj");
 
-	//GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
-	//playerRifle->GetComponent<Transform>().SetLocalPosition(10, 1, 10);
-	//playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
-	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture","Image//Game//M4A1//M4A1.tga");
-	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
-	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+	GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
+	playerRifle->GetComponent<Transform>().SetLocalPosition(10, 1, 10);
+	playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
+	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture","Image//Game//M4A1//M4A1.tga");
+	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
+	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
  
 }
 

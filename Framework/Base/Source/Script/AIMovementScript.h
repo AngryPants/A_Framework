@@ -15,18 +15,19 @@ public:
 	vector<GameObject*> waypoints;
 	GameObject* current;
 	float moveSpeed;
+	bool reachedDestination;
 
 	//constructor and destructor
 	AIMovementScript(GameObject& gameObject);
+	virtual void OnTriggerStay(const Collider& _collider);
 	virtual ~AIMovementScript();
 
 	//Function(s)
 	virtual void Update(double deltaTime);
 	void CreateWayPoint(const Vector3& waypointPosition,const float& radius);
 	bool SetNewWayPoint(WayPointComponent* current, int position);
-	void UpdateWayPoint();
+	void LinkWayPoint();
 	Vector3 GetDirectionToNext();
 };
-
 
 #endif

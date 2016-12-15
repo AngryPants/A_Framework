@@ -23,15 +23,18 @@ public:
 	// define the bullet to shoot
 	virtual void ShootBullet(){};
 
+	//Manual reload
+	virtual bool ManualReload(){ return false; };
+
 	//For Different use cases
-	virtual bool ExtraCondition(){return true;};
+	virtual bool ExtraCondition(){return false;};
 
 	//default firing
 	virtual void ShootingLogic(double deltaTime);
 
 	virtual void Update(double deltaTime);
 
-
+	Vector3 LookAt(Vector3 target, Vector3 up);
 };
 
 #endif

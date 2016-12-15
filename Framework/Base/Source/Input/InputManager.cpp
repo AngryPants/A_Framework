@@ -130,6 +130,12 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo, INPUT_PLAYERSHOOT, input.GetState());
 			break;
 		}
+		// Shooting
+		case KEYS::F:
+		{
+			SetInput(inputInfo, INPUT_PLAYERRELOAD, input.GetState());
+			break;
+		}
 		//Pickup
 		case KEYS::G :
 		{

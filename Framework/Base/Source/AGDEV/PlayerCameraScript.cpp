@@ -32,9 +32,9 @@ void PlayerCameraScript::Update(double deltaTime) {
 	}
 	GetGameObject().GetComponent<Camera>().SetFOV(fov);
 
-	if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x > 90.0f) {
-		GetGameObject().GetComponent<Transform>().SetLocalRotationX(90.0f);
-	} else if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x < -90.0f) {
-		GetGameObject().GetComponent<Transform>().SetLocalRotationX(-90.0f);
+	if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x > 89.0f) {
+		GetGameObject().GetComponent<Transform>().SetLocalRotationX(89.0f);
+	} else if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x < -89.0f) {
+		GetGameObject().GetComponent<Transform>().SetLocalRotationX(-89.0f);
 	}
 }
