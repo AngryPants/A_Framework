@@ -416,8 +416,8 @@ bool CollisionUtility::CheckCollisionSphereAABB(Vector3 positionSphere, float ra
 {
 	Vector3 minPosBox, maxPosBox;
 
-	minPosBox = Vector3(positionBox.x - sizeBox.x, positionBox.y - sizeBox.y, positionBox.z - sizeBox.z);
-	maxPosBox = Vector3(positionBox.x + sizeBox.x, positionBox.y + sizeBox.y, positionBox.z + sizeBox.z); 
+	minPosBox = Vector3(positionBox.x - sizeBox.x * 0.5f, positionBox.y - sizeBox.y * 0.5f, positionBox.z - sizeBox.z * 0.5f);
+	maxPosBox = Vector3(positionBox.x + sizeBox.x * 0.5f, positionBox.y + sizeBox.y * 0.5f, positionBox.z + sizeBox.z * 0.5f);
 
 	return CheckCollisionSphereAABBMinMax(positionSphere, radiusSphere, minPosBox, maxPosBox);
 }
@@ -434,10 +434,10 @@ bool CollisionUtility::CheckCollisionAABB(Vector3 positionA, Vector3 sizeA, Vect
 {
 	Vector3 minPosA, maxPosA, minPosB, maxPosB;
 
-	minPosA = Vector3(positionA.x - sizeA.x, positionA.y - sizeA.y, positionA.z - sizeA.z);
-	maxPosA = Vector3(positionA.x + sizeA.x, positionA.y + sizeA.y, positionA.z + sizeA.z);
-	minPosB = Vector3(positionB.x - sizeB.x, positionB.y - sizeB.y, positionB.z - sizeB.z);
-	maxPosB = Vector3(positionB.x + sizeB.x, positionB.y + sizeB.y, positionB.z + sizeB.z);
+	minPosA = Vector3(positionA.x - sizeA.x * 0.5f, positionA.y - sizeA.y * 0.5f, positionA.z - sizeA.z * 0.5f);
+	maxPosA = Vector3(positionA.x + sizeA.x * 0.5f, positionA.y + sizeA.y * 0.5f, positionA.z + sizeA.z * 0.5f);
+	minPosB = Vector3(positionB.x - sizeB.x * 0.5f, positionB.y - sizeB.y * 0.5f, positionB.z - sizeB.z * 0.5f);
+	maxPosB = Vector3(positionB.x + sizeB.x * 0.5f, positionB.y + sizeB.y * 0.5f, positionB.z + sizeB.z * 0.5f);
 
 	return CheckCollisionAABBMinMax(minPosA, maxPosA, minPosB, maxPosB);
 }
