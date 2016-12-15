@@ -1,6 +1,7 @@
 #include "PlayerMovementScript.h"
 #include "../Input/InputManager.h"
 #include "../GameObject/GameObject.h"
+#include "../GameObject/GameObjectManager.h"
 #include "../Component/Physics/Transform.h"
 #include "../Component/Physics/Rigidbody.h"
 
@@ -8,6 +9,7 @@
 PlayerMovementScript::PlayerMovementScript(GameObject& gameObject) : Script(gameObject) {
 	movementSpeed = 5.0f;
 	rotationSpeed = 80.0f;
+	onGround = true;
 }
 
 PlayerMovementScript::~PlayerMovementScript() {
@@ -54,5 +56,17 @@ void PlayerMovementScript::Update(double deltaTime) {
 	if (!keyPressed)
 	{
 		rigidbody.velocity.SetZero();
+	}
+	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_JUMP] && onGround) {
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(0, 13, 0, FORCE_MODE::FM_IMPULSE);
+	}
+
+	onGround = false;
+}
+
+void PlayerMovementScript::OnCollisionStay(const CollisionInfo& _info) {
+	GameObject* ground = GameObjectManager::GetInstance().GetGameObjectByID(_info.gameObject);
+	if (ground->name == "Ground" || ground->name == "Platform") {
+		onGround = true;
 	}
 }

@@ -53,7 +53,7 @@ void SceneTest::Init() {
 	skybox.textureLists[Skybox::TEXTURES::SKYBOX_RIGHT].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Right", "Image//Skybox//Mountains//Right.tga");
 
 	//SpatialPartition 
-	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
+	int xGridSize = 10; int yGridSize = 10; int zGridSize = 10;
 	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;  
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
@@ -70,6 +70,8 @@ void SceneTest::Init() {
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
+	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
+	player->AddComponent<Rigidbody>().elasticity = 0.0f;
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
  
@@ -119,6 +121,30 @@ void SceneTest::Init() {
 	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
 	ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
 	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
+	ground->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].centre.Set(0, -250.0f, 0);
+	ground->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(100, 500, 100);
+	ground->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].isGround = true;
+	//ground->GetComponent<MeshRenderer>().SetInActive();
+
+	//Test Box
+	//GameObject* testBox = &GameObjectFactory::CreateCube(name, "Test Box");
+	//testBox->GetComponent<Transform>().SetLocalPosition(0, 100, 5);
+	//testBox->AddComponent<Rigidbody>().elasticity = 0.1f;
+	//testBox->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1, 1, 1);
+
+	GameObject* testBox2 = &GameObjectFactory::CreateCube(name, "Test Box 2");
+	testBox2->GetComponent<Transform>().SetLocalPosition(1, 1.1, 5);
+	testBox2->AddComponent<Rigidbody>().elasticity = 0.1f;
+	testBox2->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1, 1, 1);
+
+	//Platforms
+	for (int p = 0; p < 4; ++p) {
+		GameObject* platform = &GameObjectFactory::CreateCube(name, "Platform");
+		platform->GetComponent<Transform>().SetLocalScale(10, 5, 10);
+		platform->GetComponent<Transform>().SetLocalPosition(5, 2.5 * p, p * 10);
+		platform->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(10, 5, 10);
+		platform->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].isGround = true;
+	}
 
 	//LOD Sphere
 	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
@@ -157,17 +183,16 @@ void SceneTest::Init() {
 	//GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
 	//skyBox->SetParent(*camera);
 	//skyBox->GetComponent<Transform>().SetLocalScale(100, 100, 100);
-	
-	////LOD Sphere
-	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
-	//Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
-	//Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 64, 64, 0.5f);
-	//GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
-	//sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
-	//sphereLOD->GetComponent<MeshRenderer>().lightEnabled = true;
-	//sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
-	//sphereLOD->GetComponent<Transform>().SetLocalPosition(20, 5, 20);
-	
+
+	Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);
+	Mesh* meshMidLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Mid LOD", Color(0, 1, 0), 8, 8, 0.5f);
+	Mesh* meshHighLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh High LOD", Color(1, 0, 0), 32, 32, 0.5f);
+	GameObject* sphereLOD = &GameObjectFactory::CreateEmpty(name, "Sphere LOD");
+	sphereLOD->AddComponent<LODMeshHolder>().SetLODMesh(meshLowLOD, meshMidLOD, meshHighLOD);
+	sphereLOD->GetComponent<MeshRenderer>().lightEnabled = true;
+	sphereLOD->GetComponent<Transform>().SetLocalScale(5, 5, 5);
+	sphereLOD->GetComponent<Transform>().SetLocalPosition(SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->GetGrid(5, 2, 8).GetPosition());
+		
 	//Create Enemy Here
 	Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
 	Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));

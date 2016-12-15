@@ -6,7 +6,7 @@
 Rigidbody::Rigidbody(GameObject& _gameObject, PassKey<ComponentManager> _key)
 	: Component("rigidBody", _gameObject, _key)
 	, mass(1.0f)
-	, elasticity(0.8f)
+	, elasticity(0.05f)
 	, velocity(0,0,0)
 	, deltaTime(Math::EPSILON)
 	, gravity(DEFAULT_GRAVITY)

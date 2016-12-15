@@ -26,6 +26,10 @@ public:
 	virtual void OnCollisionStay(const CollisionInfo& _info);
 	virtual void OnCollisionExit(const CollisionInfo& _info);
 
+	//virtual void OnCollisionEnter(const Collider& _info);
+	//virtual void OnCollisionStay(const Collider& _info);
+	//virtual void OnCollisionExit(const Collider& _info);
+
 	virtual void OnTriggerEnter(const Collider& _collider);
 	virtual void OnTriggerStay(const Collider& _collider);
 	virtual void OnTriggerExit(const Collider& _collider);

@@ -17,6 +17,11 @@
 #include "../../Component/Rendering/LODMeshHolder.h"
 #include "../../Component/Rendering/SpriteRenderer.h"
 #include "../../Component/Rendering/TextRenderer.h"
+#include "../../Component/Physics/Collision/ColliderGroup.h"
+
+//Include Colliders
+#include "../../Collider/AABBCollider.h"
+#include "../../Collider/SphereCollider.h"
 
 using namespace std;
 
@@ -37,13 +42,16 @@ private:
 	void RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLevel);
 	//Debuging Stuff
 	void RenderGridBoundaries(const string& _space);	
+	void RenderColliders(const string& _space);
 
 	//Skybox
-	void RenderSkybox(const Vector3& position, const Skybox* _skybox);
+	void RenderSkybox(const Vector3& position, const Skybox* _skybox);	
 
 	//Debugging Stuff
 	Mesh* gridMesh;
 	Mesh* gridMeshEmpty;
+	Mesh* sphereColliderMesh;
+	Mesh* aabbColliderMesh;
 
 public:	
 	//Variable(s)

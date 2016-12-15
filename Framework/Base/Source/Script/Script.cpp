@@ -14,7 +14,7 @@ GameObject& Script::GetGameObject() {
 	return *gameObject;
 }
 
-//Callbacks
+//Collision Callbacks
 void Script::OnCollisionEnter(const CollisionInfo& _info) {
 }
 
@@ -24,6 +24,7 @@ void Script::OnCollisionStay(const CollisionInfo& _info) {
 void Script::OnCollisionExit(const CollisionInfo& _info) {
 }
 
+//Trigger Callbacks
 void Script::OnTriggerEnter(const Collider& _collider) {
 }
 
