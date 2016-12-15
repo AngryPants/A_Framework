@@ -30,7 +30,7 @@ void AIMovementScript::OnTriggerStay(const Collider& _collider)
 void AIMovementScript::Update(double deltaTime)
 {
 	if (!reachedDestination)
-		GetGameObject().GetComponent<Transform>().Translate(GetDirectionToNext()* moveSpeed);
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext()* moveSpeed);
 }
 
 void AIMovementScript::CreateWayPoint(const Vector3& waypointPosition, const float& radius)

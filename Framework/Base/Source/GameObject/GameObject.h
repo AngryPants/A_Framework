@@ -73,7 +73,7 @@ public:
 		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
 		Component* componentPtr = nullptr;
 		if (HasComponent<Type>()) {
-			cout << "This GameObject already has this component." << endl;
+			//cout << "This GameObject already has this component." << endl;
 			componentPtr = components[id];
 			//throw std::exception("This GameObject already has this component.");
 		} else {

@@ -20,10 +20,6 @@ public:
 		, bulletImpulse(50.f)
 		, bulletDamage(0)
 	{
-		if (!gameObject.HasComponent<Rigidbody>())
-		{
-			gameObject.AddComponent<Rigidbody>();
-		}
 	}
 	virtual ~BulletComponent(){}
 
