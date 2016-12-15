@@ -212,20 +212,21 @@ void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 
 void PhysicsSystem::Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& _positionA, SphereCollider* _colliderB, Rigidbody* _rigidbodyB, const Vector3& _positionB) {
 
-	ContactPoint contactPoint(_colliderA, _colliderB);
+	ContactPoint contactPointA(_colliderA, _colliderB);
+	ContactPoint contactPointB(_colliderB, _colliderA);
 	//Check for collision
 	if (CollisionUtility::CheckCollisionSphereSphere_Mathematical(
 		_positionA, _rigidbodyA->velocity, _colliderA->GetRadius(),
 		_positionB, _rigidbodyB->velocity, _colliderB->GetRadius(),
 		deltaTime,
-		contactPoint.point, contactPoint.normal, contactPoint.separation)) {
+		contactPointA.point, contactPointA.normal, contactPointA.separation)) {
 
 		GameObject* aGO = &_rigidbodyA->GetGameObject();
 		GameObject* bGO = &_rigidbodyB->GetGameObject();
 		
 		//Collision Response
-		Vector3 uNormalA = _rigidbodyA->velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
-		Vector3 uNormalB = _rigidbodyB->velocity.Projection(contactPoint.normal); //The component of Ball B's velocity along the normal.
+		Vector3 uNormalA = _rigidbodyA->velocity.Projection(contactPointA.normal); //The component of Ball A's velocity along the normal.
+		Vector3 uNormalB = _rigidbodyB->velocity.Projection(contactPointA.normal); //The component of Ball B's velocity along the normal.
 
 		float averageElasticity = (_rigidbodyA->elasticity + _rigidbodyB->elasticity) * 0.5f;
 		float combinedMass = _rigidbodyA->GetMass() + _rigidbodyB->GetMass();
@@ -235,16 +236,17 @@ void PhysicsSystem::Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody
 
 		//Inform A
 		CollisionInfo aInfo;
-		aInfo.contacts.push_back(contactPoint);
+		aInfo.contacts.push_back(contactPointA);
 		aInfo.gameObject = bGO->GetID();
 		aInfo.relativeVelocity = _rigidbodyA->velocity - _rigidbodyB->velocity;
 		Callback_OnCollisionStay(aGO, &aInfo);
 
 		//Inform B
-		CollisionInfo bInfo;					
-		bInfo.contacts.push_back(contactPoint);
-		//Flip the normal around.
-		bInfo.contacts.back().normal.Flip();
+		CollisionInfo bInfo;
+		contactPointB.normal = contactPointA.normal.Flipped();
+		contactPointB.separation = contactPointA.separation;
+		contactPointB.point = contactPointA.point;
+		bInfo.contacts.push_back(contactPointB);
 		bInfo.gameObject = aGO->GetID();
 		bInfo.relativeVelocity = _rigidbodyB->velocity - _rigidbodyA->velocity;
 		Callback_OnCollisionStay(bGO, &bInfo);
@@ -280,7 +282,6 @@ void PhysicsSystem::Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody
 		contactPointB.separation = contactPointA.separation;
 		contactPointB.point = contactPointA.point;
 		bInfo.contacts.push_back(contactPointB);
-		//Flip the normal around.
 		bInfo.contacts.back().normal.Flip();
 		bInfo.gameObject = goA->GetID();
 		bInfo.relativeVelocity = -_rigidbodyA->velocity;

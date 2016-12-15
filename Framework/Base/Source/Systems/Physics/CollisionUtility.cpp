@@ -347,7 +347,7 @@ bool CollisionUtility::CheckCollisionSphereSphere_Mathematical(const Vector3& _p
 		//The reason we check the smaller answer instead of just taking the larger timing is that both could be positive,
 		//and it means that the line collided first at the smaller timing.
 
-		if (timeToCollision < _deltaTime) {
+		if (timeToCollision > _deltaTime) {
 			return false;
 		}
 
