@@ -94,6 +94,10 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo, INPUT_MOVE_RIGHT, input.GetState());
 			break;
 		}
+		case KEYS::SPACE: {
+			SetInput(inputInfo, INPUT_MOVE_JUMP, input.GetState());
+			break;
+		}
 
 		//Looking
 		case KEYS::LEFT: {

@@ -41,6 +41,7 @@ public:
 
 	//AABB collision Standard Box
 	static bool CheckCollisionAABB(Vector3 positionA, Vector3 sizeA, Vector3 positionB, Vector3 sizeB);
+
 	//Generic AABB
 	static bool CheckCollisionAABBMinMax(Vector3 minPosA, Vector3 maxPosA, Vector3 minPosB, Vector3 maxPosB);
 

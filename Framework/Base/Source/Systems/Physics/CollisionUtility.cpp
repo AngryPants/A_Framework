@@ -453,8 +453,8 @@ bool CollisionUtility::CheckCollisionAABBPoint(Vector3 positionA, Vector3 sizeA,
 {
 	Vector3 minPosA, maxPosA;
 
-	minPosA = Vector3(positionA.x - sizeA.x, positionA.y - sizeA.y, positionA.z - sizeA.z);
-	maxPosA = Vector3(positionA.x + sizeA.x, positionA.y + sizeA.y, positionA.z + sizeA.z);
+	minPosA = Vector3(positionA.x - sizeA.x * 0.5f, positionA.y - sizeA.y * 0.5f, positionA.z - sizeA.z * 0.5f);
+	maxPosA = Vector3(positionA.x + sizeA.x * 0.5f, positionA.y + sizeA.y * 0.5f, positionA.z + sizeA.z * 0.5f);
 
 	return CheckCollisionAABBPointMinMax(minPosA, maxPosA, positionB);
 }

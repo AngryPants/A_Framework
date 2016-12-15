@@ -9,6 +9,7 @@ public:
 	//Variable(s)
 	float movementSpeed;
 	float rotationSpeed;
+	bool onGround;
 
 	//Constructor(s) & Destructor
 	PlayerMovementScript(GameObject& gameObject);
@@ -16,6 +17,7 @@ public:
 
 	//Interface Function(s)
 	virtual void Update(double deltaTime);
+	virtual void OnCollisionStay(const CollisionInfo& _info);
 
 };
 

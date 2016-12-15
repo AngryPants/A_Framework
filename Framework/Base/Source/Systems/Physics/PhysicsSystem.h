@@ -44,6 +44,8 @@ private:
 
 	//AABB-AABB
 	void Collision_AABB_AABB(GameObject* _a, GameObject* _b);
+	void Response_AABB_AABB(AABBCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& _positionA, AABBCollider* _colliderB, Rigidbody* _rigidbodyB, const Vector3& _positionB);
+	void Response_AABB_AABB(AABBCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& _positionA, AABBCollider* _colliderB, GameObject* _goB, const Vector3& _positionB);
 
 	//Sphere-AABB
 	void Collision_Sphere_AABB(GameObject* _a, GameObject* _b);

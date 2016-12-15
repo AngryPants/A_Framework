@@ -8,6 +8,7 @@ class AABBCollider : public Collider {
 public:
 	//Variable(s)
 	Vector3 size;
+	bool isGround;
 
 	//Constructor(s) & Destructor
 	AABBCollider(GameObjectID _gameObjectID);
