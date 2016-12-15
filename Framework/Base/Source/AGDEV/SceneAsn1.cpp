@@ -15,11 +15,12 @@
 #include "ScaleScript.h"
 #include "PlayerCameraScript.h"
 #include "PlayerMovementScript.h"
+#include "../Script//PlayerActionScript.h"
 #include "TranslateScript.h"
 #include "PivotScript.h"
 #include "DebugControlsScript.h" 
 #include "TriggerTestScript.h" 
-#include "../Script/PlayerShootingScript.h"
+#include "../Script//PlayerShootingScript.h"
 
 //Constructor(s) & Destructor
 SceneAsn1::SceneAsn1(const string& name) : Scene(name) {
@@ -62,6 +63,7 @@ void SceneAsn1::Init() {
 	player->CreateScript<DebugControlsScript>();
 	player->CreateScript<HealthScript>();
 	player->AddComponent<HealthComponent>();
+	player->CreateScript<PlayerActionScript>();
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
@@ -136,16 +138,26 @@ void SceneAsn1::Init() {
 		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(25, 0, 25);
 
 		//Create Rifle
-		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
-		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
-		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");
+		//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
+		//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
+		//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");
+		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Default//Cube.obj");
+		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Default//Cube.obj");
+		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Default//Cube.obj");
 		GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
-		playerRifle->GetComponent<Transform>().SetLocalPosition(25, 3, 25);
+		playerRifle->GetComponent<Transform>().SetLocalPosition(25, 1, 25);
 		playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Low","Image//Game//M24R//M24R.tga");
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M24R//M24R.tga");
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M24R//M24R.tga");
 	}	
+
+	{
+		for (unsigned int i = 0; i < 6; ++ i) {
+			GameObject& platform = GameObjectFactory::CreatePlatform(name);
+			platform.GetComponent<Transform>().SetLocalPosition(20, i * 2 + 1, 20 + (i * 8));
+		}
+	}
 
 }
 

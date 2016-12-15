@@ -24,7 +24,7 @@ void PlayerShootingScript::ShootBullet()
 	temp.GetComponent<BulletComponent>().lifeTime = 5.f;
 	temp.GetComponent<BulletComponent>().bulletDamage = 10.f;
 	
-	temp.GetComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player's Bullet", "OBJ//Default//Cube.obj");
+	temp.GetComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player's Bullet", "OBJ//Game//Bullet.obj");
 	temp.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Bullet Texture", "Image//Game//Bullet//Bullet.tga");
 	
 	temp.GetComponent<Rigidbody>().SetMass(0.01f);

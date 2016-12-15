@@ -303,9 +303,6 @@
     <Filter Include="Files\Graphics\Shaders\Phong">
       <UniqueIdentifier>{cc605ef7-6fae-431f-8ce6-cc12779d2f47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\AGDEV">
-      <UniqueIdentifier>{d754285e-c04f-41db-93cf-9aebe9515428}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Component\Game">
       <UniqueIdentifier>{5a53f2ba-5f29-452c-802e-932b897bfe68}</UniqueIdentifier>
     </Filter>
@@ -324,12 +321,6 @@
     <Filter Include="Files\Input\InputManager">
       <UniqueIdentifier>{fca4aabd-1a05-4d57-814b-0bbcc534622f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\AGDEV\Scene">
-      <UniqueIdentifier>{1156f533-1e19-4db9-b31c-3c72c79d4a7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\AGDEV\Script">
-      <UniqueIdentifier>{59c5f599-8cfd-4feb-b933-5a9b402ee6fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
     </Filter>
@@ -341,9 +332,6 @@
     </Filter>
     <Filter Include="Files\Collider">
       <UniqueIdentifier>{278104a7-58b2-45fb-bfda-4fb1d63a5e58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\AGDEV\Script\Debug">
-      <UniqueIdentifier>{06cec172-6959-42ac-a096-605bc3685956}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Scene">
       <UniqueIdentifier>{abd1aa03-43c9-4b38-a516-c90d0bff6e83}</UniqueIdentifier>
@@ -359,6 +347,18 @@
     </Filter>
     <Filter Include="Files\Systems\SpacialPartition">
       <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV">
+      <UniqueIdentifier>{d754285e-c04f-41db-93cf-9aebe9515428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Scene">
+      <UniqueIdentifier>{1156f533-1e19-4db9-b31c-3c72c79d4a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Script">
+      <UniqueIdentifier>{59c5f599-8cfd-4feb-b933-5a9b402ee6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Script\Debug">
+      <UniqueIdentifier>{06cec172-6959-42ac-a096-605bc3685956}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -552,9 +552,6 @@
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
     <ClCompile Include="Source\Script\AIMovementScript.cpp">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
     <ClCompile Include="Source\Script\ShootingScript.cpp">

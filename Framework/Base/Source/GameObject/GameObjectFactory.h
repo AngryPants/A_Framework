@@ -126,6 +126,21 @@ public:
 		return go;
 	}
 
+	static GameObject& CreatePlatform(const string& space, const string& name = "Platform") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
+		go.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Platform Low", "OBJ//Game//Platform//Low.obj"),
+													MeshBuilder::GetInstance().GenerateOBJ("Platform Mid", "OBJ//Game//Platform//Mid.obj"),
+													MeshBuilder::GetInstance().GenerateOBJ("Platform High", "OBJ//Game//Platform//High.obj")),
+		go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Platform", "Image//Game//Model_Textures//Platform.tga");
+		go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Platform", "Image//Game//Model_Textures//Platform.tga");
+		go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Platform", "Image//Game//Model_Textures//Platform.tga");
+		go.AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(4, 5, 6);
+		go.AddComponent<ColliderGroup<AABBCollider>>().colliders[0].isGround = true;
+		go.AddComponent<ColliderGroup<AABBCollider>>().colliders[0].centre.y = -2.5;
+
+		return go;
+	}
+
 	static GameObject& CreateSkyBox(const string& space, const string& name = "SkyBox", 
 		const string& textureUp = "", const string& textureDown = "", const string& textureLeft = "", 
 		const string& textureRight = "", const string& textureFront = "", const string& textureBack = "" ,

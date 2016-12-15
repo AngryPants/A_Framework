@@ -51,7 +51,7 @@ void PlayerMovementScript::Update(double deltaTime) {
 	}
 
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_JUMP] && onGround) {
-		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(0, 12, 0, FORCE_MODE::FM_IMPULSE);
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(0, 10, 0, FORCE_MODE::FM_IMPULSE);
 		onGround = false;
 		keyPressed = true;
 	}
@@ -77,6 +77,24 @@ void PlayerMovementScript::Update(double deltaTime) {
 	}
 
 	onGround = false;
+
+	//Bounds Checking
+	if (transform.GetPosition().x > 200) {
+		transform.SetLocalPosition(200, transform.GetPosition().y, transform.GetPosition().z);
+	} else if (transform.GetPosition().x < -200) {
+		transform.SetLocalPosition(-200, transform.GetPosition().y, transform.GetPosition().z);
+	}
+
+	if (transform.GetPosition().z > 200) {
+		transform.SetLocalPosition(transform.GetPosition().x, transform.GetPosition().y, 200);
+	} else if (transform.GetPosition().z < -200) {
+		transform.SetLocalPosition(transform.GetPosition().x, transform.GetPosition().y, -200);
+	}
+
+	if (transform.GetPosition().y < 0) {
+		transform.SetLocalPosition(transform.GetPosition().x, 0, transform.GetPosition().z);
+		rigidbody.velocity.y = 0;
+	}
 }
 
 void PlayerMovementScript::OnCollisionStay(const CollisionInfo& _info) {

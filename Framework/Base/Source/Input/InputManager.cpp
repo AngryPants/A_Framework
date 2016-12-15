@@ -115,6 +115,10 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo, INPUT_MOVE_JUMP, input.GetState());
 			break;
 		}
+		case KEYS::LEFT_CONTROL: {
+			SetInput(inputInfo, INPUT_CROUCH, input.GetState());
+			break;
+		}
 
 		//Looking
 		case KEYS::LEFT: {

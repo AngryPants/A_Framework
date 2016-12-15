@@ -30,6 +30,24 @@ void PlayerCameraScript::Update(double deltaTime) {
 	} else {
 		fov = Math::Min(60.0f, fov + static_cast<float>(deltaTime) * 360.0f);
 	}
+
+	Transform& transform = GetGameObject().GetComponent<Transform>();
+	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_CROUCH]) {
+		if (transform.GetLocalPosition().y > 0.6f) {
+			transform.Translate(0, -deltaTime* 5.0f, 0);
+			if (transform.GetLocalPosition().y < 0.6f) {
+				transform.SetLocalPosition(0, 0.6f, 0.0f);
+			}
+		}
+	} else {
+		if (transform.GetLocalPosition().y < 1.7f) {
+			transform.Translate(0, deltaTime* 5.0f, 0);
+			if (transform.GetLocalPosition().y > 1.7f) {
+				transform.SetLocalPosition(0, 1.7f, 0.0f);
+			}
+		}
+	}
+
 	GetGameObject().GetComponent<Camera>().SetFOV(fov);
 
 	if (GetGameObject().GetComponent<Transform>().GetLocalRotation().x > 89.0f) {
