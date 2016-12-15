@@ -43,6 +43,7 @@ private:
 	//Debuging Stuff
 	void RenderGridBoundaries(const string& _space);	
 	void RenderColliders(const string& _space);
+	void RenderUI(TextRenderer& textRenderer);
 
 	//Skybox
 	void RenderSkybox(const Vector3& position, const Skybox* _skybox);	
@@ -61,7 +62,7 @@ public:
 	//Interface Function(s)
 	virtual void Update(const string& space, double deltaTime);
 	virtual void Render(const string& _space, const Skybox* _skybox = nullptr);
-	virtual void RenderUI(const string& space);
+	
 	
 };
 

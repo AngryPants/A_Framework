@@ -53,16 +53,8 @@ private:
 	static GameObject& CreateRifleBase(const string& space, const string& name = "rifle")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		// collider 0 is the hitbox for picking up the gun
-		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
-		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
-		go.AddComponent<RifleComponent>();
 		go.AddComponent<LODMeshHolder>();
-		go.GetComponent<RifleComponent>().clipSize = 30;
-		go.GetComponent<RifleComponent>().currentClipSize = 30;
-		go.GetComponent<RifleComponent>().magazineSize = 150;
-		go.GetComponent<RifleComponent>().reloadTime = 1.f;
-		go.GetComponent<RifleComponent>().SetRateOfFire(10.f);
+		go.AddComponent<RifleComponent>();
 
 		return go;
 	}
@@ -228,6 +220,14 @@ public:
 	static GameObject& CreateEnemyRifle(const string& space, const string& name = "Enemy_Rifle")
 	{
 		GameObject& go = CreateRifleBase(space, name);
+		// collider 0 is the hitbox for enemy Range
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(10.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
+		go.GetComponent<RifleComponent>().clipSize = 10;
+		go.GetComponent<RifleComponent>().currentClipSize = 10;
+		go.GetComponent<RifleComponent>().magazineSize = 80;
+		go.GetComponent<RifleComponent>().reloadTime = 3.f;
+		go.GetComponent<RifleComponent>().SetRateOfFire(5.f);
 		go.CreateScript<AIShootingScript>();
 
 		return go;
@@ -236,6 +236,14 @@ public:
 	static GameObject& CreateEquippableRifle(const string& space, const string& name = "Normal_Rifle")
 	{
 		GameObject& go = CreateRifleBase(space, name);
+		// collider 0 is the hitbox for picking up the gun
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
+		go.GetComponent<RifleComponent>().clipSize = 30;
+		go.GetComponent<RifleComponent>().currentClipSize = 30;
+		go.GetComponent<RifleComponent>().magazineSize = 150;
+		go.GetComponent<RifleComponent>().reloadTime = 0.5f;
+		go.GetComponent<RifleComponent>().SetRateOfFire(8.f);
 		go.CreateScript<PlayerShootingScript>();
 
 		return go;
@@ -249,7 +257,7 @@ public:
 		go.AddComponent<ColliderGroup<SphereCollider>>();
 		go.AddComponent<LODMeshHolder>();
 		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(2);
-		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
 		//Health Script
 		go.CreateScript<HealthScript>();
 		return go;
@@ -272,13 +280,11 @@ public:
 		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 		enemyRifle.SetParent(go);*/
-		/*GameObject& enemyRifle = CreateEnemyRifle(space);
-		enemyRifle.GetComponent<RifleComponent>().clipSize = 10;
-		enemyRifle.GetComponent<RifleComponent>().currentClipSize = 10;
-		enemyRifle.GetComponent<RifleComponent>().magazineSize = 60;
-		enemyRifle.GetComponent<RifleComponent>().reloadTime = 3.f;
-		enemyRifle.GetComponent<RifleComponent>().SetRateOfFire(2.f);
-		enemyRifle.GetComponent<RifleComponent>().isHeld = true;*/
+
+		GameObject& enemyRifle = CreateEnemyRifle(space);
+		enemyRifle.GetComponent<RifleComponent>().isHeld = true;
+
+		enemyRifle.SetParent(go);
 
 		return go;
 	}
@@ -308,6 +314,48 @@ public:
 
 		return go;
 	}
+
+	//Doesnt work yet
+	static GameObject& CreateTextIn2D(const string& space, const GameObject& camera , const string& name = "TextIn2D", const Vector3 position = Vector3(0, 0, 0), const string& text = "", const string&textureFilepath = "Image//Fonts//Consolas.tga")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", textureFilepath);
+		go.GetComponent<TextRenderer>().text = text;
+		go.GetComponent<TextRenderer>().position = position;
+		return go;
+	}
+	//Doesnt work yet
+	static GameObject& CreateTextIn3D(const string& space, const string& name = "TextIn3D", const Vector3 position = Vector3(0, 0, 0), const string& text = "", const string&textureFilepath = "Image//Fonts//Consolas.tga")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", textureFilepath);
+		go.GetComponent<TextRenderer>().isUI = false;
+		go.GetComponent<TextRenderer>().text = text;
+		go.GetComponent<TextRenderer>().position = position;
+		return go;
+	}
+	//Doesnt work yet
+	static GameObject& CreateImageIn2D(const string& space, const string& name = "ImageIn2D", const string& filepath = "", const Vector3 position = Vector3(0, 0, 0), const string& text = "")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateQuad(name);
+		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture(name, filepath);
+		go.GetComponent<TextRenderer>().position = position;
+		return go;
+	}
+	//Doesnt work yet
+	static GameObject& CreateImageIn3D(const string& space, const string& name = "ImageIn3D", const string& filepath = "", const Vector3 position = Vector3(0, 0, 0), const string& text = "")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateQuad(name);
+		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture(name, filepath);
+		go.GetComponent<TextRenderer>().isUI = false;
+		go.GetComponent<TextRenderer>().position = position;
+		return go;
+	}
+	
 };
 
 #endif

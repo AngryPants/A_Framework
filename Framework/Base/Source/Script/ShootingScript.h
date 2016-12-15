@@ -20,14 +20,15 @@ public:
 
 	//Interface Function(s)
 
+	virtual void OnTriggerStay(const Collider& _collider){}
 	// define the bullet to shoot
-	virtual void ShootBullet(){};
+	virtual void ShootBullet(){}
 
 	//Manual reload
-	virtual bool ManualReload(){ return false; };
+	virtual bool ManualReload(){ return false; }
 
 	//For Different use cases
-	virtual bool ExtraCondition(){return false;};
+	virtual bool ExtraCondition(){ return false; }
 
 	//default firing
 	virtual void ShootingLogic(double deltaTime);

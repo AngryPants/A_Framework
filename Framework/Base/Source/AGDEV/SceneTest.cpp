@@ -20,7 +20,8 @@
 #include "DebugControlsScript.h" 
 #include "TriggerTestScript.h" 
 #include "../Script/PlayerShootingScript.h"
-#include "../Script/PlayerPickUpActionScript.h"
+#include "../Script/PlayerActionScript.h"
+#include "../Script/PlayerHealthScript.h"
 
 //Constructor(s) & Destructor
 SceneTest::SceneTest(const string& name) : Scene(name) {
@@ -61,13 +62,12 @@ void SceneTest::Init() {
 	//Player
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
-	player->CreateScript<DebugControlsScript>();
-	player->CreateScript<PlayerPickUpActionScript>();
-	player->CreateScript<HealthScript>();
+	player->CreateScript<PlayerActionScript>();
 	player->AddComponent<HealthComponent>();
+	player->CreateScript<PlayerHealthScript>();
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
-	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
 	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
@@ -78,6 +78,10 @@ void SceneTest::Init() {
 	camera->SetParent(*player);
 	camera->GetComponent<Transform>().SetLocalPosition(0, 1.7f, 0);
 	camera->CreateScript<PlayerCameraScript>();
+	camera->CreateScript<DebugControlsScript>();
+	camera->AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+	camera->AddComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+	camera->AddComponent<TextRenderer>().text = "HELLO WORLD";
 
 	//Lights
 	GameObject* light = &GameObjectFactory::CreateLight(name);
@@ -217,7 +221,6 @@ void SceneTest::Init() {
 	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Low","Image//Game//M24R//M24R.tga");
 	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M24R//M24R.tga");
 	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M24R//M24R.tga");
- 
 }
 
 void SceneTest::Update(double _deltaTime) {	
@@ -246,11 +249,6 @@ void SceneTest::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	RenderSystem::GetInstance().Render(name, &skybox);
 
-	//Render Entities UI
-	GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::DEPTH_TEST>();
-	GraphicsManager::GetInstance().SetToUI();
-
-	RenderSystem::GetInstance().RenderUI(name);
 	if (debugCountdown <= 0)
 	{
 		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();

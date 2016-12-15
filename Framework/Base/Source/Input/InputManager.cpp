@@ -85,7 +85,7 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo, INPUT_QUIT, input.GetState());
 			break;
 		}
-		case KEYS::R: {
+		case KEYS::F10: {
 			SetInput(inputInfo, INPUT_RESET, input.GetState());
 			break;
 		}
@@ -153,23 +153,21 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo,INPUT_RENDER_COLLIDERS_OFF,input.GetState());
 			break;
 		}
-
-		// Shooting
-		case KEYS::Q:
-		{
-			SetInput(inputInfo, INPUT_PLAYERSHOOT, input.GetState());
-			break;
-		}
-		// Shooting
-		case KEYS::F:
+		// reloading
+		case KEYS::R:
 		{
 			SetInput(inputInfo, INPUT_PLAYERRELOAD, input.GetState());
 			break;
 		}
 		//Pickup
-		case KEYS::G :
+		case KEYS::F :
 		{
 			SetInput(inputInfo, INPUT_PLAYERPICKUP, input.GetState());
+			break;
+		}
+		case KEYS::V:
+		{
+			SetInput(inputInfo, INPUT_PLAYERDISCARD, input.GetState());
 			break;
 		}
 	}
