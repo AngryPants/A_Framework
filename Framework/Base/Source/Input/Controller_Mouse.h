@@ -91,11 +91,12 @@ namespace controller {
 
 		//Cursor Movement
 		CursorPosition GetCursorPosition();
-		float GetTravelDistanceX();
-		float GetTravelDistanceY();
+		float GetTravelDistanceX() const;
+		float GetTravelDistanceY() const;
 		void SetDeadZone(const float& deadZone);
+		float GetDeadZone() const;
 
-		void ReadInput();
+		void ReadInput(bool resetCursor = true);
 		void Reset();
 		void SetWindow(GLFWwindow*const window);
 

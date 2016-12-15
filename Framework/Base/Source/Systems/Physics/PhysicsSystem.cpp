@@ -103,10 +103,10 @@ void PhysicsSystem::CheckGrid(Grid& _grid, Grid& _grid2) {
 		return;
 	}
 
-	vector<GameObjectID> goList = _grid.GetListOfObjects();
-	vector<GameObjectID> goList2 = _grid2.GetListOfObjects();
-	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
-		for (vector<GameObjectID>::iterator vecIter2 = goList2.begin(); vecIter2 != goList2.end(); ++vecIter2) {
+	const vector<GameObjectID>& goList = _grid.GetListOfObjects();
+	const vector<GameObjectID>& goList2 = _grid2.GetListOfObjects();
+	for (vector<GameObjectID>::const_iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
+		for (vector<GameObjectID>::const_iterator vecIter2 = goList2.begin(); vecIter2 != goList2.end(); ++vecIter2) {
 			//Get the GameObject.
 			GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*vecIter);
 			GameObject* go2 = GameObjectManager::GetInstance().GetGameObjectByID(*vecIter2);
@@ -150,11 +150,11 @@ void PhysicsSystem::Collision_AABB_Sphere(GameObject* _a, GameObject* _b) {
 	ColliderGroup<SphereCollider>& bColliderGroup = _b->GetComponent<ColliderGroup<SphereCollider>>();
 }*/
 
-void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {	
+void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 	ColliderGroup<SphereCollider>& aColliderGroup = _a->GetComponent<ColliderGroup<SphereCollider>>();
 	if (!aColliderGroup.IsActive()) {
 		return;
-	}	
+	}
 	ColliderGroup<SphereCollider>& bColliderGroup = _b->GetComponent<ColliderGroup<SphereCollider>>();
 	if (!bColliderGroup.IsActive()) {
 		return;
@@ -186,23 +186,21 @@ void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 			Vector3 bPosition = bGO->GetComponent<Transform>().GetPosition() + bCollider.centre;
 
 			//If either one is a trigger, then do empirical check.
-			if (aCollider.isTrigger || bCollider.isTrigger ||
-				!aGO->HasActiveComponent<Rigidbody>() ||
-				!bGO->HasActiveComponent<Rigidbody>()) {
+			if (aCollider.isTrigger || bCollider.isTrigger || (!aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>())) {
 				if (CollisionUtility::CheckCollisionSphereSphere_Empirical(aPosition, aCollider.GetRadius(), bPosition, bCollider.GetRadius())) {
 					Callback_OnTriggerStay(aGO, &bCollider);
 					Callback_OnTriggerStay(bGO, &aCollider);
 				}
-			} else {
+			} else if (aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
 				//Mathematical Check
-				Rigidbody& aRigidBody = aGO->GetComponent<Rigidbody>();
-				Rigidbody& bRigidBody = bGO->GetComponent<Rigidbody>();
+				/*Rigidbody& aRigidbody = aGO->GetComponent<Rigidbody>();
+				Rigidbody& bRigidbody = bGO->GetComponent<Rigidbody>();
 
 				ContactPoint contactPoint(&aCollider, &bCollider);
 				//Check for collision
 				if (CollisionUtility::CheckCollisionSphereSphere_Mathematical(
-					aPosition, aRigidBody.velocity, aCollider.GetRadius(),
-					bPosition, bRigidBody.velocity, bCollider.GetRadius(),
+					aPosition, aRigidbody.velocity, aCollider.GetRadius(),
+					bPosition, bRigidbody.velocity, bCollider.GetRadius(),
 					contactPoint.point, contactPoint.normal, contactPoint.separation)) {
 
 					//Now that there's a collision,
@@ -210,7 +208,7 @@ void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 					CollisionInfo aInfo;
 					aInfo.contacts.push_back(contactPoint);
 					aInfo.gameObject = bGO->GetID();
-					aInfo.relativeVelocity = aRigidBody.velocity - bRigidBody.velocity;
+					aInfo.relativeVelocity = aRigidbody.velocity - bRigidbody.velocity;
 					Callback_OnCollisionStay(aGO, &aInfo);
 
 					//Inform B
@@ -219,21 +217,105 @@ void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 					//Flip the normal around.
 					bInfo.contacts.back().normal.Flip();
 					bInfo.gameObject = aGO->GetID();
-					bInfo.relativeVelocity = bRigidBody.velocity - aRigidBody.velocity;
+					bInfo.relativeVelocity = bRigidbody.velocity - aRigidbody.velocity;
 					Callback_OnCollisionStay(bGO, &bInfo);
 
 					//Collision Response
-					Vector3 uNormalA = aRigidBody.velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
-					Vector3 uNormalB = bRigidBody.velocity.Projection(contactPoint.normal); //The component of Ball B's velocity along the normal.
+					Vector3 uNormalA = aRigidbody.velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
+					Vector3 uNormalB = bRigidbody.velocity.Projection(contactPoint.normal); //The component of Ball B's velocity along the normal.
 
-					float averageElasticity = (aRigidBody.elasticity + bRigidBody.elasticity) * 0.5f;
-					float combinedMass = aRigidBody.GetMass() + bRigidBody.GetMass();
+					float averageElasticity = (aRigidbody.elasticity + bRigidbody.elasticity) * 0.5f;
+					float combinedMass = aRigidbody.GetMass() + bRigidbody.GetMass();
 
-					aRigidBody.velocity = averageElasticity * (aRigidBody.velocity + (2.0f * bRigidBody.GetMass() / combinedMass) * (uNormalB - uNormalA));
-					bRigidBody.velocity = averageElasticity * (bRigidBody.velocity + (2.0f * aRigidBody.GetMass() / combinedMass) * (uNormalA - uNormalB));
-				}
+					aRigidbody.velocity = averageElasticity * (aRigidbody.velocity + (2.0f * bRigidbody.GetMass() / combinedMass) * (uNormalB - uNormalA));
+					bRigidbody.velocity = averageElasticity * (bRigidbody.velocity + (2.0f * aRigidbody.GetMass() / combinedMass) * (uNormalA - uNormalB));
+				}*/
+				Response_Sphere_Sphere(&aCollider, &aGO->GetComponent<Rigidbody>(), aPosition,
+									   &bCollider, &bGO->GetComponent<Rigidbody>(), bPosition);
+			} else if (aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>()) {
+				Response_Sphere_Sphere(&aCollider, &aGO->GetComponent<Rigidbody>(), aPosition,
+									   &bCollider, bGO, bPosition);
+			} else if (!aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
+				Response_Sphere_Sphere(&bCollider, &bGO->GetComponent<Rigidbody>(), bPosition,
+									   &aCollider, aGO, aPosition);
 			}
 		}
+	}
+}
+
+void PhysicsSystem::Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& _positionA, SphereCollider* _colliderB, Rigidbody* _rigidbodyB, const Vector3& _positionB) {
+
+	ContactPoint contactPoint(_colliderA, _colliderB);
+	//Check for collision
+	if (CollisionUtility::CheckCollisionSphereSphere_Mathematical(
+		_positionA, _rigidbodyA->velocity, _colliderA->GetRadius(),
+		_positionB, _rigidbodyB->velocity, _colliderB->GetRadius(),
+		deltaTime,
+		contactPoint.point, contactPoint.normal, contactPoint.separation)) {
+
+		GameObject* aGO = &_rigidbodyA->GetGameObject();
+		GameObject* bGO = &_rigidbodyB->GetGameObject();
+
+		//Now that there's a collision,
+		//Inform A
+		CollisionInfo aInfo;
+		aInfo.contacts.push_back(contactPoint);
+		aInfo.gameObject = bGO->GetID();
+		aInfo.relativeVelocity = _rigidbodyA->velocity - _rigidbodyB->velocity;
+		Callback_OnCollisionStay(aGO, &aInfo);
+
+		//Inform B
+		CollisionInfo bInfo;					
+		bInfo.contacts.push_back(contactPoint);
+		//Flip the normal around.
+		bInfo.contacts.back().normal.Flip();
+		bInfo.gameObject = aGO->GetID();
+		bInfo.relativeVelocity = _rigidbodyB->velocity - _rigidbodyA->velocity;
+		Callback_OnCollisionStay(bGO, &bInfo);
+
+		//Collision Response
+		Vector3 uNormalA = _rigidbodyA->velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
+		Vector3 uNormalB = _rigidbodyB->velocity.Projection(contactPoint.normal); //The component of Ball B's velocity along the normal.
+
+		float averageElasticity = (_rigidbodyA->elasticity + _rigidbodyB->elasticity) * 0.5f;
+		float combinedMass = _rigidbodyA->GetMass() + _rigidbodyB->GetMass();
+
+		_rigidbodyA->velocity = averageElasticity * (_rigidbodyA->velocity + (2.0f * _rigidbodyB->GetMass() / combinedMass) * (uNormalB - uNormalA));
+		_rigidbodyB->velocity = averageElasticity * (_rigidbodyB->velocity + (2.0f * _rigidbodyA->GetMass() / combinedMass) * (uNormalA - uNormalB));
+	}
+}
+
+void PhysicsSystem::Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& _positionA, SphereCollider* _colliderB, GameObject* _goB, const Vector3& _positionB) {
+	GameObject* goA = &_rigidbodyA->GetGameObject();
+
+	ContactPoint contactPoint(_colliderA, _colliderB);
+	//Check for collision
+	if (CollisionUtility::CheckCollisionSphereSphere_Mathematical(
+		_positionA, _rigidbodyA->velocity, _colliderA->GetRadius(),
+		_positionB, Vector3(0, 0, 0), _colliderB->GetRadius(),
+		deltaTime,
+		contactPoint.point, contactPoint.normal, contactPoint.separation)) {
+
+		//Now that there's a collision,
+		//Inform A
+		CollisionInfo aInfo;
+		aInfo.contacts.push_back(contactPoint);
+		aInfo.gameObject = _goB->GetID();
+		aInfo.relativeVelocity = _rigidbodyA->velocity;
+		Callback_OnCollisionStay(goA, &aInfo);
+
+		//Inform B
+		CollisionInfo bInfo;					
+		bInfo.contacts.push_back(contactPoint);
+		//Flip the normal around.
+		bInfo.contacts.back().normal.Flip();
+		bInfo.gameObject = goA->GetID();
+		bInfo.relativeVelocity = -_rigidbodyA->velocity;
+		Callback_OnCollisionStay(_goB, &bInfo);
+
+		//Collision Response
+		Vector3 uNormalA = _rigidbodyA->velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
+		(_rigidbodyA->velocity -= 2.0f * uNormalA) *= _rigidbodyA->elasticity;
 	}
 }
 
@@ -253,19 +335,23 @@ void PhysicsSystem::UpdateGravity(const string& _space) {
 		Rigidbody* componentPtr = static_cast<Rigidbody*>(*setIter);
 		if (componentPtr->IsActive() && componentPtr->useGravity) {
 			componentPtr->AddRelativeForce(componentPtr->gravity, FORCE_MODE::FM_ACCELERATION);
-		}		
+		}
 	}
 }
 
 void PhysicsSystem::UpdateCollision(const string& _space) {
 	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(_space);
+	
 	for (int x = 0; x < sp->GetxNumOfGrid(); ++x) {
 		for (int y = 0; y < sp->GetyNumOfGrid(); ++y) {
 			for (int z = 0; z < sp->GetzNumOfGrid(); ++z) {
-				
-				//Get the grid. If it's empty, no need to do collision check.
-				Grid& grid = sp->GetGrid(x, y, z);				
-				CheckGrid(grid);
+				//continue;
+				//Get the grid. If there is nothing in the grid, continue;
+				Grid& grid = sp->GetGrid(x, y, z);
+				if (grid.GetNumObjects() == 0) {
+					continue;
+				}
+				CheckGrid(grid);				
 
 				//Check with the surrounding grids.
 				for (unsigned int i = 0; i < 2; ++i) {
@@ -308,4 +394,10 @@ void PhysicsSystem::UpdateMovement(const string& _space) {
 			transform.Translate(componentPtr->velocity * deltaTime);
 		}
 	}
+}
+
+void PhysicsSystem::Update(const string& _space) {
+	UpdateGravity(_space);
+	UpdateCollision(_space);
+	UpdateMovement(_space);
 }

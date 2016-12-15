@@ -303,6 +303,7 @@ bool CollisionUtility::CheckCollisionSphereSphere_Empirical(Vector3 positionA, f
 
 bool CollisionUtility::CheckCollisionSphereSphere_Mathematical(const Vector3& _positionA, const Vector3& _velocityA, float _radiusA,
 															   const Vector3& _positionB, const Vector3& _velocityB, float _radiusB,
+															   double deltaTime,
 															   Vector3& _collisionPoint, Vector3& _collisionNormal, float& _separation) {
 	//The direction from A to B
 	Vector3 dirToB = _positionB - _positionA;
@@ -322,8 +323,7 @@ bool CollisionUtility::CheckCollisionSphereSphere_Mathematical(const Vector3& _p
 
 	Vector3 closestPt = _positionA + projection;
 	//Assume A is a line and add the radius to B.
-	float combinedRadius = _radiusA + _radiusB;
-	
+	float combinedRadius = _radiusA + _radiusB;	
 	float distSquared = (_positionB - closestPt).LengthSquared();
 	if (distSquared > combinedRadius * combinedRadius) {
 		return false;

@@ -24,10 +24,10 @@ protected:
 	set<GameObjectID> addQueue;
 	set<GameObjectID> removeQueue;
 
-public:
 	// The vector of objects due for migration to another grid
 	vector<GameObjectID> migrationList;
 
+public:
 	// Constructor
 	SpatialPartition();
 	virtual ~SpatialPartition();

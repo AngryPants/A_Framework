@@ -87,7 +87,7 @@ public:
 	bool IsHere(GameObjectID theObject) const;
 
 	// Get list of objects in this grid
-	vector<GameObjectID> GetListOfObjects();
+	const vector<GameObjectID>& GetListOfObjects();
 
 	//Get the number of objects in this grid.
 	int GetNumObjects() const;

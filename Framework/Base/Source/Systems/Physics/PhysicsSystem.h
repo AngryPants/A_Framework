@@ -2,11 +2,14 @@
 #define COLLISION_SYSTEM_H
 
 #include "SingletonTemplate.h"
+#include "Vector3.h"
 #include <string>
 
 //Forward Declaration
 class Grid;
 class GameObject;
+class Rigidbody;
+class SphereCollider;
 
 using std::string;
 
@@ -30,13 +33,17 @@ private:
 	//void Collision_AABB_Sphere(GameObject* _a, GameObject* _b);
 
 	void Collision_Sphere_Sphere(GameObject* _a, GameObject* _b);
+	void Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& positionA, SphereCollider* _colliderB, Rigidbody* _rigidbodyB, const Vector3& _positionB);
+	void Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& positionA, SphereCollider* _colliderB, GameObject* _goB, const Vector3& _positionB);
+
+	void UpdateGravity(const string& _space);	
+	void UpdateCollision(const string& _space);
+	void UpdateMovement(const string& _space);
 
 public:
 	//Function(s)
 	void UpdateDeltaTime(const string& _space, double _deltaTime);
-	void UpdateGravity(const string& _space);	
-	void UpdateCollision(const string& _space);
-	void UpdateMovement(const string& _space);
+	void Update(const string& _space);	
 
 };
 

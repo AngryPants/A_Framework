@@ -6,7 +6,7 @@
 //Constructor(s) & Destructor
 PlayerMovementScript::PlayerMovementScript(GameObject& gameObject) : Script(gameObject) {
 	movementSpeed = 5.0f;
-	rotationSpeed = 60.0f;
+	rotationSpeed = 360.0f;
 }
 
 PlayerMovementScript::~PlayerMovementScript() {
@@ -14,7 +14,8 @@ PlayerMovementScript::~PlayerMovementScript() {
 
 //Interface Function(s)
 void PlayerMovementScript::Update(double deltaTime) {
-	Transform& transform = GetGameObject().GetComponent<Transform>();
+	Transform& transform = GetGameObject().GetComponent<Transform>();	
+	transform.Rotate(0, deltaTime * rotationSpeed * InputManager::GetInstance().GetInputInfo().axis[IAXIS_LOOK_HORIZONTAL], 0);
 	if(InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MOVE_LEFT]) {
 		transform.Translate(movementSpeed * deltaTime * transform.GetLocalLeft());
 	}

@@ -17,6 +17,9 @@ Contains the implementation of the input manager.
 #include "Controller_Gamepad.h"
 #include <iostream>
 
+using std::cout;
+using std::endl;
+
 using namespace controller;
 
 InputManager::InputManager() {
@@ -121,6 +124,18 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo,INPUT_RENDER_SPATIAL_PARTITION_OFF,input.GetState());
 			break;
 		}
+		// Shooting
+		case KEYS::Q:
+		{
+			SetInput(inputInfo, INPUT_PLAYERSHOOT, input.GetState());
+			break;
+		}
+		//Pickup
+		case KEYS::G :
+		{
+			SetInput(inputInfo, INPUT_PLAYERPICKUP, input.GetState());
+			break;
+		}
 	}
 }
 
@@ -200,6 +215,27 @@ void ProcessInput(InputInfo& inputInfo, const Gamepad& input) {
 
 }
 
+void ProcessInput(InputInfo& inputInfo, const Mouse& mouse) {
+	/****************************************/
+	//This is where we start customising the controls for our game. It might get a little tedious.
+	//For the sake of standardisation, ensure that keyValue is between 0.0f to 1.0f.
+	//The point of keyValue is when using mouse or controller. When using a mouse, moving the mouse from the centre of
+	//the screen all the way to the edge of the screen will be considered 1.0f.
+	/****************************************/
+
+	if (mouse.GetTravelDistanceX() > mouse.GetDeadZone() || mouse.GetTravelDistanceX() < -mouse.GetDeadZone()) {
+		inputInfo.axis[IAXIS_LOOK_HORIZONTAL] = -mouse.GetTravelDistanceX();
+	} else {
+		inputInfo.axis[IAXIS_LOOK_HORIZONTAL] = 0.0f;
+	}
+
+	if (mouse.GetTravelDistanceY() > mouse.GetDeadZone() || mouse.GetTravelDistanceY() < -mouse.GetDeadZone()) {
+		inputInfo.axis[IAXIS_LOOK_VERTICAL] = mouse.GetTravelDistanceY();
+	} else {
+		inputInfo.axis[IAXIS_LOOK_VERTICAL] = 0.0f;
+	}
+}
+
 void InputManager::Update() {
 
 	Keyboard& keyboard = Keyboard::GetInstance();
@@ -232,6 +268,9 @@ void InputManager::Update() {
 	} else {
 		keyboard.ClearInput();
 	}
+
+	//Process mouse input.
+	ProcessInput(inputInfo, mouse);
 	/****************************************/
 	//Do not touch anything below unless you know what you're doing.
 	/****************************************/

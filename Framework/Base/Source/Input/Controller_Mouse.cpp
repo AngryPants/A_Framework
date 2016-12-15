@@ -1,5 +1,10 @@
 #include "Controller_Mouse.h"
 #include "../Application/Application.h"
+#include "MyMath.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 namespace controller {
 
@@ -38,12 +43,12 @@ namespace controller {
 		return this->cursorPosition;
 	}
 
-	float Mouse::GetTravelDistanceX() {
+	float Mouse::GetTravelDistanceX() const {
 		return travelDistanceX;
 	}
 
 	//NOTE: THE 0 VALUE FOR Y IS AT THE TOP OF THE SCREEN.
-	float Mouse::GetTravelDistanceY() {
+	float Mouse::GetTravelDistanceY() const {
 		return travelDistanceY;
 	}
 
@@ -57,7 +62,11 @@ namespace controller {
 		}
 	}
 
-	void Mouse::ReadInput() {
+	float Mouse::GetDeadZone() const {
+		return this->deadZone;
+	}
+
+	void Mouse::ReadInput(bool resetCursor) {
 		//Mouse Clicks
 		for (int i = 0; i < MAX_KEYS; ++i) {
 			previousState[i] = currentState[i];
@@ -81,10 +90,15 @@ namespace controller {
 
 		CursorPosition windowCentre;
 		windowCentre.Set(static_cast<float>(windowWidth / 2), static_cast<float>(windowHeight / 2));
-		glfwSetCursorPos(window, windowCentre.x, windowCentre.y);
+		if (resetCursor) {
+			glfwSetCursorPos(window, windowCentre.x, windowCentre.y);
+		}
 
-		travelDistanceX = static_cast<float>(cursorPosition.x) / static_cast<float>(windowWidth / 2);
-		travelDistanceY = static_cast<float>(cursorPosition.y) / static_cast<float>(windowHeight / 2);
+		//cout << "X (Centre): " << windowCentre.x << " Y (Centre): " << windowCentre.y << endl;
+		//cout << "X (Current): " << cursorPosition.x << " Y (Current): " << cursorPosition.y << endl;
+
+		travelDistanceX = static_cast<float>(cursorPosition.x - windowCentre.x) / static_cast<float>(windowWidth / 2);
+		travelDistanceY = static_cast<float>(cursorPosition.y - windowCentre.y) / static_cast<float>(windowHeight / 2);
 
 		if (travelDistanceX < deadZone && travelDistanceX > -deadZone) {
 			travelDistanceX = 0.0f;
@@ -92,6 +106,9 @@ namespace controller {
 		if (travelDistanceY < deadZone && travelDistanceY > -deadZone) {
 			travelDistanceY = 0.0f;
 		}
+
+		travelDistanceX = Math::Clamp(travelDistanceX, -1.0f, 1.0f);
+		travelDistanceY = Math::Clamp(travelDistanceY, -1.0f, 1.0f);		
 	}
 
 	void Mouse::Reset() {

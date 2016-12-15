@@ -70,15 +70,17 @@ public:
 
 	template <class Type>
 	Type& AddComponent() {
+		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
+		Component* componentPtr = nullptr;
 		if (HasComponent<Type>()) {
 			cout << "This GameObject already has this component." << endl;
-			throw std::exception("This GameObject already has this component.");
-		}
-
-		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
-		componentBitset[id] = 1;
-		Component* componentPtr = &ComponentManager::GetInstance().CreateComponent<Type>(*this);
-		components[id] = componentPtr;
+			componentPtr = components[id];
+			//throw std::exception("This GameObject already has this component.");
+		} else {
+			componentBitset[id] = 1;
+			componentPtr = &ComponentManager::GetInstance().CreateComponent<Type>(*this);
+			components[id] = componentPtr;
+		}		
 		
 		return *(static_cast<Type*>(componentPtr));
 	}

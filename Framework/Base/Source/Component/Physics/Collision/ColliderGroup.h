@@ -24,6 +24,8 @@ public:
 			cout << errorMessage << endl;
 	        throw std::exception(errorMessage.c_str());
 		}
+
+		CreateColliders(1);
 	}
 	virtual ~ColliderGroup() {}
 	

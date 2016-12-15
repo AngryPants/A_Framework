@@ -20,6 +20,10 @@ public:
 		cout << "Fucking Triggered!" << endl;
 	}
 
+	virtual void OnCollisionStay(const CollisionInfo& _info) {
+		cout << "Fucking Collided!" << endl;
+	}
+
 };
 
 #endif

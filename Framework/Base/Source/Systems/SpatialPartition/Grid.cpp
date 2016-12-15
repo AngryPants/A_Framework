@@ -137,7 +137,7 @@ bool Grid::IsHere(GameObjectID theObject) const
 }
 
 // Get list of objects in this grid
-vector<GameObjectID> Grid::GetListOfObjects()
+const vector<GameObjectID>& Grid::GetListOfObjects()
 {
 	return listOfObjects;
 }

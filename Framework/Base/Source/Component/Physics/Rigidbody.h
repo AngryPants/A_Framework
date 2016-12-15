@@ -45,8 +45,8 @@ public:
 	void SetVelocity(Vector3 _velocity);
 	void SetVelocity(float _x, float _y, float _z);
 
-	void AddRelativeForce(float _x, float _y, float _z, FORCE_MODE _mode);
-	void AddRelativeForce(Vector3 _force, FORCE_MODE _mode);
+	void AddRelativeForce(float _x, float _y, float _z, FORCE_MODE _mode = FORCE_MODE::FM_FORCE);
+	void AddRelativeForce(Vector3 _force, FORCE_MODE _mode = FORCE_MODE::FM_FORCE);
 
 	void SetMass(float _mass);
 	float GetMass();

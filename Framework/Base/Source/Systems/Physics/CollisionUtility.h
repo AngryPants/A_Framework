@@ -18,8 +18,9 @@ public:
 	//Accurate Collision Sphere
 	static bool CheckAccurateSphereSphereCollision(Vector3 positionA, Vector3& velocityA, float radiusA, Vector3 positionB, Vector3 velocityB, float radiusB);
 	static bool CheckCollisionSphereSphere_Mathematical(const Vector3& _positionA, const Vector3& _velocityA, float _radiusA,
-										   const Vector3& _positionB, const Vector3& _velocityB, float _radiusB,
-										   Vector3& _collisionPoint, Vector3& _collisionNormal, float& _separation);
+														const Vector3& _positionB, const Vector3& _velocityB, float _radiusB,
+														double deltaTime,
+														Vector3& _collisionPoint, Vector3& _collisionNormal, float& _separation);
 
 	//RayCasting (infiniteLength)
 	static bool CheckCollisionRaySphere(Vector3 lineOrigin, Vector3 dirVec, Vector3 positionSphere, float sphereRadius, Vector3& collisionPoint, Vector3& collisionNormal);

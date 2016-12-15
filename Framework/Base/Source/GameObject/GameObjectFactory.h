@@ -9,6 +9,11 @@
 #include "../Mesh/MeshBuilder.h"
 
 //Include Scripts
+#include "../Script/HealthScript.h"
+#include "../Script/BulletScript.h"
+#include "../Script/PlayerShootingScript.h"
+#include "../Script/AIShootingScript.h"
+#include "../Script/AIMovementScript.h"
 
 //Include Components
 #include "../Component/Rendering/Camera.h"
@@ -19,12 +24,22 @@
 #include "../Component/Rendering/MeshHolder.h"
 #include "../Component/Rendering/LODMeshHolder.h"
 #include "../Component/Rendering/SpriteRenderer.h"
+
 #include "../Component/Rendering/TextRenderer.h" 
 #include "../Component/Physics/Collision/ColliderGroup.h"
 
 //Include Colliders
 #include "../Collider/SphereCollider.h"
 #include "../Collider/AABBCollider.h"
+#include "../Component/Rendering/TextRenderer.h"
+#include "../Component/Physics/Transform.h"
+#include "../Component/Physics/Rigidbody.h"
+
+//////////////AGDEVGAME/////////////////////
+#include "../Component/Game/Bullet.h"
+#include "../Component/Game/Health.h"
+#include "../Component/Game/Rifle.h"
+#include "../Component/Game/Waypoint.h"
 
 class GameObjectFactory {
 
@@ -32,6 +47,22 @@ private:
 	//Constructor(s) & Destructor
 	GameObjectFactory() {}
 	virtual ~GameObjectFactory() {}
+
+	//private functions
+	static GameObject& CreateRifleBase(const string& space, const string& name = "rifle")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<ColliderGroup<SphereCollider>>();
+		go.AddComponent<RifleComponent>();
+		go.AddComponent<LODMeshHolder>();
+		go.GetComponent<RifleComponent>().clipSize = 30;
+		go.GetComponent<RifleComponent>().currentClipSize = 30;
+		go.GetComponent<RifleComponent>().magazineSize = 150;
+		go.GetComponent<RifleComponent>().reloadTime = 5.f;
+		go.GetComponent<RifleComponent>().SetRateOfFire(10.f);
+
+		return go;
+	}
 
 public:
 	//Interface Function(s)
@@ -88,6 +119,144 @@ public:
 		return go;
 	}
 
+	static GameObject& CreateSkyBox(const string& space, const string& name = "SkyBox", 
+		const string& textureUp = "", const string& textureDown = "", const string& textureLeft = "", 
+		const string& textureRight = "", const string& textureFront = "", const string& textureBack = "" ,
+		const float& distance = 1.5f , const float& scale = 100.f)
+	{
+		GameObject& center = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		center.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		center.GetComponent<Transform>().IgnoreSpatialPartition( true);
+
+		GameObject& up = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		up.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		up.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("SkyBox PlaneUp", "OBJ//Default//Plane.obj");
+		up.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("SkyBoxUpTexture", textureUp);
+		up.SetParent(center);
+		up.GetComponent<Transform>().SetLocalScale(scale, scale, scale);
+		up.GetComponent<Transform>().SetLocalRotation(0, 0, 180);
+		up.GetComponent<Transform>().SetLocalPosition(0, distance, 0);
+		up.GetComponent<Transform>().IgnoreSpatialPartition(true);
+
+		GameObject& down = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		down.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		down.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("SkyBox PlaneDown", "OBJ//Default//Plane.obj");
+		down.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("SkyBoxDownTexture", textureDown);
+		down.SetParent(center);
+		down.GetComponent<Transform>().SetLocalScale(scale, scale, scale);
+		down.GetComponent<Transform>().SetLocalPosition(0, -distance, 0);
+		down.GetComponent<Transform>().IgnoreSpatialPartition(true);
+
+		GameObject& left = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		left.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		left.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("SkyBox PlaneLeft", "OBJ//Default//Plane.obj");
+		left.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("SkyBoxLeftTexture", textureLeft);
+		left.SetParent(center);
+		left.GetComponent<Transform>().SetLocalScale(scale, scale, scale);
+		left.GetComponent<Transform>().Rotate(0, 0, 90);
+		left.GetComponent<Transform>().SetLocalPosition(distance, 0, 0);
+		left.GetComponent<Transform>().IgnoreSpatialPartition(true);
+
+		GameObject& right = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		right.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		right.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("SkyBox PlaneRight", "OBJ//Default//Plane.obj");
+		right.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("SkyBoxRightTexture", textureRight);
+		right.SetParent(center);
+		right.GetComponent<Transform>().SetLocalScale(scale, scale, scale);
+		right.GetComponent<Transform>().Rotate(0, 0, 270);
+		right.GetComponent<Transform>().SetLocalPosition(-distance, 0, 0);
+		right.GetComponent<Transform>().IgnoreSpatialPartition(true);
+
+		GameObject& front = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		front.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		front.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("SkyBox PlaneFront", "OBJ//Default//Plane.obj");
+		front.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("SkyBoxFrontTexture", textureFront);
+		front.SetParent(center);
+		front.GetComponent<Transform>().SetLocalScale(scale, scale, scale);
+		front.GetComponent<Transform>().Rotate(270, 0, 0);
+		front.GetComponent<Transform>().SetLocalPosition(0, 0, distance);
+		front.GetComponent<Transform>().IgnoreSpatialPartition(true);
+
+		GameObject& back = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		back.GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+		back.AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("SkyBox PlaneBack", "OBJ//Default//Plane.obj");
+		back.GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("SkyBoxBackTexture", textureBack);
+		back.SetParent(center);
+		back.GetComponent<Transform>().SetLocalScale(scale, scale, scale);
+		back.GetComponent<Transform>().Rotate(90, 0, 0);
+		back.GetComponent<Transform>().SetLocalPosition(0, 0, -distance);
+		back.GetComponent<Transform>().IgnoreSpatialPartition(true);
+
+		return center;
+	}
+
+	static GameObject& CreateEnemyBase(const string& space, const string& name = "Enemy")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<HealthComponent>();
+		go.AddComponent<ColliderGroup<SphereCollider>>(); 
+		go.AddComponent<LODMeshHolder>();
+
+		return go;
+	}
+
+	static GameObject& CreateBulletBase(const string& space, const string& name = "bullet")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<Rigidbody>();
+		go.AddComponent<ColliderGroup<SphereCollider>>();
+		go.AddComponent<BulletComponent>();
+		go.AddComponent<MeshHolder>();
+
+		return go;
+	}
+
+	static GameObject& CreateWayPointBase(const string& space, const string& name = "waypoint")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<WayPointComponent>();
+		go.AddComponent<ColliderGroup<SphereCollider>>(); 
+
+		return go;
+	}
+
+	static GameObject& CreateEnemyRifle(const string& space, const string& name = "Enemy_Rifle")
+	{
+		GameObject& go = CreateRifleBase(space, name);
+		go.CreateScript<AIShootingScript>();
+		return go;
+	}
+
+	static GameObject& CreateEquippableRifle(const string& space, const string& name = "Normal_Rifle")
+	{
+		GameObject& go = CreateRifleBase(space, name);
+		go.CreateScript<PlayerShootingScript>();
+
+		return go;
+	}
+
+	static GameObject& CreateDefaultEnemy(const string& space, const string& name = "Enemy")
+	{
+		GameObject& go = CreateEnemyBase(space,name);
+		go.CreateScript<AIShootingScript>();
+
+		//Create Rifle for enemy
+		GameObject& enemyRifle = CreateEnemyRifle(space, name);
+		enemyRifle.SetParent(go);
+		return go;
+	}
+
+	static GameObject& CreateDefaultMovingEnemy(const string& space, const string& name = "Enemy")
+	{
+		GameObject& go = CreateDefaultEnemy(space, name);
+		go.GetComponent<Transform>().SetLocalPosition(0, 1, 0);
+		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
+		//waypoint->CreateWayPoint(Vector3(20, 1, 20), 1.f);
+		//waypoint->CreateWayPoint(Vector3(-20, 1, 20), 1.f);
+		//waypoint->CreateWayPoint(Vector3(20, 1, -20), 1.f);
+		waypoint->CreateWayPoint(Vector3(-20, 1, -20), 1.f);
+		return go;
+	}
 };
 
 #endif
