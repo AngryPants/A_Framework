@@ -119,37 +119,33 @@ void PhysicsSystem::CheckGrid(Grid& _grid, Grid& _grid2) {
 	}
 }
 
+//Sort out the various collisions
 void PhysicsSystem::SortCollisionType(GameObject* _a, GameObject* _b) {
+	SortCollisionSphere(_a, _b);
+	SortCollisionAABB(_a, _b);
+}
+
+void PhysicsSystem::SortCollisionSphere(GameObject* _a, GameObject* _b) {
 	if (_a->HasActiveComponent<ColliderGroup<SphereCollider>>()) {
 		if (_b->HasActiveComponent<ColliderGroup<SphereCollider>>()) {
 			Collision_Sphere_Sphere(_a, _b);
+		} else if (_b->HasActiveComponent<ColliderGroup<AABBCollider>>()) {
+			Collision_Sphere_AABB(_a, _b);
 		}
 	}
 }
 
-/*void PhysicsSystem::Collision_AABB_AABB(GameObject* _a, GameObject* _b) {
-	Transform& aTransform = _a->GetComponent<Transform>();
-	ColliderGroup<AABBCollider>& aColliderGroup = _a->GetComponent<ColliderGroup<AABBCollider>>();
-
-	Transform& bTransform = _b->GetComponent<Transform>();
-	ColliderGroup<AABBCollider>& bColliderGroup = _b->GetComponent<ColliderGroup<AABBCollider>>();
-
-	//Another nested for loop to check every AABB Collider.
-	for (vector<AABBCollider>::iterator aIter = aColliderGroup.colliders.begin(); aIter != aColliderGroup.colliders.end(); ++aIter) {
-		for (vector<AABBCollider>::iterator bIter = bColliderGroup.colliders.begin(); bIter != aColliderGroup.colliders.end(); ++bIter) {
-
+void PhysicsSystem::SortCollisionAABB(GameObject* _a, GameObject* _b) {
+	if (_a->HasActiveComponent<ColliderGroup<AABBCollider>>()) {
+		if (_b->HasActiveComponent<ColliderGroup<AABBCollider>>()) {
+			Collision_AABB_AABB(_a, _b);
+		} else if (_b->HasActiveComponent<ColliderGroup<SphereCollider>>()) {
+			Collision_Sphere_AABB(_b, _a);
 		}
 	}
 }
 
-void PhysicsSystem::Collision_AABB_Sphere(GameObject* _a, GameObject* _b) {
-	Transform& aTransform = _a->GetComponent<Transform>();
-	ColliderGroup<AABBCollider>& aColliderGroup = _a->GetComponent<ColliderGroup<AABBCollider>>();
-
-	Transform& bTransform = _b->GetComponent<Transform>();
-	ColliderGroup<SphereCollider>& bColliderGroup = _b->GetComponent<ColliderGroup<SphereCollider>>();
-}*/
-
+//Sphere-Sphere
 void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 	ColliderGroup<SphereCollider>& aColliderGroup = _a->GetComponent<ColliderGroup<SphereCollider>>();
 	if (!aColliderGroup.IsActive()) {
@@ -192,44 +188,6 @@ void PhysicsSystem::Collision_Sphere_Sphere(GameObject* _a, GameObject* _b) {
 					Callback_OnTriggerStay(bGO, &aCollider);
 				}
 			} else if (aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
-				//Mathematical Check
-				/*Rigidbody& aRigidbody = aGO->GetComponent<Rigidbody>();
-				Rigidbody& bRigidbody = bGO->GetComponent<Rigidbody>();
-
-				ContactPoint contactPoint(&aCollider, &bCollider);
-				//Check for collision
-				if (CollisionUtility::CheckCollisionSphereSphere_Mathematical(
-					aPosition, aRigidbody.velocity, aCollider.GetRadius(),
-					bPosition, bRigidbody.velocity, bCollider.GetRadius(),
-					contactPoint.point, contactPoint.normal, contactPoint.separation)) {
-
-					//Now that there's a collision,
-					//Inform A
-					CollisionInfo aInfo;
-					aInfo.contacts.push_back(contactPoint);
-					aInfo.gameObject = bGO->GetID();
-					aInfo.relativeVelocity = aRigidbody.velocity - bRigidbody.velocity;
-					Callback_OnCollisionStay(aGO, &aInfo);
-
-					//Inform B
-					CollisionInfo bInfo;					
-					bInfo.contacts.push_back(contactPoint);
-					//Flip the normal around.
-					bInfo.contacts.back().normal.Flip();
-					bInfo.gameObject = aGO->GetID();
-					bInfo.relativeVelocity = bRigidbody.velocity - aRigidbody.velocity;
-					Callback_OnCollisionStay(bGO, &bInfo);
-
-					//Collision Response
-					Vector3 uNormalA = aRigidbody.velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
-					Vector3 uNormalB = bRigidbody.velocity.Projection(contactPoint.normal); //The component of Ball B's velocity along the normal.
-
-					float averageElasticity = (aRigidbody.elasticity + bRigidbody.elasticity) * 0.5f;
-					float combinedMass = aRigidbody.GetMass() + bRigidbody.GetMass();
-
-					aRigidbody.velocity = averageElasticity * (aRigidbody.velocity + (2.0f * bRigidbody.GetMass() / combinedMass) * (uNormalB - uNormalA));
-					bRigidbody.velocity = averageElasticity * (bRigidbody.velocity + (2.0f * aRigidbody.GetMass() / combinedMass) * (uNormalA - uNormalB));
-				}*/
 				Response_Sphere_Sphere(&aCollider, &aGO->GetComponent<Rigidbody>(), aPosition,
 									   &bCollider, &bGO->GetComponent<Rigidbody>(), bPosition);
 			} else if (aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>()) {
@@ -316,6 +274,113 @@ void PhysicsSystem::Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody
 		//Collision Response
 		Vector3 uNormalA = _rigidbodyA->velocity.Projection(contactPoint.normal); //The component of Ball A's velocity along the normal.
 		(_rigidbodyA->velocity -= 2.0f * uNormalA) *= _rigidbodyA->elasticity;
+	}
+}
+
+//AABB-AABB
+void PhysicsSystem::Collision_AABB_AABB(GameObject* _a, GameObject* _b) {
+
+	ColliderGroup<AABBCollider>& aColliderGroup = _a->GetComponent<ColliderGroup<AABBCollider>>();
+	if (!aColliderGroup.IsActive()) {
+		return;
+	}
+	ColliderGroup<AABBCollider>& bColliderGroup = _b->GetComponent<ColliderGroup<AABBCollider>>();
+	if (!bColliderGroup.IsActive()) {
+		return;
+	}
+
+	Transform& aTransform = _a->GetComponent<Transform>();
+	Transform& bTransform = _b->GetComponent<Transform>();
+
+	for (vector<AABBCollider>::iterator aIter = aColliderGroup.colliders.begin(); aIter != aColliderGroup.colliders.end(); ++aIter) {
+		//Collider
+		AABBCollider& aCollider = *aIter;
+		if (!aCollider.isActive) {
+			continue;
+		}		
+		for (vector<AABBCollider>::iterator bIter = bColliderGroup.colliders.begin(); bIter != bColliderGroup.colliders.end(); ++bIter) {
+			//Collider
+			AABBCollider& bCollider = *bIter;
+			if (!bCollider.isActive) {
+				continue;
+			}
+
+			//GameObjects
+			GameObject* aGO = GameObjectManager::GetInstance().GetGameObjectByID(aCollider.gameObjectID);
+			GameObject* bGO = GameObjectManager::GetInstance().GetGameObjectByID(bCollider.gameObjectID);
+
+			//Positions
+			Vector3 aPosition = aGO->GetComponent<Transform>().GetPosition() + aCollider.centre;
+			Vector3 bPosition = bGO->GetComponent<Transform>().GetPosition() + bCollider.centre;
+
+			if (aCollider.isTrigger || bCollider.isTrigger || (!aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>())) {
+				//Trigger Check
+				if (CollisionUtility::CheckCollisionAABB(aPosition, aCollider.size, bPosition, bCollider.size)) {
+					Callback_OnTriggerStay(aGO, &bCollider);
+					Callback_OnTriggerStay(bGO, &aCollider);
+				}
+			} else if (aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
+				
+			} else if (aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>()) {
+				
+			} else if (!aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
+				
+			}
+		}
+	}
+
+}
+
+//Sphere-AABB
+void PhysicsSystem::Collision_Sphere_AABB(GameObject* _a, GameObject* _b) {
+	ColliderGroup<SphereCollider>& aColliderGroup = _a->GetComponent<ColliderGroup<SphereCollider>>();
+	if (!aColliderGroup.IsActive()) {
+		return;
+	}
+	ColliderGroup<AABBCollider>& bColliderGroup = _b->GetComponent<ColliderGroup<AABBCollider>>();
+	if (!bColliderGroup.IsActive()) {
+		return;
+	}
+
+	Transform& aTransform = _a->GetComponent<Transform>();
+	Transform& bTransform = _b->GetComponent<Transform>();
+
+	for (vector<SphereCollider>::iterator aIter = aColliderGroup.colliders.begin(); aIter != aColliderGroup.colliders.end(); ++aIter) {
+		//Collider
+		SphereCollider& aCollider = *aIter;
+		if (!aCollider.isActive) {
+			continue;
+		}
+		
+		for (vector<AABBCollider>::iterator bIter = bColliderGroup.colliders.begin(); bIter != bColliderGroup.colliders.end(); ++bIter) {
+			//Collider
+			AABBCollider& bCollider = *bIter;
+			if (!bCollider.isActive) {
+				continue;
+			}
+
+			//GameObjects
+			GameObject* aGO = GameObjectManager::GetInstance().GetGameObjectByID(aCollider.gameObjectID);
+			GameObject* bGO = GameObjectManager::GetInstance().GetGameObjectByID(bCollider.gameObjectID);
+
+			//Positions
+			Vector3 aPosition = aGO->GetComponent<Transform>().GetPosition() + aCollider.centre;
+			Vector3 bPosition = bGO->GetComponent<Transform>().GetPosition() + bCollider.centre;
+
+			//If either one is a trigger, then do empirical check.
+			if (aCollider.isTrigger || bCollider.isTrigger || (!aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>())) {
+				if (CollisionUtility::CheckCollisionSphereAABB(aPosition, aCollider.GetRadius(), bPosition, bCollider.size)) {
+					Callback_OnTriggerStay(aGO, &bCollider);
+					Callback_OnTriggerStay(bGO, &aCollider);
+				}
+			} else if (aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
+				
+			} else if (aGO->HasActiveComponent<Rigidbody>() && !bGO->HasActiveComponent<Rigidbody>()) {
+				
+			} else if (!aGO->HasActiveComponent<Rigidbody>() && bGO->HasActiveComponent<Rigidbody>()) {
+				
+			}
+		}
 	}
 }
 

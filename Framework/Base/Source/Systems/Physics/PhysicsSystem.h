@@ -10,6 +10,7 @@ class Grid;
 class GameObject;
 class Rigidbody;
 class SphereCollider;
+class AABBCollider;
 
 using std::string;
 
@@ -29,12 +30,23 @@ private:
 	void CheckGrid(Grid& _grid);
 	void CheckGrid(Grid& _grid, Grid& _grid2);
 	void SortCollisionType(GameObject* _a, GameObject* _b);
+
+	void SortCollisionSphere(GameObject* _a, GameObject* _b);
+	void SortCollisionAABB(GameObject* _a, GameObject* _b);
+
 	//void Collision_AABB_AABB(GameObject* _a, GameObject* _b);
 	//void Collision_AABB_Sphere(GameObject* _a, GameObject* _b);
 
+	//Sphere-Sphere
 	void Collision_Sphere_Sphere(GameObject* _a, GameObject* _b);
 	void Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& positionA, SphereCollider* _colliderB, Rigidbody* _rigidbodyB, const Vector3& _positionB);
 	void Response_Sphere_Sphere(SphereCollider* _colliderA, Rigidbody* _rigidbodyA, const Vector3& positionA, SphereCollider* _colliderB, GameObject* _goB, const Vector3& _positionB);
+
+	//AABB-AABB
+	void Collision_AABB_AABB(GameObject* _a, GameObject* _b);
+
+	//Sphere-AABB
+	void Collision_Sphere_AABB(GameObject* _a, GameObject* _b);
 
 	void UpdateGravity(const string& _space);	
 	void UpdateCollision(const string& _space);
