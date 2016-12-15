@@ -67,10 +67,9 @@ void SceneTest::Init() {
 	player->AddComponent<HealthComponent>();
 	player->AddComponent<Rigidbody>().useGravity = false;
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
-	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
-	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
@@ -137,14 +136,14 @@ void SceneTest::Init() {
 	testBox2->AddComponent<Rigidbody>().elasticity = 0.1f;
 	testBox2->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1, 1, 1);
 
-	//Platforms
-	for (int p = 0; p < 4; ++p) {
-		GameObject* platform = &GameObjectFactory::CreateCube(name, "Platform");
-		platform->GetComponent<Transform>().SetLocalScale(10, 5, 10);
-		platform->GetComponent<Transform>().SetLocalPosition(5, 2.5 * p, p * 10);
-		platform->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(10, 5, 10);
-		platform->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].isGround = true;
-	}
+	////Platforms
+	//for (int p = 0; p < 4; ++p) {
+	//	GameObject* platform = &GameObjectFactory::CreateCube(name, "Platform");
+	//	platform->GetComponent<Transform>().SetLocalScale(10, 5, 10);
+	//	platform->GetComponent<Transform>().SetLocalPosition(5, 2.5 * p, p * 10);
+	//	platform->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(10, 5, 10);
+	//	platform->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].isGround = true;
+	//}
 
 	//LOD Sphere
 	//Mesh* meshLowLOD = MeshBuilder::GetInstance().GenerateSphere("Mesh Low LOD", Color(0, 1, 1), 6, 6, 0.5f);

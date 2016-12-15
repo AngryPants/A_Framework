@@ -6,7 +6,7 @@ AIMovementScript::AIMovementScript(GameObject& gameObject) : Script(gameObject)
 {
 	waypoints.clear();
 	current = nullptr;
-	moveSpeed = 0.05f;
+	moveSpeed = 0.25f;
 	reachedDestination = false;
 }
 
@@ -30,7 +30,13 @@ void AIMovementScript::OnTriggerStay(const Collider& _collider)
 void AIMovementScript::Update(double deltaTime)
 {
 	if (!reachedDestination)
-		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext()* moveSpeed);
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext() * 500);
+	if (GetGameObject().GetComponent<Rigidbody>().velocity.LengthSquared() > moveSpeed* moveSpeed)
+	{
+		GetGameObject().GetComponent<Rigidbody>().velocity.Normalize() *= moveSpeed;
+	}
+
+	GetGameObject().GetComponent<Rigidbody>().velocity.y = 0;
 }
 
 void AIMovementScript::CreateWayPoint(const Vector3& waypointPosition, const float& radius)

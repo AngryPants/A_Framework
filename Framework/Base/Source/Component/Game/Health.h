@@ -34,6 +34,11 @@ public:
 			healthpoints = health;
 	}
 
+	void TakeDamage(int damage)
+	{
+		healthpoints -= damage;
+	}
+
 	int GetCurrentHealth()
 	{
 		return healthpoints;
