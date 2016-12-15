@@ -9,6 +9,8 @@ public:
 	AIShootingScript(GameObject& gameObject);
 	virtual ~AIShootingScript();
 
+	virtual void OnTriggerStay(const Collider& _collider);
+
 	virtual void ShootBullet();
 
 	virtual bool ExtraCondition();

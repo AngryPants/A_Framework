@@ -53,9 +53,12 @@ void SceneTest::Init() {
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
 	player->CreateScript<PlayerPickUpActionScript>();
+	player->CreateScript<HealthScript>();
+	player->AddComponent<HealthComponent>();
+	player->AddComponent<Rigidbody>().useGravity = false;
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
-	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
-	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(5.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
+	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
@@ -173,7 +176,7 @@ void SceneTest::Init() {
 	Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M4A1//M4A1.obj");
 
 	GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
-	playerRifle->GetComponent<Transform>().SetLocalPosition(10, 1, 10);
+	playerRifle->GetComponent<Transform>().SetLocalPosition(1, 1, 10);
 	playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
 	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture","Image//Game//M4A1//M4A1.tga");
 	playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");

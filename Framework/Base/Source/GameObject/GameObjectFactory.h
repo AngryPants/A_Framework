@@ -53,7 +53,7 @@ private:
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		// collider 0 is the hitbox for picking up the gun
-		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
 		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
 		go.AddComponent<RifleComponent>();
 		go.AddComponent<LODMeshHolder>();
@@ -216,6 +216,7 @@ public:
 	{
 		GameObject& go = CreateRifleBase(space, name);
 		go.CreateScript<AIShootingScript>();
+
 		return go;
 	}
 
@@ -230,31 +231,38 @@ public:
 	static GameObject& CreateEnemyBase(const string& space, const string& name = "Enemy")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<Rigidbody>().useGravity = false;
 		go.AddComponent<HealthComponent>();
 		go.AddComponent<ColliderGroup<SphereCollider>>();
 		go.AddComponent<LODMeshHolder>();
-		//Collider 0 is enemy Attack range
+		//Collider 0 is enemy hitBox 
 		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(2);
-		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(10.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
+		//Health Script
+		go.CreateScript<HealthScript>();
 		return go;
 	}
 
-	static GameObject& CreateDefaultEnemy(const string& space, const string& name = "DefaultEnemy")
+	static GameObject& CreateDefaultEnemy(const string& space)
 	{
-		GameObject& go = CreateEnemyBase(space,name);
-
-		//Create Rifle for enemy
-		GameObject& enemyRifle = CreateEnemyRifle(space, name);
-		enemyRifle.SetParent(go);
-		return go;
-	}
-
-	static GameObject& CreateDefaultMovingEnemy(const string& space, const string& name = "MovingEnemy")
-	{
-		GameObject& go = CreateDefaultEnemy(space, name);
-		//Collider 1 is for CheckPoints Movement
-		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(5.f);
+		GameObject& go = CreateEnemyBase(space);
+		//Enemy AttackRange
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(10.f);
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
+		//Create Rifle for enemy
+		GameObject& enemyRifle = CreateEnemyRifle(space);
+		enemyRifle.SetParent(go);
+		//enemyRifle.GetComponent<RifleComponent>().isHeld = true;
+
+		return go;
+	}
+
+	static GameObject& CreateDefaultMovingEnemy(const string& space)
+	{
+		GameObject& go = CreateDefaultEnemy(space);
+		//Collider 2 is for Checking with waypoints Movement
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[2].SetRadius(2.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[2].isTrigger = true;
 		go.GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
 		waypoint->CreateWayPoint(Vector3(20, 1, 20), 10.f);

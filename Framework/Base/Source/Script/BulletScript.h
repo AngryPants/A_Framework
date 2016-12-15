@@ -21,22 +21,6 @@ public:
 		// if bullet time is up
 		if (GetGameObject().GetComponent<BulletComponent>().lifeTime <= 0.f)
 			GetGameObject().Destroy();
-	
-		//Collision done here
-		if (BulletCollisionDetection())
-		{
-			BulletCollisionResponse();
-		}
-	}
-
-	//Collision Bullet with Specific game Objects To be Done by subClasses
-	virtual bool BulletCollisionDetection()
-	{
-		return false;
-	}
-
-	virtual void BulletCollisionResponse()
-	{
 	}
 };
 
