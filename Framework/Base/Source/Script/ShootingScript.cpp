@@ -71,7 +71,6 @@ void ShootingScript::ShootingLogic(double deltaTime)
 	}
 }
 
-
 Vector3 ShootingScript::LookAt(Vector3 _target, Vector3 _up) 
 {
 	//Ensure that the parameters are valid.

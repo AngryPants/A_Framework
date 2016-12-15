@@ -53,7 +53,7 @@ private:
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		// collider 0 is the hitbox for picking up the gun
-		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
+		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
 		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
 		go.AddComponent<RifleComponent>();
 		go.AddComponent<LODMeshHolder>();
@@ -235,13 +235,6 @@ public:
 		go.AddComponent<HealthComponent>();
 		go.AddComponent<ColliderGroup<SphereCollider>>();
 		go.AddComponent<LODMeshHolder>();
-		//Mesh* MeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ(" Enemy Mesh Low LOD", "OBJ// Game //Enemy//EnemyLow.obj");
-		//Mesh* MeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Enemy Mesh Mid LOD", "OBJ// Game //Enemy//EnemyMid.obj");
-		//Mesh* MeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Enemy Mesh High LOD", "OBJ//Game// Enemy//EnemyHigh.obj");
-		//go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Enemy Texture", "Image//Game//Enemy//EnemyLow.tga");
-		//go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture(" Enemy Texture", "Image//Game//Enemy//EnemyMid.tga");
-		//go.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture(" Enemy Texture", "Image//Game//Enemy//EnemyHigh.tga");
-		//Collider 0 is enemy hitBox 
 		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(2);
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.f);
 		//Health Script
@@ -255,6 +248,7 @@ public:
 		//Enemy AttackRange
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(10.f);
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
+
 		//Create Rifle for enemy
 		/*Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD", "OBJ//Game//M4A1//M4A1.obj");
 		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M4A1//M4A1.obj");
@@ -265,7 +259,6 @@ public:
 		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 		enemyRifle.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 		enemyRifle.SetParent(go);*/
-
 		/*GameObject& enemyRifle = CreateEnemyRifle(space);
 		enemyRifle.GetComponent<RifleComponent>().clipSize = 10;
 		enemyRifle.GetComponent<RifleComponent>().currentClipSize = 10;
@@ -281,10 +274,11 @@ public:
 	{
 		GameObject& go = CreateDefaultEnemy(space);
 		//Collider 2 is for Checking with waypoints Movement
-		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[2].SetRadius(2.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[2].SetRadius(1.f);
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[2].isTrigger = true;
 		go.GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
+		//should be done outside
 		waypoint->CreateWayPoint(Vector3(20, 1, 20), 10.f);
 		waypoint->CreateWayPoint(Vector3(-20, 1, 20), 10.f);
 		waypoint->CreateWayPoint(Vector3(20, 1, -20), 10.f);
