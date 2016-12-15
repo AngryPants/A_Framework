@@ -242,7 +242,10 @@
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\Script\PlayerBulletScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
+      <Filter>Files\AGDEV\Script</Filter> 
+    </ClInclude>
+    <ClInclude Include="Source\Others\Skybox.h">
+      <Filter>Files\Others</Filter> 
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -550,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="Source\Script\ShootingScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Others\Skybox.cpp">
+      <Filter>Files\Others</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

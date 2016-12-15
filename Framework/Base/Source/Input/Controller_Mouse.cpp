@@ -10,7 +10,7 @@ namespace controller {
 
 	Mouse::Mouse() {
 		window = nullptr;
-		deadZone = 0.05f;
+		deadZone = 0.01f;
 		travelDistanceX = 0.0f;
 		travelDistanceY = 0.0f;
 	}

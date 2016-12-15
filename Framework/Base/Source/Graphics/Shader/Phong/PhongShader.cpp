@@ -107,7 +107,7 @@ namespace PhongShader {
 		shader->Update(uniforms.lightOn[lightIndex], false);
 	}
 
-	void RenderText(Mesh& mesh, TextureList& textureList, const string& text, Color color, const PhongShader::Uniforms& uniforms) {
+	void RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color, const PhongShader::Uniforms& uniforms) {
 		ShaderProgram* shaderProgram = GetShader();
 		shaderProgram->Update(uniforms.textEnabled, true);
 		shaderProgram->Update(uniforms.textColor, ToOpenglStruct(color), 1);
@@ -143,7 +143,7 @@ namespace PhongShader {
 		shaderProgram->Update(uniforms.textEnabled, false);
 	}
 	
-	void RenderMesh(Mesh& mesh, TextureList& textureList, const bool& enableLight, const PhongShader::Uniforms& shadowUniforms) {
+	void RenderMesh(Mesh& mesh, const TextureList& textureList, const bool& enableLight, const PhongShader::Uniforms& shadowUniforms) {
 		ShaderProgram* shaderProgram = GetShader();	
 		Mtx44 MVP, modelView, modelView_inverse_transpose;
 		MVP = GraphicsManager::GetInstance().projectionStack.Top() * GraphicsManager::GetInstance().viewStack.Top() * GraphicsManager::GetInstance().modelStack.Top();

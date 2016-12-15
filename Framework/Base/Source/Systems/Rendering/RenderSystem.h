@@ -3,6 +3,8 @@
 
 #include "SingletonTemplate.h"
 #include "../../Others/IDGenerator.h"
+#include "../../Texture/TextureList.h"
+#include "../../Others/Skybox.h"
 #include <string>
 #include <bitset>
 
@@ -36,17 +38,20 @@ private:
 	//Debuging Stuff
 	void RenderGridBoundaries(const string& _space);	
 
+	//Skybox
+	void RenderSkybox(const Vector3& position, const Skybox* _skybox);
+
 	//Debugging Stuff
 	Mesh* gridMesh;
 	Mesh* gridMeshEmpty;
 
-public:
+public:	
 	//Variable(s)
 	bool renderSpatialPartition;
 
 	//Interface Function(s)
 	virtual void Update(const string& space, double deltaTime);
-	virtual void Render(const string& space);
+	virtual void Render(const string& _space, const Skybox* _skybox = nullptr);
 	virtual void RenderUI(const string& space);
 	
 };
