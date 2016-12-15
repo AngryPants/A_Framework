@@ -16,8 +16,8 @@
 #include "PlayerMovementScript.h"
 #include "TranslateScript.h"
 #include "PivotScript.h"
-#include "DebugControlsScript.h"
-#include "TriggerTestScript.h"
+#include "DebugControlsScript.h" 
+#include "TriggerTestScript.h" 
 #include "../Script/PlayerShootingScript.h"
 #include "../Script/PlayerPickUpActionScript.h"
 
@@ -42,9 +42,9 @@ void SceneTest::Init() {
 	RenderHelper::GetInstance().EnableFog(false);
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 	
-	//SpatialPartition
-	int xGridSize = 10; int yGridSize = 20; int zGridSize = 10;
-	int xNumGrid = 10; int yNumGrid = 6; int zNumGrid = 10;
+	//SpatialPartition 
+	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
+	int xNumGrid = 13; int yNumGrid = 7; int zNumGrid = 13;  
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 	//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid);
 
@@ -54,7 +54,8 @@ void SceneTest::Init() {
 	player->CreateScript<DebugControlsScript>();
 	player->CreateScript<PlayerPickUpActionScript>();
 	player->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
-	player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
+	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
+ 
 	
 	//Camera
 	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Player Camera");
@@ -90,7 +91,18 @@ void SceneTest::Init() {
 	//cylinder->CreateScript<TranslateScript>();
 	//cylinder->CreateScript<RotateScript>();
 
-	//Ground
+	//Ground 
+	//GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
+	//ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
+	//ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
+	//ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
+	//ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
+
+	//SkyBox
+	GameObject* skyBox = &GameObjectFactory::CreateSkyBox(name);
+	skyBox->SetParent(*camera);
+	//skyBox->GetComponent<Transform>().SetLocalScale(100, 100, 100);
+	 
 	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
 	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
@@ -164,7 +176,7 @@ void SceneTest::Init() {
 	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture","Image//Game//M4A1//M4A1.tga");
 	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
 	//playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture", "Image//Game//M4A1//M4A1.tga");
-
+ 
 }
 
 void SceneTest::Update(double _deltaTime) {	
@@ -179,13 +191,14 @@ void SceneTest::Update(double _deltaTime) {
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
 		Application::GetInstance().Quit();
 	}
+ 
 	RenderSystem::GetInstance().Update(name, _deltaTime);
 	debugCountdown -= _deltaTime;
 
 	if (debugCountdown <= 0)
 	{
 		cout << "FPS: " << 1.0 / _deltaTime << endl;
-	}
+	} 
 }
 
 void SceneTest::Render() {

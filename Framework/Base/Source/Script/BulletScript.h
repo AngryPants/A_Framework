@@ -23,7 +23,7 @@ public:
 			GetGameObject().Destroy();
 		// update bullet force
 		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetGameObject().GetComponent<Transform>().GetForward() * GetGameObject().GetComponent<BulletComponent>().bulletSpeed, FORCE_MODE::FM_FORCE);
-	
+
 		//Collision done here
 		if (BulletCollisionDetection())
 		{

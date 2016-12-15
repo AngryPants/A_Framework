@@ -530,5 +530,20 @@
     <ClCompile Include="Source\Component\Rendering\Light.cpp">
       <Filter>Files\Component\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Script\AIShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\PlayerShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\AIMovementScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\ShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

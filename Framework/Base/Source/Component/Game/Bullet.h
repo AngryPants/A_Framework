@@ -21,7 +21,7 @@ public:
 		if (!gameObject.HasComponent<Rigidbody>())
 		{
 			gameObject.AddComponent<Rigidbody>();
-		}			
+		}
 	}
 	virtual ~BulletComponent(){}
 
