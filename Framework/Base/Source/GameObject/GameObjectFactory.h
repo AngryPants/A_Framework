@@ -293,8 +293,8 @@ public:
 		return go;
 	}
 
-
-	static GameObject& CreateTextIn2D(const string& space, const string& name = "TextIn2D", const Vector3 position = Vector3(0, 0, 0), const string& text = "", const string&textureFilepath = "Image//Fonts//Consolas.tga")
+	//Doesnt work yet
+	static GameObject& CreateTextIn2D(const string& space, const GameObject& camera , const string& name = "TextIn2D", const Vector3 position = Vector3(0, 0, 0), const string& text = "", const string&textureFilepath = "Image//Fonts//Consolas.tga")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
@@ -314,7 +314,7 @@ public:
 		go.GetComponent<TextRenderer>().position = position;
 		return go;
 	}
-
+	//Doesnt work yet
 	static GameObject& CreateImageIn2D(const string& space, const string& name = "ImageIn2D", const string& filepath = "", const Vector3 position = Vector3(0, 0, 0), const string& text = "")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);

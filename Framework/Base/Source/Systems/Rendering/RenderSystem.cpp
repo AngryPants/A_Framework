@@ -153,6 +153,7 @@ void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 	{
 		RenderUI(camPtr->GetGameObject().GetComponent<TextRenderer>());
 	}
+
 }
 
 //Render out a grid.
