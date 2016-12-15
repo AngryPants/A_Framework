@@ -7,10 +7,9 @@ class AIShootingScript : public ShootingScript
 {
 public:
 	AIShootingScript(GameObject& gameObject);
-
 	virtual ~AIShootingScript();
 
-	virtual void ShootBullet(const string& bulletName = "bullet", const string&filepath = "", const float& lifeTime = 5.f, const float& bulletSpeed = 20.f, const float& bulletSize = 10.f);
+	virtual void ShootBullet();
 
 	virtual bool ExtraCondition();
 };

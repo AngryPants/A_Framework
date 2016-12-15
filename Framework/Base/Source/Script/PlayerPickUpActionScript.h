@@ -9,8 +9,8 @@ public:
 	PlayerPickUpActionScript(GameObject& gameObject);
 	virtual ~PlayerPickUpActionScript();
 	
-	virtual void Update(double deltaTime);
-
+	virtual void OnTriggerStay(const Collider& _collider);
+	virtual void Update(double deltaTime){}
 };
 
 #endif

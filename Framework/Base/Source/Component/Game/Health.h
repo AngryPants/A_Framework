@@ -21,15 +21,17 @@ public:
 	void SetMaxHealth(int maxHP)
 	{
 		if (maxHP > 0)
+		{
 			maxHealth = maxHP;
+			if (healthpoints > maxHealth)
+				healthpoints = maxHealth;
+		}
 	}
 
 	void SetHealth(int health)
 	{
 		if (health > 0 && health < maxHealth)
 			healthpoints = health;
-		else if (maxHealth == 0)
-			maxHealth = healthpoints = health;
 	}
 
 	int GetCurrentHealth()

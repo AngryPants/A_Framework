@@ -11,12 +11,12 @@ class BulletComponent : public Component
 public:
 	//variables 
 	float lifeTime;
-	float bulletSpeed;
+	float bulletImpulse;
 	//Constructors
 	BulletComponent(GameObject& gameObject, PassKey<ComponentManager> _key)
 		: Component("Bullet Component", gameObject, _key)
 		, lifeTime(5.f)
-		, bulletSpeed(20.f) 
+		, bulletImpulse(50.f) 
 	{
 		if (!gameObject.HasComponent<Rigidbody>())
 		{
