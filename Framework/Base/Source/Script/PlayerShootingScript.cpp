@@ -17,7 +17,7 @@ void PlayerShootingScript::ShootBullet(const string& bulletName, const string&fi
 		GameObject& temp = GameObjectFactory::CreateBulletBase(GetGameObject().GetSpace());
 		temp.GetComponent<BulletComponent>().bulletSpeed = bulletSpeed;
 		temp.GetComponent<BulletComponent>().lifeTime = lifeTime;
-		temp.GetComponent<SphereCollider>().radius = bulletSize;
+		temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(bulletSize);
 		temp.GetComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ(bulletName,filepath);
 	}
 }

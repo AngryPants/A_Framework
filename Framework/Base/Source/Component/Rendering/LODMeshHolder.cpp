@@ -2,9 +2,10 @@
 #include "MeshHolder.h"
 #include "MeshRenderer.h"
 #include "../../Mesh/MeshBuilder.h"
+#include "../ComponentManager.h"
 
 //Constructor(s) & Destructor
-LODMeshHolder::LODMeshHolder(GameObject& _gameObject) : Component("LOD Mesh Holder", _gameObject)
+LODMeshHolder::LODMeshHolder(GameObject& _gameObject, PassKey<ComponentManager> _key) : Component("LOD Mesh Holder", _gameObject, _key)
 {
 	for (int i = 0; i < NUM_DETAIL_LEVEL; i++)
 	{

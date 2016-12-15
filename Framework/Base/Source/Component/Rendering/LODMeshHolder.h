@@ -19,7 +19,7 @@ public:
 	};
 
 	//Constructor(s) & Destructor
-	LODMeshHolder(GameObject& _gameObject);
+	LODMeshHolder(GameObject& _gameObject, PassKey<ComponentManager> _key);
 	virtual ~LODMeshHolder();
 
 	//Mesh

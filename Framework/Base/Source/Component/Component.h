@@ -3,12 +3,14 @@
 
 #include <string>
 #include <iostream>
+#include "PassKey.h"
 
 using std::string;
 using std::cout;
 using std::endl;
 
 class GameObject;
+class ComponentManager;
 
 static const unsigned int MAX_COMPONENTS = 64;
 
@@ -18,31 +20,29 @@ class Component {
 private:
 	//Variable(s)
 	GameObject* gameObject; //The GameObject that owns this Component.
-	string space;
+	string space;	
 
 public:
 	//Variable(s)
 	const string name;
-	bool isActive;
-	
+		
 	//Destructor
 	virtual ~Component();
 	
 	//Interface Function(s)
-	GameObject& GetGameObject() {
-		return *gameObject;
-	}
-	GameObject& GetGameObject() const {
-		return *gameObject;
-	}
-
-	const string& GetSpace() const {
-		return space;
-	}
+	GameObject& GetGameObject();
+	GameObject& GetGameObject() const;
+	const string& GetSpace() const;
+	bool IsActive() const;
+	virtual void SetActive();
+	virtual void SetInActive();
 		
 protected:
+	//Variable(s)
+	bool isActive;	
+
 	//Constructor(s)
-	Component(const string& name, GameObject& gameObject);
+	Component(const string& _name, GameObject& _gameObject, PassKey<ComponentManager> _key);
 
 };
 

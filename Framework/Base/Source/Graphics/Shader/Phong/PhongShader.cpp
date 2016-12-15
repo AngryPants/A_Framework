@@ -74,8 +74,8 @@ namespace PhongShader {
 
 	void UpdateLight(Light& light, Transform& transform, const unsigned int lightIndex, const PhongShader::Uniforms& uniforms) {
 		ShaderProgram* shader = GetShader();
-		shader->Update(uniforms.lightOn[lightIndex], light.isActive);
-		if (light.isActive == false) {
+		shader->Update(uniforms.lightOn[lightIndex], light.IsActive());
+		if (light.IsActive() == false) {
 			return;
 		}
 		shader->Update(uniforms.lightType[lightIndex], static_cast<int>(light.type));

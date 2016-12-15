@@ -83,7 +83,7 @@ private:
 	///**************************Global (Relative To World)**************************///
 	//Transformation
 	void CalculatePosition();
-	//void CalculateRotation();
+	void CalculateRotation();
 
 	//Direction Vectors
 	void CalculateGlobalVectors();
@@ -98,7 +98,7 @@ private:
 
 public:
 	//Constructor(s) & Destructor
-	Transform(GameObject& gameObject);
+	Transform(GameObject& _gameObject, PassKey<ComponentManager> _key);
 	virtual ~Transform();
 
 	//Check if our data is outdated.
@@ -115,7 +115,7 @@ public:
 	const Vector3& GetLocalScale() const;
 
 	//Get the position relative to the world.
-	Vector3 GetPosition();	
+	Vector3 GetPosition();
 	//Vector3 GetRotation();
 
 	//Get the Forward, Up and Left Vectors of the transform relative to the world.
@@ -163,6 +163,9 @@ public:
 	void Scale(const Vector3& scale);
 	void Scale(float x, float y, float z);
 	//void LookAt(Vector3 _target, Vector3 _up = Vector3(0, 1, 0));
+
+	virtual void SetInactive();
+	virtual void SetActive();
 
 };
 

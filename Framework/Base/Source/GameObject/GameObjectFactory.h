@@ -17,16 +17,22 @@
 
 //Include Components
 #include "../Component/Rendering/Camera.h"
-#include "../Component/Rendering/Light.h"
+#include "../Component/Rendering/Light.h" 
+#include "../Component/Physics/Transform.h"
+#include "../Component/Physics/Rigidbody.h" 
 #include "../Component/Rendering/MeshRenderer.h"
 #include "../Component/Rendering/MeshHolder.h"
 #include "../Component/Rendering/LODMeshHolder.h"
 #include "../Component/Rendering/SpriteRenderer.h"
+#include "../Component/Rendering/TextRenderer.h" 
+#include "../Component/Physics/Collision/ColliderGroup.h"
+
+//Include Colliders
+#include "../Collider/SphereCollider.h"
+#include "../Collider/AABBCollider.h"
 #include "../Component/Rendering/TextRenderer.h"
 #include "../Component/Physics/Transform.h"
 #include "../Component/Physics/Rigidbody.h"
-#include "../Component/Colliders/BoxCollider.h"
-#include "../Component/Colliders/SphereCollider.h"
 
 //////////////AGDEVGAME/////////////////////
 #include "../Component/Game/Bullet.h"
@@ -46,7 +52,7 @@ private:
 	static GameObject& CreateRifleBase(const string& space, const string& name = "rifle")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<BoxCollider>();
+		go.AddComponent<ColliderGroup<SphereCollider>>(); 
 		go.AddComponent<RifleComponent>();
 		go.AddComponent<LODMeshHolder>();
 		go.GetComponent<RifleComponent>().clipSize = 30;
@@ -188,7 +194,7 @@ public:
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<HealthComponent>();
-		go.AddComponent<BoxCollider>(); 
+		go.AddComponent<ColliderGroup<SphereCollider>>();  
 		go.AddComponent<LODMeshHolder>();
 
 		return go;
@@ -198,7 +204,7 @@ public:
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
 		go.AddComponent<Rigidbody>();
-		go.AddComponent<SphereCollider>();
+		go.AddComponent<ColliderGroup<SphereCollider>>(); 
 		go.AddComponent<BulletComponent>();
 		go.AddComponent<MeshHolder>();
 
@@ -208,8 +214,8 @@ public:
 	static GameObject& CreateWayPointBase(const string& space, const string& name = "waypoint")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<WayPointComponent>(); 
-		go.AddComponent<SphereCollider>();
+		go.AddComponent<WayPointComponent>();
+		go.AddComponent<ColliderGroup<SphereCollider>>(); 
 
 		return go;
 	}

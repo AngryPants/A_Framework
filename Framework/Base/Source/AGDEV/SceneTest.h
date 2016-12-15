@@ -20,7 +20,7 @@ public:
 	virtual void Init();
 	virtual void Save() {}
 	virtual void Load() {}
-	virtual void Update(double deltaTime);
+	virtual void Update(double _deltaTime);
 	virtual void Render();
 	virtual void Exit();
 

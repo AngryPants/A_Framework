@@ -1,8 +1,9 @@
 #include "SpriteRenderer.h"
 #include "../../GameObject/GameObject.h"
+#include "../ComponentManager.h"
 
 //Constructor(s) & Destructor
-SpriteRenderer::SpriteRenderer(GameObject& gameObject) : Component("Sprite Renderer", gameObject) {
+SpriteRenderer::SpriteRenderer(GameObject& _gameObject, PassKey<ComponentManager> _key) : Component("Sprite Renderer", _gameObject, _key) {
 	mesh = nullptr;
 	lightEnabled = false;
 	currentAnimation = nullptr;

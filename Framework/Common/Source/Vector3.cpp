@@ -394,6 +394,18 @@ Vector3& Vector3::Normalize( void ) throw( DivideByZero )
 	return *this;
 }
 
+Vector3 Vector3::Flipped() {
+	return -(*this);
+}
+
+Vector3& Vector3::Flip() {
+	this->x = -this->x;
+	this->y = -this->y;
+	this->z = -this->z;
+
+	return *this;
+}
+
 std::ostream& operator<< (std::ostream& os, const Vector3& rhs)
 {
 	os << "[X: " << rhs.x << ", Y: " << rhs.y << ", Z: " << rhs.z << "]";

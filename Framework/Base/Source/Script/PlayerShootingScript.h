@@ -2,7 +2,6 @@
 #define PLAYER_SHOOTING_SCRIPT_H
 
 #include "../Script/ShootingScript.h"
-#include "../Component/Colliders/SphereCollider.h"
 #include "../Input/InputManager.h"
 
 class PlayerShootingScript : public ShootingScript

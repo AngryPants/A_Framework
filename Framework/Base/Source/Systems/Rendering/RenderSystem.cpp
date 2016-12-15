@@ -32,7 +32,7 @@ void RenderSystem::Update(const string& space, double deltaTime) {
 	set<Component*>& spriteRenderers = ComponentManager::GetInstance().GetComponents<SpriteRenderer>(space);
 	for(set<Component*>::iterator setIter = spriteRenderers.begin(); setIter != spriteRenderers.end(); ++setIter) {
 		SpriteRenderer& spriteRenderer = *(static_cast<SpriteRenderer*>(*setIter));
-		if(!spriteRenderer.isActive) {
+		if(!spriteRenderer.IsActive()) {
 			continue;
 		}
 		spriteRenderer.Update(deltaTime);
@@ -46,7 +46,7 @@ void RenderSystem::Render(const string& space) {
 	set<Component*>& cameras = ComponentManager::GetInstance().GetComponents<Camera>(space);
 	for (set<Component*>::iterator setIter = cameras.begin(); setIter != cameras.end(); ++setIter) {
 		Camera* camPtr2 = static_cast<Camera*>(*setIter);
-		if (camPtr2->isActive == false) {
+		if (camPtr2->IsActive() == false) {
 			continue;
 		}
 		if (camPtr == nullptr) {
@@ -64,6 +64,7 @@ void RenderSystem::Render(const string& space) {
 		return;
 	}
 	
+	//Set to the camera's view.
 	camPtr->aspectRatio.Set(Application::GetInstance().GetWindowWidth(), Application::GetInstance().GetWindowHeight());
 	GraphicsManager::GetInstance().SetToCameraView(*camPtr, camPtr->GetGameObject().GetComponent<Transform>());	
 
@@ -72,7 +73,7 @@ void RenderSystem::Render(const string& space) {
 	unsigned int lightIndex = 0;
 	for (set<Component*>::iterator setIter = lights.begin(); setIter != lights.end() && lightIndex < RenderHelper::GetInstance().GetNumLights(); ++setIter) {
 		Light* lightPtr = static_cast<Light*>(*setIter);
-		if (lightPtr->isActive && lightPtr->GetGameObject().HasComponent<Transform>()) {
+		if (lightPtr->IsActive() && lightPtr->GetGameObject().HasComponent<Transform>()) {
 			RenderHelper::GetInstance().UpdateLight(*lightPtr, lightPtr->GetGameObject().GetComponent<Transform>(), lightIndex++);
 		}
 	}
@@ -84,6 +85,7 @@ void RenderSystem::Render(const string& space) {
 		RenderGridBoundaries(space);
 	}	
 
+	//Render out grid by grid.
 	Transform& camTransform = camPtr->GetGameObject().GetComponent<Transform>();
 	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(space);
 	for (int x = 0; x < sp->GetxNumOfGrid(); ++x) {
@@ -130,40 +132,49 @@ void RenderSystem::Render(const string& space) {
 	RenderGrid(sp->GetExtraGrid(), LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS);
 }
 
+//Render out a grid.
 void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLevel) {
 	vector<GameObjectID> goList = grid.GetListOfObjects();
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
-		Mesh* mesh = nullptr;
-		TextureList* textureList = nullptr;
+		//Get the GameObject.
 		GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*vecIter);
 		if (go == nullptr) {
 			continue;
-		} else if (go->HasComponent<MeshRenderer>() == false) {
+		}
+		
+		//Check for Mesh Renderer.
+		if (!go->HasComponent<MeshRenderer>() || !go->GetComponent<MeshRenderer>().IsActive()) {
 			continue;
 		}
 
-		MeshRenderer& meshRenderer = go->GetComponent<MeshRenderer>();
-		if (go->HasComponent<MeshHolder>()) {
+		//Initialise the mesh & textures we need to render.
+		Mesh* mesh = nullptr;
+		TextureList* textureList = nullptr;
+
+		//Check for type of MeshHolder.
+		if (go->HasComponent<MeshHolder>() && go->GetComponent<MeshHolder>().IsActive()) {
 			mesh = go->GetComponent<MeshHolder>().GetMesh();
 			textureList = &go->GetComponent<MeshHolder>().GetTextureList();
-		} else if (go->HasComponent<LODMeshHolder>()) {
+		} else if (go->HasComponent<LODMeshHolder>() && go->GetComponent<LODMeshHolder>().IsActive()) {
 			mesh = go->GetComponent<LODMeshHolder>().GetLODMesh(detailLevel);
 			textureList = &go->GetComponent<LODMeshHolder>().GetTextureList(detailLevel);
 		}
-		if (mesh == nullptr) {
-			continue;
-		}
-		modelStack.PushMatrix();
-			modelStack.MultMatrix(go->GetComponent<Transform>().GetTransformationMatrix());
-			RenderHelper::GetInstance().RenderMesh(*mesh, *textureList, meshRenderer.lightEnabled);
-		modelStack.PopMatrix();
+
+		//Check if we have anything to render.
+		if (mesh != nullptr && textureList != nullptr) {
+			modelStack.PushMatrix();
+				modelStack.MultMatrix(go->GetComponent<Transform>().GetTransformationMatrix());
+				RenderHelper::GetInstance().RenderMesh(*mesh, *textureList, go->GetComponent<MeshRenderer>().lightEnabled);
+			modelStack.PopMatrix();
+		}		
 	}
 }
 
 void RenderSystem::RenderUI(const string& space) {
 }
 
+//Render the grid boundaries for debuging purposes.
 void RenderSystem::RenderGridBoundaries(const string& _space) {
 	SpatialPartition* sp = SpatialPartitionSystem::GetInstance().GetSpatialPartition(_space);
 	if (sp == nullptr) {

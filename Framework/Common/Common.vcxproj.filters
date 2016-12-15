@@ -12,7 +12,7 @@
       <UniqueIdentifier>{d766b814-f82a-4083-a6ba-b390713db91f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Vector">
-      <UniqueIdentifier>{80abaf57-76ff-4253-bb44-2bd4a25cbe9a}</UniqueIdentifier>
+      <UniqueIdentifier>{8e4553c6-55c7-42ee-b27a-3d67b1fa5565}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +66,12 @@
     <ClInclude Include="Source\timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PassKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Vector.h">
       <Filter>Header Files\Vector</Filter>
     </ClInclude>
@@ -74,9 +80,6 @@
     </ClInclude>
     <ClInclude Include="Source\Vector3.h">
       <Filter>Header Files\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PassKey.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

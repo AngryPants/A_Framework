@@ -36,6 +36,12 @@ enum INPUT_TYPE {
 	NUM_KEYS,
 };
 
+enum INPUT_AXIS_TYPE {
+	IAXIS_LOOK_HORIZONTAL,
+	IAXIS_LOOK_VERTICAL,
+	NUM_INPUT_AXIS,
+};
+
 struct InputInfo {
 
 public:
@@ -45,6 +51,7 @@ public:
 	bitset<NUM_KEYS> previousState;
 	bitset<NUM_KEYS> keyReleased;
 	float keyValue[NUM_KEYS];
+	float axis[NUM_INPUT_AXIS];
 
 	//Constructor(s) & Destructor
 	InputInfo() = default;
@@ -53,6 +60,10 @@ public:
 	void ClampValues() {
 		for (auto& value : keyValue) {
 			value = Math::Clamp(value, 0.0f, 1.0f);
+		}
+
+		for (std::size_t j = 0; j < NUM_INPUT_AXIS; ++j) {
+			axis[j] = Math::Clamp(axis[j], -1.0f, 1.0f);
 		}
 	}
 
@@ -64,6 +75,10 @@ public:
 		for (unsigned int i = 0; i < static_cast<unsigned int>(NUM_KEYS); ++i) {
 			keyValue[i] = 0.0f;
 		}
+
+		for (std::size_t j = 0; j < NUM_INPUT_AXIS; ++j) {
+			axis[j] = 0.0f;
+		}
 	}
 
 	void Update() {
@@ -71,12 +86,10 @@ public:
 			if (keyDown[i] && !previousState[i]) {
 				previousState[i] = true;
 				keyPressed[i] = true;
-			}
-			else if (keyReleased[i]) {
+			} else if (keyReleased[i]) {
 				previousState[i] = false;
 				keyPressed[i] = false;
-			}
-			else {
+			} else {
 				keyPressed[i] = false;
 			}
 		}

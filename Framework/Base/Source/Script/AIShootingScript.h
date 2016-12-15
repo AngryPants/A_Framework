@@ -2,7 +2,6 @@
 #define AI_SHOOTING_SCRIPT_H
 
 #include "../Script/ShootingScript.h"
-#include "../Component/Colliders/SphereCollider.h"
 
 class AIShootingScript : public ShootingScript
 {

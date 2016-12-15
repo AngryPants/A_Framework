@@ -12,7 +12,7 @@ GameObject::GameObject(const string& _space, const string& _name, PassKey<GameOb
 	for (unsigned int i = 0; i < sizeof(scripts) / sizeof(scripts[0]); ++i) {
 		scripts[i] = nullptr;
 	}
-	tag = "Default";
+	tags.insert("Default");
 	AddComponent<Transform>();
 	node = SceneGraph::GetInstance().CreateSceneNode(*this); //SceneGraph
 }
@@ -67,9 +67,19 @@ bool GameObject::IsDestroyed() const {
 }
 
 //Scripts
+Script* GameObject::GetScript(unsigned int index) {
+	if (index > sizeof(scripts) / sizeof(scripts[0]) - 1) {
+		string errorMessage = "Unable to GetScript(" + to_string(index) + ") of GameObject " + name + " as there the specified slot is invalid.";
+		cout << errorMessage << endl;
+		return nullptr;
+	}
+
+	return scripts[index];
+}
+
 void GameObject::RemoveScript(unsigned int index) {
 	if (index > sizeof(scripts) / sizeof(scripts[0]) - 1) {
-		string errorMessage = "Unable to RemoveScript(" + to_string(index) + ") to GameObject " + name + " as there the specified slot is invalid.";
+		string errorMessage = "Unable to RemoveScript(" + to_string(index) + ") of GameObject " + name + " as there the specified slot is invalid.";
 		cout << errorMessage << endl;
 		return;
 	}

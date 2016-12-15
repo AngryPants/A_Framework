@@ -12,6 +12,7 @@ CPP file for Transform.
 #include "Transform.h"
 #include <iostream>
 #include "../../GameObject/GameObject.h"
+#include "../ComponentManager.h"
 
 using std::cout;
 using std::endl;
@@ -24,7 +25,7 @@ using std::endl;
 The constructor of Transform.
 */
 /*******************************************************************************/
-Transform::Transform(GameObject& gameObject) : Component("Transform", gameObject) {
+Transform::Transform(GameObject& _gameObject, PassKey<ComponentManager> _key) : Component("Transform", _gameObject, _key) {
 	ignoresSpatialPartition = false;
 	SetLocalPosition(0, 0, 0);
 	SetLocalRotation(0, 0, 0);
@@ -90,7 +91,7 @@ void Transform::Calculate() {
 
 	//Transformation
 	CalculatePosition();
-	//CalculateRotation();
+	CalculateRotation();
 
 	isDirty = false;
 }
@@ -191,6 +192,9 @@ void Transform::CalculatePosition() {
 		rotation.Set(x, y, z);
 	}
 }*/
+
+void Transform::CalculateRotation() {
+}
 
 //Direction Vectors
 void Transform::CalculateGlobalVectors() {
@@ -656,3 +660,11 @@ The up vector the transform is supposed to orient to.
 	//However, since the whole transform relies on our localRotation, we need to convert it.
 
 }*/
+
+void Transform::SetInactive() {
+	this->isActive = true;
+}
+
+void Transform::SetActive() {
+	this->isActive = true;
+}

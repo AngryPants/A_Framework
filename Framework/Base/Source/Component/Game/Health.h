@@ -10,10 +10,10 @@ private:
 	int maxHealth;
 public:
 	// constructor
-	HealthComponent(GameObject& gameObject,int health = 0) 
-		: Component("health",gameObject)
-		, healthpoints(health)
-		, maxHealth(health)
+	HealthComponent(GameObject& gameObject, PassKey<ComponentManager> _key)
+		: Component("Health Component", gameObject, _key)
+		, healthpoints(100)
+		, maxHealth(100)
 	{
 	} 
 	virtual ~HealthComponent(){}

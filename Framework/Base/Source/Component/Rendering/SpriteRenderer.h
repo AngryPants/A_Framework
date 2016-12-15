@@ -23,7 +23,7 @@ public:
 	bool lightEnabled;
 
 	//Constructor(s) & Destructor
-	SpriteRenderer(GameObject& gameObject);
+	SpriteRenderer(GameObject& _gameObject, PassKey<ComponentManager> _key);
 	virtual ~SpriteRenderer();
 
 	//Interface

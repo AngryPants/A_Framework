@@ -221,13 +221,44 @@ int SpatialPartition::GetzNumOfGrid() const
 /********************************************************************************
 Get a particular grid
 ********************************************************************************/
-Grid SpatialPartition::GetGrid(const int _xIndex, const int _yIndex , const int _zIndex) const
+Grid& SpatialPartition::GetGrid(const int _xIndex, const int _yIndex , const int _zIndex) const
 {
 	return theGrid[(_xIndex * yNumOfGrid * zNumOfGrid) + (_yIndex * zNumOfGrid) + _zIndex];
 }
 
-Grid SpatialPartition::GetExtraGrid() const {
+Grid& SpatialPartition::GetExtraGrid() const {
 	return theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid];
+}
+
+vector<Grid*> SpatialPartition::GetSurroundingGrids(const int _xIndex, const int _yIndex, const int _zIndex) {
+
+	vector<Grid*> result;
+	//Start From Bottom and Bottom Left
+	for (unsigned int x = 0; x < 3; ++x) {
+		for (unsigned int y = 0; y < 3; ++y) {
+			for (unsigned int z = 0; z < 3; ++z) {
+				int xIndex = _xIndex - 1 + x;
+				int yIndex = _yIndex - 1 + y;
+				int zIndex = _zIndex - 1 + z;
+
+				//If it is the centre grid, ignore it.
+				if (xIndex == _xIndex && yIndex == _yIndex && zIndex == _zIndex) {
+					continue;
+				}
+
+				//If it is not within our entire spatial partition, ignore it
+				if (xIndex < 0 || xIndex >= xNumOfGrid ||
+					yIndex < 0 || yIndex >= yNumOfGrid ||
+					zIndex < 0 || zIndex >= zNumOfGrid) {
+					continue;
+				}
+
+				result.push_back(&GetGrid(xIndex, yIndex, zIndex));
+			}
+		}		
+	}
+
+	return result;
 }
 
 /********************************************************************************

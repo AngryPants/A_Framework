@@ -24,10 +24,10 @@ protected:
 	set<GameObjectID> addQueue;
 	set<GameObjectID> removeQueue;
 
-public:
 	// The vector of objects due for migration to another grid
 	vector<GameObjectID> migrationList;
 
+public:
 	// Constructor
 	SpatialPartition();
 	virtual ~SpatialPartition();
@@ -64,8 +64,10 @@ public:
 	int GetzNumOfGrid() const; 
 
 	// Get a particular grid
-	Grid GetGrid(const int _xIndex, const int _yIndex, const int _zIndex) const; 
-	Grid GetExtraGrid() const;
+	Grid& GetGrid(const int _xIndex, const int _yIndex, const int _zIndex) const; 
+	Grid& GetExtraGrid() const;
+	vector<Grid*> GetSurroundingGrids(const int _xIndex, const int _yIndex, const int _zIndex);
+
 	// Get vector of objects from this Spatial Partition
 	vector<GameObjectID> GetObjects(Vector3 _position, const float _radius);
 

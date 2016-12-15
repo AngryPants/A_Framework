@@ -8,12 +8,7 @@ class WayPointComponent: public Component
 {
 public:
 	//constructor & destructor
-	WayPointComponent(GameObject& gameObject)
-		: Component("wayPointMovement", gameObject)
-	{
-		prev = next = nullptr;
-		trigger = false;
-	}
+	WayPointComponent(GameObject& gameObject, PassKey<ComponentManager> _key);
 	virtual ~WayPointComponent()
 	{
 	}

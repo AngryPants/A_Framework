@@ -136,16 +136,10 @@
     <ClInclude Include="Source\Systems\Rendering\RenderSystem.h">
       <Filter>Files\Systems\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Systems\Physics\CollisionSystem.h">
-      <Filter>Files\Systems\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h">
       <Filter>Files\Systems\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Source\AGDEV\PlayerCameraScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\RotateScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\AGDEV\SceneEmpty.h">
@@ -155,9 +149,6 @@
       <Filter>Files\AGDEV\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\AGDEV\PlayerMovementScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\ScaleScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\Rendering\LODMeshHolder.h">
@@ -177,24 +168,6 @@
     </ClInclude>
     <ClInclude Include="Source\Component\Rendering\MeshHolder.h">
       <Filter>Files\Component\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\TranslateScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\PivotScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Colliders\SphereCollider.h">
-      <Filter>Files\Component\Colliders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Colliders\BoxCollider.h">
-      <Filter>Files\Component\Colliders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Colliders\Collider.h">
-      <Filter>Files\Component\Colliders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AGDEV\DebugControlsScript.h">
-      <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\Game\Health.h">
       <Filter>Files\Component\Game</Filter>
@@ -228,6 +201,42 @@
     </ClInclude>
     <ClInclude Include="Source\Script\PlayerPickUpActionScript.h">
       <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Physics\Collision\ColliderGroup.h">
+      <Filter>Files\Component\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider\AABBCollider.h">
+      <Filter>Files\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider\Collider.h">
+      <Filter>Files\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider\CollisionInfo.h">
+      <Filter>Files\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider\ContactPoint.h">
+      <Filter>Files\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collider\SphereCollider.h">
+      <Filter>Files\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\TriggerTestScript.h">
+      <Filter>Files\AGDEV\Script\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\TranslateScript.h">
+      <Filter>Files\AGDEV\Script\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\DebugControlsScript.h">
+      <Filter>Files\AGDEV\Script\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\PivotScript.h">
+      <Filter>Files\AGDEV\Script\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\RotateScript.h">
+      <Filter>Files\AGDEV\Script\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\ScaleScript.h">
+      <Filter>Files\AGDEV\Script\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -318,14 +327,20 @@
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Component\Colliders">
-      <UniqueIdentifier>{c18cf088-c9d3-45ed-b5e4-d3a868be6b95}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Systems\SpacialPartition">
       <UniqueIdentifier>{caca3bb0-52ff-47ca-b842-f953a43308e9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Component\Others">
       <UniqueIdentifier>{a80a2e6a-f49a-49f7-9aef-3eb1215015d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Physics\Collision">
+      <UniqueIdentifier>{a96c28d1-4715-43ba-9bc8-10cb0fdfc656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Collider">
+      <UniqueIdentifier>{278104a7-58b2-45fb-bfda-4fb1d63a5e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Script\Debug">
+      <UniqueIdentifier>{06cec172-6959-42ac-a096-605bc3685956}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -434,9 +449,6 @@
     <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp">
       <Filter>Files\Systems\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Systems\Physics\CollisionSystem.cpp">
-      <Filter>Files\Systems\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
@@ -473,11 +485,50 @@
     <ClCompile Include="Source\Component\Rendering\MeshHolder.cpp">
       <Filter>Files\Component\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\Colliders\SphereCollider.cpp">
-      <Filter>Files\Component\Colliders</Filter>
+    <ClCompile Include="Source\Script\AIShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component\Colliders\BoxCollider.cpp">
-      <Filter>Files\Component\Colliders</Filter>
+    <ClCompile Include="Source\Script\PlayerShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\AIMovementScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\ShootingScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Systems\Physics\PhysicsSystem.cpp">
+      <Filter>Files\Systems\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider\AABBCollider.cpp">
+      <Filter>Files\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider\Collider.cpp">
+      <Filter>Files\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider\ContactPoint.cpp">
+      <Filter>Files\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collider\SphereCollider.cpp">
+      <Filter>Files\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Game\Bullet.cpp">
+      <Filter>Files\Component\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Game\Health.cpp">
+      <Filter>Files\Component\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Game\Rifle.cpp">
+      <Filter>Files\Component\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Game\Waypoint.cpp">
+      <Filter>Files\Component\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Rendering\Light.cpp">
+      <Filter>Files\Component\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Source\Script\AIShootingScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>

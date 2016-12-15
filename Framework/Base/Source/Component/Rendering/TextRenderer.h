@@ -16,12 +16,8 @@ public:
 	string text;
 
 	//Constructor(s) & Destructor
-	TextRenderer(GameObject& gameObject) : Component("Text Renderer", gameObject) {
-		mesh = nullptr;
-		lightEnabled = false;
-		textColor.Set(0, 0, 0);
-	}
-	virtual ~TextRenderer() {}
+	TextRenderer(GameObject& _gameObject, PassKey<ComponentManager> _key);
+	virtual ~TextRenderer();
 
 };
 

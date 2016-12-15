@@ -21,6 +21,8 @@ typedef std::bitset<MAX_COMPONENTS> ComponentBitset;
 
 class GameObjectManager;
 
+static const int MAX_SCRIPTS = 8;
+
 class GameObject {
 
 private:
@@ -30,7 +32,7 @@ private:
 	ComponentBitset componentBitset;
 	Component* components[MAX_COMPONENTS];
 	SceneNode* node;
-	Script* scripts[8];	
+	Script* scripts[MAX_SCRIPTS];
 	bool destroyed;
 	
 	//Destructor
@@ -43,7 +45,7 @@ public:
 
 	//Variable(s)
 	string name;
-	string tag;
+	set<string> tags;
 	
 	//Name
 	void SetName(const string& name);
@@ -58,16 +60,27 @@ public:
 	}
 
 	template <class Type>
-	Type& AddComponent() {
-		if (HasComponent<Type>()) {
-			cout << "This GameObject already has this component." << endl;
-			throw std::exception("This GameObject already has this component.");
+	bool HasActiveComponent() const {
+		if (!HasComponent<Type>()) {
+			return false;
 		}
 
+		return GetComponent<Type>().IsActive();
+	}
+
+	template <class Type>
+	Type& AddComponent() {
 		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
-		componentBitset[id] = 1;
-		Component* componentPtr = &ComponentManager::GetInstance().CreateComponent<Type>(*this);
-		components[id] = componentPtr;
+		Component* componentPtr = nullptr;
+		if (HasComponent<Type>()) {
+			cout << "This GameObject already has this component." << endl;
+			componentPtr = components[id];
+			//throw std::exception("This GameObject already has this component.");
+		} else {
+			componentBitset[id] = 1;
+			componentPtr = &ComponentManager::GetInstance().CreateComponent<Type>(*this);
+			components[id] = componentPtr;
+		}		
 		
 		return *(static_cast<Type*>(componentPtr));
 	}
@@ -154,6 +167,7 @@ public:
 	}
 
 	void RemoveScript(unsigned int index);
+	Script* GetScript(unsigned int index);
 	void UpdateScripts(double deltaTime, PassKey<GameObjectManager> _key);
 
 	//Parent

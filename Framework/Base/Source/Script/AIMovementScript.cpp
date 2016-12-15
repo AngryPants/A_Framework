@@ -28,9 +28,8 @@ void AIMovementScript::CreateWayPoint(const Vector3& waypointPosition, const flo
 {
 	GameObject& temp = GameObjectFactory::CreateWayPointBase(GetGameObject().GetSpace());
 	temp.GetComponent<Transform>().SetLocalPosition(waypointPosition);
-	temp.GetComponent<SphereCollider>().isTrigger = true;
-	temp.GetComponent<SphereCollider>().centre = waypointPosition;
-	temp.GetComponent<SphereCollider>().radius = radius;
+	temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
+	temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(radius);
 	waypoints.push_back(&temp);
 	UpdateWayPoint();
 }

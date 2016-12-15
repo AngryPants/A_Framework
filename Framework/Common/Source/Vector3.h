@@ -64,8 +64,11 @@ struct Vector3 : public Vector {
 	Vector3 Normalized(void) const throw(DivideByZero);
 	
 	//Normalize this vector and return a reference to it
-	//Throw a divide by zero exception if normalizing a zero vector
+	//Throw a divide by zero exception if normalizing a zero vector	
 	Vector3& Normalize(void) throw(DivideByZero);
+
+	Vector3 Flipped();
+	Vector3& Flip();	
 
 	friend std::ostream& operator<<( std::ostream& os, const Vector3& rhs); //print to ostream
 

@@ -17,13 +17,12 @@ void AIShootingScript::ShootBullet(const string& bulletName , const string&filep
 		GameObject& temp = GameObjectFactory::CreateBulletBase(GetGameObject().GetSpace());
 		temp.GetComponent<BulletComponent>().bulletSpeed = bulletSpeed;
 		temp.GetComponent<BulletComponent>().lifeTime = lifeTime;
-		temp.GetComponent<SphereCollider>().radius = bulletSize;
+		temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(bulletSize);
 		temp.GetComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ(bulletName, filepath);
 	}
 }
 
 bool AIShootingScript::ExtraCondition()
 {
-	return (GetGameObject().GetComponent<SphereCollider>().name == "AI_DetectionRadius" && GetGameObject().tag == "player");
-	//&& GetGameObject().GetComponent<SphereCollider>().OnTriggerEnter())
+	return false;
 }

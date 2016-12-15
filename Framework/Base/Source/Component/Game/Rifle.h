@@ -1,7 +1,6 @@
 #ifndef RIFLE_COMPONENT_H
 #define RIFLE_COMPONENT_H
 
-#include "../Colliders/BoxCollider.h"
 #include "../Rendering/LODMeshHolder.h"
 #include "../../GameObject/GameObject.h"
 #include "Vector3.h"
@@ -20,8 +19,8 @@ public:
 	bool fired;
 	bool isHeld;// whether gun is being hold
 	//Constructors
-	RifleComponent(GameObject& gameObject)
-		: Component("rifle", gameObject)
+	RifleComponent(GameObject& gameObject, PassKey<ComponentManager> _key)
+		: Component("Rifle Component", gameObject, _key)
 		, rateOfFire(0.f)
 		, reloadTime(0.f)
 		, currentClipSize(0)
@@ -30,9 +29,7 @@ public:
 		, isReloading(false)
 		, fired(false)
 		, isHeld(false)
-	{
-		if (!gameObject.HasComponent<BoxCollider>())
-			gameObject.AddComponent<BoxCollider>();
+	{		
 	}
 	virtual ~RifleComponent(){}
 
