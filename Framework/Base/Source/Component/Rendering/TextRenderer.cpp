@@ -6,6 +6,9 @@ TextRenderer::TextRenderer(GameObject& _gameObject, PassKey<ComponentManager> _k
 	mesh = nullptr;
 	lightEnabled = false;
 	textColor.Set(0, 0, 0);
+	isUI = true;
+	rotation = 0;
+	scale.Set(1, 1, 1);
 }
 
 TextRenderer::~TextRenderer() {

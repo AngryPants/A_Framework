@@ -122,6 +122,7 @@
     <ClCompile Include="Source\Component\Rendering\MeshHolder.cpp" />
     <ClCompile Include="Source\Component\Rendering\MeshRenderer.cpp" />
     <ClCompile Include="Source\Component\Rendering\SpriteRenderer.cpp" />
+    <ClCompile Include="Source\Component\Rendering\TextRenderer.cpp" />
     <ClCompile Include="Source\GameObject\GameObject.cpp" />
     <ClCompile Include="Source\GameObject\GameObjectManager.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsManager.cpp" />

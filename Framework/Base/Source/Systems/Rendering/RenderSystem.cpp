@@ -146,6 +146,13 @@ void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 		}
 	}
 	RenderGrid(sp->GetExtraGrid(), LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS);
+
+	//Render UI here(should be last to render) current camera
+	GraphicsManager::GetInstance().ClearDepth();
+	if (camPtr->GetGameObject().HasActiveComponent<TextRenderer>())
+	{
+		RenderUI(camPtr->GetGameObject().GetComponent<TextRenderer>());
+	}
 }
 
 //Render out a grid.
@@ -187,7 +194,19 @@ void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLeve
 	}
 }
 
-void RenderSystem::RenderUI(const string& space) {
+void RenderSystem::RenderUI(TextRenderer& textRenderer) {
+
+	if (textRenderer.mesh == nullptr || !textRenderer.IsActive())
+		return;
+
+	GraphicsManager::GetInstance().SetToUI();
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+	modelStack.PushMatrix();
+	modelStack.Translate(textRenderer.position.x, textRenderer.position.y, textRenderer.position.z);
+	modelStack.Rotate(textRenderer.rotation, 0, 0, 1);
+	modelStack.Scale(textRenderer.scale.x, textRenderer.scale.y, textRenderer.scale.z);
+	RenderHelper::GetInstance().RenderText(*textRenderer.mesh, textRenderer.textureList, textRenderer.text, textRenderer.textColor);
+	modelStack.PopMatrix();
 }
 
 void RenderSystem::RenderSkybox(const Vector3& position, const Skybox* _skybox) {

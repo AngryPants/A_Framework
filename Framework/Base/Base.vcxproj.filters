@@ -548,9 +548,6 @@
     <ClCompile Include="Source\Script\AIMovementScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Script\PlayerPickUpActionScript.cpp">
-      <Filter>Files\AGDEV\Script</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Script\ShootingScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
@@ -559,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="Source\Script\PlayerActionScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Rendering\TextRenderer.cpp">
+      <Filter>Files\Component\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

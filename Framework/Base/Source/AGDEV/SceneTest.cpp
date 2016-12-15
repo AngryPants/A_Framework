@@ -79,6 +79,9 @@ void SceneTest::Init() {
 	camera->GetComponent<Transform>().SetLocalPosition(0, 1.7f, 0);
 	camera->CreateScript<PlayerCameraScript>();
 	camera->CreateScript<DebugControlsScript>();
+	camera->AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+	camera->AddComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+	camera->AddComponent<TextRenderer>().text = "HELLO WORLD";
 
 	//Lights
 	GameObject* light = &GameObjectFactory::CreateLight(name);
@@ -246,11 +249,6 @@ void SceneTest::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	RenderSystem::GetInstance().Render(name, &skybox);
 
-	//Render Entities UI
-	GraphicsManager::GetInstance().Disable<GraphicsManager::MODE::DEPTH_TEST>();
-	GraphicsManager::GetInstance().SetToUI();
-
-	RenderSystem::GetInstance().RenderUI(name);
 	if (debugCountdown <= 0)
 	{
 		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
