@@ -97,7 +97,7 @@ void SceneAsn1::Init() {
 	ground->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].isGround = true;
 	
 	//Background Mountain
-	{
+	/*{
 		vector<unsigned char> heightMap;
 		GameObject* mountain = &GameObjectFactory::CreateEmpty(name, "Mountain");
 		mountain->GetComponent<Transform>().SetLocalPosition(0, -20, 500);
@@ -122,10 +122,10 @@ void SceneAsn1::Init() {
 		mountain->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Mountain Low", "Image//Game//Environment//Rock//Low.tga");
 		mountain->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Mountain Mid", "Image//Game//Environment//Rock//Mid.tga");
 		mountain->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Mountain High", "Image//Game//Environment//Rock//High.tga");
-	}
+	}*/
 
 	for (unsigned int g = 0; g < 400; ++g) {
-		Vector3 spawnPos(Math::RandFloatMinMax(-300.0f, 300.0f), 0, Math::RandFloatMinMax(-300.0f, 300.0f));
+		Vector3 spawnPos(Math::RandFloatMinMax(-150.0f, 150.0f), 0, Math::RandFloatMinMax(-150.0f, 150.0f));
 		GameObject& grass = GameObjectFactory::CreateGrass(name, "Grass");
 		grass.GetComponent<Transform>().SetLocalPosition(spawnPos);
 		grass.GetComponent<Transform>().SetLocalScale(4, 4, 4);
@@ -138,25 +138,76 @@ void SceneAsn1::Init() {
 		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(25, 0, 25);
 
 		//Create Rifle
-		//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
-		//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
-		//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");
-		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Default//Cube.obj");
-		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Default//Cube.obj");
-		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Default//Cube.obj");
+		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
+		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
+		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");		
 		GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
 		playerRifle->GetComponent<Transform>().SetLocalPosition(25, 1, 25);
 		playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Low","Image//Game//M24R//M24R.tga");
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M24R//M24R.tga");
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M24R//M24R.tga");
-	}	
+	}
 
 	{
-		for (unsigned int i = 0; i < 6; ++ i) {
+		//Create Cutscene Trigger
+		GameObject* cutsceneTrigger = &GameObjectFactory::CreateCutsceneTrigger(name);
+		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(-25, 0, 25);
+
+		//Create Rifle
+		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("M4A1 Mesh Low LOD","OBJ//Game//M4A1//M4A1Low.obj");
+		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ("M4A1 Mesh Mid LOD", "OBJ//Game//M4A1//M4A1Mid.obj");
+		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("M4A1 Mesh High LOD", "OBJ//Game//M4A1//M4A1High.obj");		
+		GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
+		playerRifle->GetComponent<Transform>().SetLocalPosition(-25, 1, 25);
+		playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
+		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Low","Image//Game//M24R//M24R.tga");
+		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M24R//M24R.tga");
+		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M24R//M24R.tga");
+	}
+
+	{
+		for (unsigned int i = 0; i < 0; ++ i) {
 			GameObject& platform = GameObjectFactory::CreatePlatform(name);
 			platform.GetComponent<Transform>().SetLocalPosition(20, i * 2 + 1, 20 + (i * 8));
 		}
+	}
+
+	{
+		GameObject& core = GameObjectFactory::CreateEmpty(name, "Core");
+		core.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Core Low", "OBJ//Game//Core//Low.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core Mid", "OBJ//Game//Core//Mid.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core High", "OBJ//Game//Core//High.obj"));
+		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture Low","Image//Game//Core//Core.tga");
+		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture Mid", "Image//Game/Core//Core.tga");
+		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture High", "Image//Game//Core//Core.tga");
+		core.GetComponent<MeshRenderer>().lightEnabled = false;
+
+		core.GetComponent<Transform>().SetLocalPosition(0, 25, -70);
+		core.GetComponent<Transform>().SetLocalScale(15, 15, 15);
+		core.CreateScript<RotateScript>();
+
+		GameObject& ring = GameObjectFactory::CreateEmpty(name, "Core Ring");
+		ring.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Core Ring Low", "OBJ//Game//Core//Ring//Low.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core Ring Mid", "OBJ//Game//Core//Ring//Mid.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core Ring High", "OBJ//Game//Core//Ring//High.obj"));
+		//ring.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Ring Texture Low","Image//Game//Core//Core.tga");
+		//ring.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Ring Texture Mid", "Image//Game/Core//Core.tga");
+		//ring.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Ring Texture High", "Image//Game//Core//Core.tga");
+		ring.SetParent(core);
+		ring.CreateScript<RotateScript>();
+
+		GameObject& ring2 = GameObjectFactory::CreateEmpty(name, "Core Ring");
+		ring2.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Core Ring Low", "OBJ//Game//Core//Ring//Low.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core Ring Mid", "OBJ//Game//Core//Ring//Mid.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core Ring High", "OBJ//Game//Core//Ring//High.obj"));
+		//ring2.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Ring Texture Low","Image//Game//Core//Core.tga");
+		//ring2.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Ring Texture Mid", "Image//Game/Core//Core.tga");
+		//ring2.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Ring Texture High", "Image//Game//Core//Core.tga");
+		ring2.SetParent(core);
+		ring2.GetComponent<Transform>().SetLocalScale(1.2, 1.2, 1.2);
+		ring2.GetComponent<Transform>().SetLocalRotation(90, 90, 90);
+		ring2.CreateScript<RotateScript>();
 	}
 
 }
