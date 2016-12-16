@@ -23,9 +23,6 @@ GameObject& GameObjectManager::CreateGameObject(const string& space, const strin
 		goVector.resize(goPtr->GetID() + 1, nullptr);
 	}
 	goVector[goPtr->GetID()] = goPtr;
-	
-	//SpatialPartition
-	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(space)->Add(goPtr->GetID());
 
 	return *goPtr;
 }
@@ -45,6 +42,9 @@ void GameObjectManager::AddGameObjects() {
 			goSet.insert(goPtr);
 			goMap.insert(pair<string, set<GameObject*> >(goPtr->GetSpace(), goSet));
 		}
+
+		//SpatialPartition
+		SpatialPartitionSystem::GetInstance().CreateSpatialPartition(goPtr->GetSpace())->Add(goPtr->GetID());
 	}
 	addQueue.clear();
 }
@@ -53,9 +53,9 @@ void GameObjectManager::RemoveGameObjects() {
 	for (set<GameObject*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ++setIter) {
 		GameObject* goPtr = *setIter;
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
+		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 		mapIter->second.erase(goPtr);
-		goVector[goPtr->GetID()] = nullptr; 
-		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+		goVector[goPtr->GetID()] = nullptr; 		
 		goPtr->Delete({});
 	}
 	removeQueue.clear();
@@ -70,7 +70,7 @@ GameObject* GameObjectManager::GetGameObjectByID(GameObjectID id) {
 
 void GameObjectManager::Clear(const string& space) {
 	//Remove them from our remove queue, since we're gonna delete it in the main set anyways.
-	set<GameObject*>::iterator setIter = removeQueue.begin();
+	/*set<GameObject*>::iterator setIter = removeQueue.begin();
 	while (setIter != removeQueue.end()) {
 		GameObject* goPtr = *setIter;
 		if (goPtr->GetSpace() == space) {
@@ -85,23 +85,60 @@ void GameObjectManager::Clear(const string& space) {
 	while (setIter != addQueue.end()) {
 		GameObject* goPtr = *setIter;
 		if (goPtr->GetSpace() == space) {
+			//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 			setIter = addQueue.erase(setIter);
-			goVector[goPtr->GetID()] = nullptr;
-			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+			goVector[goPtr->GetID()] = nullptr;			
 			goPtr->Delete({});
 		} else {
 			++setIter;
 		}
+	}*/
+
+	for (set<GameObject*>::iterator setIter = addQueue.begin(); setIter != addQueue.end(); ) {
+		GameObject* goPtr = *setIter;
+		if (goPtr->GetSpace() != space) {
+			++setIter;
+			continue;
+		}
+
+		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
+		if (mapIter != goMap.end()) {
+			mapIter->second.insert(goPtr);
+		}
+		else {
+			set<GameObject*> goSet;
+			goSet.insert(goPtr);
+			goMap.insert(pair<string, set<GameObject*> >(goPtr->GetSpace(), goSet));
+		}
+
+		//SpatialPartition
+		//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(goPtr->GetSpace())->Add(goPtr->GetID());
+		setIter = addQueue.erase(setIter);
+	}
+
+	for (set<GameObject*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ) {
+		GameObject* goPtr = *setIter;
+		if (goPtr->GetSpace() != space) {
+			++setIter;
+			continue;
+		}
+
+		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
+		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+		mapIter->second.erase(goPtr);
+		goVector[goPtr->GetID()] = nullptr;
+		goPtr->Delete({});
+		setIter = removeQueue.erase(setIter);
 	}
 
 	//Delete the main set.
 	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
 	if (mapIter != goMap.end()) {
-		setIter = mapIter->second.begin();
+		set<GameObject*>::iterator setIter = mapIter->second.begin();
 		while (setIter != mapIter->second.end()) {
 			GameObject* goPtr = *setIter;
+			//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 			goVector[goPtr->GetID()] = nullptr;
-			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 			goPtr->Delete({});
 			++setIter;
 		}

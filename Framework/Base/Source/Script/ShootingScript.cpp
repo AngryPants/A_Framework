@@ -17,11 +17,11 @@ void ShootingScript::Update(double deltaTime)
 void ShootingScript::ShootingLogic(double deltaTime)
 {
 	// if gun is reloading or player Manual Reloads
-	if (GetGameObject().GetComponent<RifleComponent>().isReloading || ManualReload())
+	if (GetGameObject().GetComponent<RifleComponent>().isReloading == true|| ManualReload() )
 	{
 		timeLeftBeforeReloaded += deltaTime;
 		// if reloaded
-		if (timeLeftBeforeReloaded > GetGameObject().GetComponent<RifleComponent>().reloadTime)
+		if (timeLeftBeforeReloaded >= GetGameObject().GetComponent<RifleComponent>().reloadTime)
 		{
 			// if there is still magazine
 			if (GetGameObject().GetComponent<RifleComponent>().magazineSize > 0)
@@ -31,20 +31,29 @@ void ShootingScript::ShootingLogic(double deltaTime)
 				{
 					GetGameObject().GetComponent<RifleComponent>().currentClipSize = GetGameObject().GetComponent<RifleComponent>().magazineSize;
 					GetGameObject().GetComponent<RifleComponent>().magazineSize = 0;
+					cout << "Clips Left : " << GetGameObject().GetComponent<RifleComponent>().currentClipSize;
 				}
 				// if there is magazine has more then or just enough clips, deduct from it
 				else if (GetGameObject().GetComponent<RifleComponent>().magazineSize >= GetGameObject().GetComponent<RifleComponent>().clipSize)
 				{
 					GetGameObject().GetComponent<RifleComponent>().magazineSize -= GetGameObject().GetComponent<RifleComponent>().clipSize;
 					GetGameObject().GetComponent<RifleComponent>().currentClipSize = GetGameObject().GetComponent<RifleComponent>().clipSize;
+					cout << "Magazine Left : " << GetGameObject().GetComponent<RifleComponent>().magazineSize <<endl;
 				}
 			}
+			else
+			{
+				GetGameObject().GetComponent<RifleComponent>().currentClipSize = 0;
+				cout << "Out of Ammo" << endl;
+			}
 			GetGameObject().GetComponent<RifleComponent>().isReloading = false;
+			GetGameObject().GetComponent<RifleComponent>().fired = false;
 			timeLeftBeforeReloaded = 0.f;
+			timeBeforeNextBullet = 0.f;
 		}
 	}
 	// if gun just fired
-	else if (GetGameObject().GetComponent<RifleComponent>().fired)
+	else if (GetGameObject().GetComponent<RifleComponent>().fired == true)
 	{
 		timeBeforeNextBullet += deltaTime;
 		if (timeBeforeNextBullet > 1.f / GetGameObject().GetComponent<RifleComponent>().GetRateOfFire())
@@ -53,21 +62,22 @@ void ShootingScript::ShootingLogic(double deltaTime)
 			timeBeforeNextBullet = 0.f;
 		}
 	}
-	// if Rifle is ready to fire
-	else if (ExtraCondition() &&
-		GetGameObject().GetComponent<RifleComponent>().currentClipSize > 0 &&
-		!GetGameObject().GetComponent<RifleComponent>().isReloading &&
-		!GetGameObject().GetComponent<RifleComponent>().fired)
+	// gun has to reload
+	else if (GetGameObject().GetComponent<RifleComponent>().currentClipSize <= 0 &&
+		GetGameObject().GetComponent<RifleComponent>().isReloading == false)
 	{
+		GetGameObject().GetComponent<RifleComponent>().isReloading = true;
+	}
+	// if Rifle is ready to fire
+	else if (ExtraCondition()/* &&*/
+		/*GetGameObject().GetComponent<RifleComponent>().currentClipSize > 0 &&
+		GetGameObject().GetComponent<RifleComponent>().isReloading == false &&
+		GetGameObject().GetComponent<RifleComponent>().fired == false*/)
+	{
+		cout << "Trying to shoot" << endl;
 		ShootBullet();
 		GetGameObject().GetComponent<RifleComponent>().currentClipSize -= 1;
 		GetGameObject().GetComponent<RifleComponent>().fired = true;
-	}
-	// gun just fired
-	else if (GetGameObject().GetComponent<RifleComponent>().currentClipSize <= 0 &&
-		!GetGameObject().GetComponent<RifleComponent>().isReloading)
-	{
-		GetGameObject().GetComponent<RifleComponent>().isReloading = true;
 	}
 }
 

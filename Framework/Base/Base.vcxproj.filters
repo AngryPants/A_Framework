@@ -256,6 +256,9 @@
     <ClInclude Include="Source\Script\PlayerHealthScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Component\Game\PlayerData.h">
+      <Filter>Files\Component\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -288,23 +291,11 @@
     <Filter Include="Files\Script">
       <UniqueIdentifier>{c0232fd4-3352-4261-9b99-e82763e152d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Component">
-      <UniqueIdentifier>{022b604c-8ded-4a7d-9dfc-3ff7b3819027}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Application">
       <UniqueIdentifier>{8544d2f8-e8a5-44b5-a043-91d5cb8ed395}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Component\Physics">
-      <UniqueIdentifier>{b39784a2-d327-4280-b2b3-6242e65031d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Component\Rendering">
-      <UniqueIdentifier>{295e9fb2-e259-42a4-8b56-bc8e89cb53f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Graphics\Shaders\Phong">
       <UniqueIdentifier>{cc605ef7-6fae-431f-8ce6-cc12779d2f47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Component\Game">
-      <UniqueIdentifier>{5a53f2ba-5f29-452c-802e-932b897bfe68}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Input\Gamepad">
       <UniqueIdentifier>{25a70dbb-03b0-45c1-a865-7bc2fbf66f81}</UniqueIdentifier>
@@ -323,12 +314,6 @@
     </Filter>
     <Filter Include="Files\Others">
       <UniqueIdentifier>{63c02688-a8ac-4757-9b96-75f1b20d4767}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Component\Others">
-      <UniqueIdentifier>{a80a2e6a-f49a-49f7-9aef-3eb1215015d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\Component\Physics\Collision">
-      <UniqueIdentifier>{a96c28d1-4715-43ba-9bc8-10cb0fdfc656}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Collider">
       <UniqueIdentifier>{278104a7-58b2-45fb-bfda-4fb1d63a5e58}</UniqueIdentifier>
@@ -359,6 +344,24 @@
     </Filter>
     <Filter Include="Files\AGDEV\Script\Debug">
       <UniqueIdentifier>{06cec172-6959-42ac-a096-605bc3685956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component">
+      <UniqueIdentifier>{022b604c-8ded-4a7d-9dfc-3ff7b3819027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Physics">
+      <UniqueIdentifier>{b39784a2-d327-4280-b2b3-6242e65031d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Physics\Collision">
+      <UniqueIdentifier>{a96c28d1-4715-43ba-9bc8-10cb0fdfc656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Rendering">
+      <UniqueIdentifier>{295e9fb2-e259-42a4-8b56-bc8e89cb53f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Game">
+      <UniqueIdentifier>{5a53f2ba-5f29-452c-802e-932b897bfe68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Component\Others">
+      <UniqueIdentifier>{a80a2e6a-f49a-49f7-9aef-3eb1215015d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -571,6 +574,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Rendering\TextRenderer.cpp">
       <Filter>Files\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Game\PlayerData.cpp">
+      <Filter>Files\Component\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

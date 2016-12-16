@@ -21,6 +21,8 @@
 #include "DebugControlsScript.h" 
 #include "TriggerTestScript.h" 
 #include "../Script//PlayerShootingScript.h"
+#include "../Component/Game/PlayerData.h"
+#include "../Script/PlayerHealthScript.h"
 
 //Constructor(s) & Destructor
 SceneAsn1::SceneAsn1(const string& name) : Scene(name) {
@@ -61,15 +63,16 @@ void SceneAsn1::Init() {
 	player = &GameObjectFactory::CreateEmpty(name, "Player");
 	player->CreateScript<PlayerMovementScript>();
 	player->CreateScript<DebugControlsScript>();
-	player->CreateScript<HealthScript>();
-	player->AddComponent<HealthComponent>();
+	player->CreateScript<PlayerHealthScript>();
 	player->CreateScript<PlayerActionScript>();
+	player->AddComponent<HealthComponent>();
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
+	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
+	player->AddComponent <PlayerDataComponent>();
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].SetRadius(2.f);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[1].isTrigger = true;
-	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
 	//player->AddComponent<MeshHolder>().mesh = MeshBuilder::GetInstance().GenerateOBJ("Player Sphere", "OBJ//Default//Sphere.obj");
  
 	//Camera
@@ -130,7 +133,7 @@ void SceneAsn1::Init() {
 		grass.GetComponent<Transform>().SetLocalPosition(spawnPos);
 		grass.GetComponent<Transform>().SetLocalScale(4, 4, 4);
 		grass.GetComponent<Transform>().SetLocalRotation(0, Math::RandFloatMinMax(0.0f, 360.0f), 0);
-	}	
+	}
 
 	{
 		//Create Cutscene Trigger
@@ -138,12 +141,9 @@ void SceneAsn1::Init() {
 		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(25, 0, 25);
 
 		//Create Rifle
-		//Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
-		//Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
-		//Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");
-		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Default//Cube.obj");
-		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Default//Cube.obj");
-		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Default//Cube.obj");
+		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
+		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ(" Rifle Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
+		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("Rifle Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");
 		GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
 		playerRifle->GetComponent<Transform>().SetLocalPosition(25, 1, 25);
 		playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
@@ -151,6 +151,34 @@ void SceneAsn1::Init() {
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M24R//M24R.tga");
 		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M24R//M24R.tga");
 	}	
+
+
+	{
+		for (int i = -6; i <= 6; i++)
+		{
+			if (i > -2 && i < 2)
+				continue;
+			//Create Enemy Here
+			Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+			Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+			Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+			GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
+			enemy->GetComponent<Transform>().SetLocalPosition(50 * i, 1, 50 * i);
+			enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
+		}
+
+		for (int i = -6; i <= 6; i++)
+		{
+			if (i > -2 && i < 2)
+				continue;
+			Mesh* stationaryEnemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+			Mesh* stationaryEnemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+			Mesh* stationaryEnemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+			GameObject* enemy2 = &GameObjectFactory::CreateDefaultEnemy(name);
+			enemy2->GetComponent<Transform>().SetLocalPosition(30 * i, 1, 30 * i);
+			enemy2->GetComponent<LODMeshHolder>().SetLODMesh(stationaryEnemyMeshLowLOD, stationaryEnemyMeshMidLOD, stationaryEnemyMeshHighLOD);
+		}
+	}
 
 	{
 		for (unsigned int i = 0; i < 6; ++ i) {
@@ -161,11 +189,10 @@ void SceneAsn1::Init() {
 
 }
 
-void SceneAsn1::Update(double _deltaTime) {	
-	PhysicsSystem::GetInstance().UpdateDeltaTime(name, _deltaTime);
-
-	GameObjectManager::GetInstance().UpdateScripts(name, _deltaTime);
+void SceneAsn1::Update(double _deltaTime) {
 	SpatialPartitionSystem::GetInstance().Update(name);
+	PhysicsSystem::GetInstance().UpdateDeltaTime(name, _deltaTime);
+	GameObjectManager::GetInstance().UpdateScripts(name, _deltaTime);
 		
 	PhysicsSystem::GetInstance().Update(name);
 
@@ -185,6 +212,7 @@ void SceneAsn1::Update(double _deltaTime) {
 
 void SceneAsn1::Render() {
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
+	SpatialPartitionSystem::GetInstance().Update(name);
 	RenderSystem::GetInstance().Render(name, &skybox);
 
 	if (debugCountdown <= 0)

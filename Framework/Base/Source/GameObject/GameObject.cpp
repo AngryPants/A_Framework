@@ -58,9 +58,11 @@ const ComponentBitset& GameObject::GetComponentBitset() const {
 
 //Destruction
 void GameObject::Destroy() {
-	destroyed = true;
-	GameObjectManager::GetInstance().RemoveGameObject(*this, {});
-	node->Destroy();
+	if (destroyed == false) {
+		destroyed = true;
+		GameObjectManager::GetInstance().RemoveGameObject(*this, {});
+		node->Destroy();
+	}	
 }
 bool GameObject::IsDestroyed() const {
 	return destroyed;

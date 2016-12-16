@@ -164,6 +164,7 @@ void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLeve
 		//Get the GameObject.
 		GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*vecIter);
 		if (go == nullptr) {
+			cout << "RenderSystem has found invalid ID." << endl;
 			continue;
 		}
 		

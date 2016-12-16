@@ -281,6 +281,15 @@ void ProcessInput(InputInfo& inputInfo,Mouse& mouse) {
 	{
 		SetInput(inputInfo, INPUT_PLAYERSHOOT,false);
 	}
+
+	if (mouse.IsKeyPressed(1))
+	{
+		SetInput(inputInfo, INPUT_LOOK_ZOOM_HALF, true);
+	}
+	else
+	{
+		SetInput(inputInfo, INPUT_LOOK_ZOOM_HALF, false);
+	}
 }
 
 void InputManager::Update() {

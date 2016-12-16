@@ -7,11 +7,14 @@
 class PlayerShootingScript : public ShootingScript
 {
 public:
+
+	bool toShoot,toReload;
 	PlayerShootingScript(GameObject& gameObject);
 	virtual ~PlayerShootingScript();
 
 	virtual void ShootBullet();
-
+	virtual void Update(double deltaTime);
+	virtual void OnTriggerStay(const Collider& _collider);
 	virtual bool ManualReload();
 	virtual bool ExtraCondition();
 };

@@ -4,6 +4,7 @@
 #include "../GameObject/GameObjectManager.h"
 #include "../Component/Game/Rifle.h"
 #include "PlayerShootingScript.h"
+#include "../Component/Game/PlayerData.h"
 
 PlayerActionScript::PlayerActionScript(GameObject& gameObject) : Script(gameObject)
 {
@@ -19,8 +20,9 @@ void PlayerActionScript::OnTriggerStay(const Collider& _collider)
 	if (temp->HasComponent<RifleComponent>()
 		&& (temp->GetScript(0) != nullptr && dynamic_cast<PlayerShootingScript*>(temp->GetScript(0)) != nullptr))
 	{
-		if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_PLAYERPICKUP])
+		if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_PLAYERPICKUP] && !GetGameObject().GetComponent<PlayerDataComponent>().isHoldingGun)
 		{
+			GetGameObject().GetComponent<PlayerDataComponent>().isHoldingGun = true;
 			vector<GameObject*> children;
 			GetGameObject().GetChildren(children);
 			for (vector<GameObject*>::iterator iter = children.begin(); iter != children.end(); iter++)
@@ -36,6 +38,7 @@ void PlayerActionScript::OnTriggerStay(const Collider& _collider)
 		}
 		else if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_PLAYERDISCARD] && temp->GetComponent<RifleComponent>().isHeld)
 		{
+			GetGameObject().GetComponent<PlayerDataComponent>().isHoldingGun = false;
 			temp->GetComponent<RifleComponent>().isHeld = false;
 			temp->DetachParent();
 			//temp->GetComponent<Transform>().SetLocalRotation(0, 0, 0);

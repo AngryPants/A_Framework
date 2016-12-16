@@ -36,6 +36,7 @@
     <ClInclude Include="Source\Component\ComponentManager.h" />
     <ClInclude Include="Source\Component\Game\Bullet.h" />
     <ClInclude Include="Source\Component\Game\Health.h" />
+    <ClInclude Include="Source\Component\Game\PlayerData.h" />
     <ClInclude Include="Source\Component\Game\Rifle.h" />
     <ClInclude Include="Source\Component\Game\Waypoint.h" />
     <ClInclude Include="Source\Component\Physics\Collision\ColliderGroup.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="Source\Component\ComponentManager.cpp" />
     <ClCompile Include="Source\Component\Game\Bullet.cpp" />
     <ClCompile Include="Source\Component\Game\Health.cpp" />
+    <ClCompile Include="Source\Component\Game\PlayerData.cpp" />
     <ClCompile Include="Source\Component\Game\Rifle.cpp" />
     <ClCompile Include="Source\Component\Game\Waypoint.cpp" />
     <ClCompile Include="Source\Component\Physics\RigidBody.cpp" />

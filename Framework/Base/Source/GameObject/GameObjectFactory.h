@@ -241,8 +241,8 @@ public:
 		go.GetComponent<RifleComponent>().clipSize = 10;
 		go.GetComponent<RifleComponent>().currentClipSize = 10;
 		go.GetComponent<RifleComponent>().magazineSize = 80;
-		go.GetComponent<RifleComponent>().reloadTime = 3.f;
-		go.GetComponent<RifleComponent>().SetRateOfFire(5.f);
+		go.GetComponent<RifleComponent>().reloadTime = 1.f;
+		go.GetComponent<RifleComponent>().SetRateOfFire(1.f);
 		go.CreateScript<AIShootingScript>();
 
 		return go;
@@ -254,9 +254,9 @@ public:
 		// collider 0 is the hitbox for picking up the gun
 		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
 		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
-		go.GetComponent<RifleComponent>().clipSize = 30;
-		go.GetComponent<RifleComponent>().currentClipSize = 30;
-		go.GetComponent<RifleComponent>().magazineSize = 150;
+		go.GetComponent<RifleComponent>().clipSize = 80;
+		go.GetComponent<RifleComponent>().currentClipSize = 80;
+		go.GetComponent<RifleComponent>().magazineSize = 250;
 		go.GetComponent<RifleComponent>().reloadTime = 0.5f;
 		go.GetComponent<RifleComponent>().SetRateOfFire(8.f);
 		go.CreateScript<PlayerShootingScript>();
@@ -313,10 +313,13 @@ public:
 		go.GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
 		//should be done outside
-		waypoint->CreateWayPoint(Vector3(20, 1, 20), 10.f);
-		waypoint->CreateWayPoint(Vector3(-20, 1, 20), 10.f);
-		waypoint->CreateWayPoint(Vector3(20, 1, -20), 10.f);
-		waypoint->CreateWayPoint(Vector3(-20, 1, -20), 10.f);
+		int x = Math::RandInt() % 250;
+		int z = Math::RandInt() % 250;
+
+		waypoint->CreateWayPoint(Vector3(x, 1, z), 10.f);
+		waypoint->CreateWayPoint(Vector3(-x, 1, z), 10.f);
+		waypoint->CreateWayPoint(Vector3(x, 1, -z), 10.f);
+		waypoint->CreateWayPoint(Vector3(-x, 1, -z), 10.f);
 		waypoint->LinkWayPoint();
 		return go;
 	}

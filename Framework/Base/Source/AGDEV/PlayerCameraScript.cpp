@@ -25,11 +25,17 @@ void PlayerCameraScript::Update(double deltaTime) {
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_DOWN]) {
 		GetGameObject().GetComponent<Transform>().Rotate(deltaTime * rotationSpeed, 0, 0);
 	}
+	
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_ZOOM]) {
 		fov = Math::Max(5.0f, fov - static_cast<float>(deltaTime) * 360.0f);
-	} else {
-		fov = Math::Min(60.0f, fov + static_cast<float>(deltaTime) * 360.0f);
+	} 
+	else if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_ZOOM_HALF]) {
+		fov = Math::Max(25.0f, fov - static_cast<float>(deltaTime)* 360.0f);
 	}
+	else {
+		fov = Math::Min(60.0f, fov + static_cast<float>(deltaTime)* 360.0f);
+	}
+
 
 	Transform& transform = GetGameObject().GetComponent<Transform>();
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_CROUCH]) {
