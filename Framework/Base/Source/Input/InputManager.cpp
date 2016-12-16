@@ -174,6 +174,18 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			SetInput(inputInfo, INPUT_PLAYERDISCARD, input.GetState());
 			break;
 		}
+		case KEYS::ONE:
+		{
+			SetInput(inputInfo, INPUT_BULLET_STANDARD, input.GetState());
+			break;
+		}
+		case KEYS::TWO:
+		{
+			SetInput(inputInfo, INPUT_BULLET_STICKY, input.GetState());
+			break;
+		}
+
+
 	}
 }
 

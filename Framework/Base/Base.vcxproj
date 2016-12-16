@@ -87,6 +87,7 @@
     <ClInclude Include="Source\Script\PlayerShootingScript.h" />
     <ClInclude Include="Source\Script\Script.h" />
     <ClInclude Include="Source\Script\ShootingScript.h" />
+    <ClInclude Include="Source\Script\StickyBullet.h" />
     <ClInclude Include="Source\Systems\Physics\CollisionUtility.h" />
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\Rendering\RenderSystem.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Source\Script\PlayerShootingScript.cpp" />
     <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Script\ShootingScript.cpp" />
+    <ClCompile Include="Source\Script\StickyBullet.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp" />
     <ClCompile Include="Source\Systems\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp" />

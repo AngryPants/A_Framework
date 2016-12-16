@@ -9,6 +9,8 @@ class PlayerShootingScript : public ShootingScript
 public:
 
 	bool toShoot,toReload;
+	int shootMode;
+
 	PlayerShootingScript(GameObject& gameObject);
 	virtual ~PlayerShootingScript();
 

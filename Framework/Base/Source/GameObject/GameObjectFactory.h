@@ -223,6 +223,17 @@ public:
 		return go;
 	}
 
+	static GameObject& CreateStickyBullet(const string& space, const string& name = "bullet")
+	{
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
+		go.AddComponent<Rigidbody>();
+		go.AddComponent<ColliderGroup<SphereCollider>>();
+		go.AddComponent<BulletComponent>();
+		go.AddComponent<MeshHolder>();
+
+		return go;
+	}
+
 	static GameObject& CreateWayPointBase(const string& space, const string& name = "Waypoint")
 	{
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);

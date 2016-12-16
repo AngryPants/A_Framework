@@ -351,8 +351,6 @@ bool CollisionUtility::CheckCollisionSphereSphere_Mathematical(const Vector3& _p
 			return false;
 		}
 
-		std::cout << timeToCollision << std::endl;
-
 		//Now that we know that there's a collision, find additional info.
 		_collisionPoint = _positionA + (timeToCollision * relativeVelocity);
 

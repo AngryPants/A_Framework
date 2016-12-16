@@ -10,7 +10,7 @@
 class BulletScript : public Script
 {
 public:
-	BulletScript(GameObject& gameObject) :Script(gameObject)
+	BulletScript(GameObject& gameObject) : Script(gameObject)
 	{
 	}
 	virtual ~BulletScript(){};

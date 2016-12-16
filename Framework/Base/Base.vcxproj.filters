@@ -259,6 +259,9 @@
     <ClInclude Include="Source\Component\Game\PlayerData.h">
       <Filter>Files\Component\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Script\StickyBullet.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -577,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Game\PlayerData.cpp">
       <Filter>Files\Component\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Script\StickyBullet.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

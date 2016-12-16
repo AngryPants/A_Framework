@@ -298,7 +298,8 @@ void SpatialPartition::Add(GameObjectID theObject)
 	}
 
 	// Add them to each grid
-	if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
+	if (!go->GetComponent<Transform>().IgnoresSpatialPartition() &&
+		((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
 		((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
 		((zIndex >= 0) && (zIndex < zNumOfGrid)))
 	{
@@ -321,7 +322,6 @@ void SpatialPartition::Local_Add()
 
 		if (go == nullptr)
 		{
-			cout << "SpatialPartition Invalid ID" << endl;
 			return;
 		}
 
@@ -371,7 +371,6 @@ void SpatialPartition::Remove(GameObjectID theObject)
 
 	if (go == nullptr)
 	{
-		cout << "Null Pointer in SP" << endl;
 		return;
 	}
 
