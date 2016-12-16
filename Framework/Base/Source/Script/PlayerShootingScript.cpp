@@ -39,7 +39,6 @@ void PlayerShootingScript::Update(double deltaTime)
 
 void PlayerShootingScript::ShootBullet()
 {
-	cout << "Shooting Bullet" << endl;
 	GameObject& temp = GameObjectFactory::CreateBulletBase(GetGameObject().GetSpace());
 	Vector3 forwardRotation = LookAt(GetGameObject().GetComponent<Transform>().GetForward() + GetGameObject().GetComponent<Transform>().GetPosition(), GetGameObject().GetComponent<Transform>().GetUp());
 
@@ -59,8 +58,6 @@ void PlayerShootingScript::ShootBullet()
 	temp.GetComponent<Rigidbody>().AddRelativeForce(temp.GetComponent<Transform>().GetForward() * temp.GetComponent<BulletComponent>().bulletImpulse, FORCE_MODE::FM_IMPULSE);
 	temp.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(0.1f);
 	temp.CreateScript<PlayerBulletScript>();
-	cout << "Bullet ID: " << temp.GetID() << endl;
-	cout << "Bullet Position: " << temp.GetComponent<Transform>().GetPosition() << endl;
 }
 
 bool PlayerShootingScript::ExtraCondition()

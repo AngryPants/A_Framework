@@ -17,7 +17,7 @@ public:
 	{
 		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObject);
 		cout << temp->name << endl;
-		if (temp->name == "Enemy")
+		if (temp->name == "Enemy" || temp->name == "Core")
 		{
 			temp->GetComponent<HealthComponent>().TakeDamage(GetGameObject().GetComponent<BulletComponent>().bulletDamage);
 			cout << "Enemy Health : " << temp->GetComponent<HealthComponent>().GetCurrentHealth() << endl;

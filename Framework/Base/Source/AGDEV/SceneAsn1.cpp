@@ -141,10 +141,9 @@ void SceneAsn1::Init() {
 		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(25, 0, 25);
 
 		//Create Rifle
- 
 		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh Low LOD","OBJ//Game//M24R//M24RLow.obj");
 		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
-		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");		
+		Mesh* rifleMeshHighLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh High LOD", "OBJ//Game//M24R//M24RHigh.obj");	
 		GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
 		playerRifle->GetComponent<Transform>().SetLocalPosition(25, 1, 25);
 		playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
@@ -193,17 +192,17 @@ void SceneAsn1::Init() {
 		GameObject* playerRifle = &GameObjectFactory::CreateEquippableRifle(name);
 		playerRifle->GetComponent<Transform>().SetLocalPosition(-25, 1, 25);
 		playerRifle->GetComponent<LODMeshHolder>().SetLODMesh(rifleMeshLowLOD, rifleMeshMidLOD, rifleMeshHighLOD);
-		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Low","Image//Game//M24R//M24R.tga");
-		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M24R//M24R.tga");
-		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M24R//M24R.tga");
+		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Low","Image//Game//M4A1//M4A1.tga");
+		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture Mid", "Image//Game/M4A1//M4A1.tga");
+		playerRifle->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Rifle Texture High", "Image//Game//M4A1//M4A1.tga");
 	}
 
-	//{
-	//	for (unsigned int i = 0; i < 0; ++ i) {
-	//		GameObject& platform = GameObjectFactory::CreatePlatform(name);
-	//		platform.GetComponent<Transform>().SetLocalPosition(20, i * 2 + 1, 20 + (i * 8));
-	//	}
-	//}
+	{
+		for (unsigned int i = 0; i < 0; ++ i) {
+			GameObject& platform = GameObjectFactory::CreatePlatform(name);
+			platform.GetComponent<Transform>().SetLocalPosition(20, i * 2 + 1, 20 + (i * 8));
+		}
+	}
 
 	{
 		GameObject& core = GameObjectFactory::CreateEmpty(name, "Core");
@@ -214,6 +213,10 @@ void SceneAsn1::Init() {
 		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture Mid", "Image//Game/Core//Core.tga");
 		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture High", "Image//Game//Core//Core.tga");
 		core.GetComponent<MeshRenderer>().lightEnabled = false;
+
+		core.AddComponent<HealthComponent>();
+		core.CreateScript<HealthScript>();
+		core.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(7.5);
 
 		core.GetComponent<Transform>().SetLocalPosition(0, 25, -70);
 		core.GetComponent<Transform>().SetLocalScale(15, 15, 15);
@@ -261,7 +264,7 @@ void SceneAsn1::Update(double _deltaTime) {
 
 	if (debugCountdown <= 0)
 	{
-		cout << "FPS: " << 1.0 / _deltaTime << endl;
+		//cout << "FPS: " << 1.0 / _deltaTime << endl;
 	} 
 }
 
