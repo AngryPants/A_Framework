@@ -7,36 +7,29 @@
 class SpatialPartition
 {
 private:
-	//function(s)
-	void Local_Add();
-	void Local_Remove();
-protected:
 	// Variables
+	string space;
 	Grid* theGrid;
 	int xSize, ySize, zSize;
 	int xGridSize, yGridSize, zGridSize;
 	int xNumOfGrid, yNumOfGrid, zNumOfGrid;
 	int xPosition, yPosition, zPosition;
-
-	// LOD distances
-	float LevelOfDetails_Distances[2];
-	set<GameObjectID> allObjects;
-	set<GameObjectID> addQueue;
-	set<GameObjectID> removeQueue;
-
+	
 	// The vector of objects due for migration to another grid
-	vector<GameObjectID> migrationList;
+	vector<GameObjectID> goList;
+	
+	void Sort(GameObjectID _gameObjectID);
 
 public:
 	// Constructor
-	SpatialPartition();
+	SpatialPartition(const string& _space);
 	virtual ~SpatialPartition();
 	// Initialise the spatial partition
 	bool Set(const int _xGridSize, const int _yGridSize, const int _zGridSize,
 			 const int _xNumOfGrid, const int _yNumOfGrid, const int _zNumOfGrid,
 			 const int _xPosition = 0, const int _yPosition = 0, const int _zPosition = 0);
 	// Update the spatial partition
-	void Update();
+	void Update();	
 
 	// Get xSize of the entire spatial partition
 	int GetxSize() const;
@@ -72,9 +65,9 @@ public:
 	vector<GameObjectID> GetObjects(Vector3 _position, const float _radius);
 
 	// Add a new object
-	void Add(GameObjectID _theObject);
+	void Add(GameObjectID _gameObjectID);
 	// Remove but not delete object from this grid
-	void Remove(GameObjectID _theObject);
+	void Remove(GameObjectID _gameObjectID);
 
 	//Calculate the distance from camera to a grid centrepoint
 	float CalculateDistance(const Vector3& _theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex);

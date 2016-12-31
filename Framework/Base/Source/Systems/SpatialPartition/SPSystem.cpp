@@ -27,7 +27,7 @@ SpatialPartition* SpatialPartitionSystem::CreateSpatialPartition(const string& s
 	}
 	else
 	{
-		SpatialPartition* sp = new SpatialPartition();
+		SpatialPartition* sp = new SpatialPartition(spaceName);
 		spMap.insert(std::pair<string, SpatialPartition*>(spaceName, sp));
 		return sp;
 	}

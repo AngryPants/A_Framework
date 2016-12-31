@@ -55,7 +55,7 @@ void SceneAsn1::Init() {
 	skybox.textureLists[Skybox::TEXTURES::SKYBOX_RIGHT].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Right", "Image//Skybox//Mountains//Right.tga");
 
 	//SpatialPartition 
-	int xGridSize = 25; int yGridSize = 50; int zGridSize = 25;
+	int xGridSize = 50; int yGridSize = 50; int zGridSize = 50;
 	int xNumGrid = 50; int yNumGrid = 5; int zNumGrid = 50;
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 
@@ -67,7 +67,7 @@ void SceneAsn1::Init() {
 	player->CreateScript<PlayerActionScript>();
 	player->AddComponent<HealthComponent>();
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
-	player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
+	//player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
 	player->AddComponent <PlayerDataComponent>();
 	player->AddComponent<ColliderGroup<SphereCollider>>().CreateColliders(1);
 	player->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(5.f);
@@ -93,7 +93,7 @@ void SceneAsn1::Init() {
 	ground->GetComponent<MeshHolder>().mesh->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
 	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	ground->GetComponent<Transform>().SetLocalScale(1000, 1, 1000);
-	ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
+	ground->useSpatialPartition = false;
 	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Ground Grass", "Image//Game//Environment//Grass.tga");
 	ground->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].centre.Set(0, -250.0f, 0);
 	ground->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(1000, 500, 1000);
@@ -127,19 +127,7 @@ void SceneAsn1::Init() {
 		mountain->GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Mountain High", "Image//Game//Environment//Rock//High.tga");
 	}
 
-	for (unsigned int g = 0; g < 400; ++g) {
-		Vector3 spawnPos(Math::RandFloatMinMax(-150.0f, 150.0f), 0, Math::RandFloatMinMax(-150.0f, 150.0f));
-		GameObject& grass = GameObjectFactory::CreateGrass(name, "Grass");
-		grass.GetComponent<Transform>().SetLocalPosition(spawnPos);
-		grass.GetComponent<Transform>().SetLocalScale(4, 4, 4);
-		grass.GetComponent<Transform>().SetLocalRotation(0, Math::RandFloatMinMax(0.0f, 360.0f), 0);
-	}
-
 	{
-		//Create Cutscene Trigger
-		GameObject* cutsceneTrigger = &GameObjectFactory::CreateCutsceneTrigger(name);
-		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(25, 0, 25);
-
 		//Create Rifle
 		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh Low LOD", "OBJ//Game//M24R//M24RLow.obj");
 		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ("M24R Mesh Mid LOD", "OBJ//Game//M24R//M24RMid.obj");
@@ -181,10 +169,6 @@ void SceneAsn1::Init() {
 	}
 
 	{
-		//Create Cutscene Trigger
-		GameObject* cutsceneTrigger = &GameObjectFactory::CreateCutsceneTrigger(name);
-		cutsceneTrigger->GetComponent<Transform>().SetLocalPosition(-25, 0, 25);
-
 		//Create Rifle
 		Mesh* rifleMeshLowLOD = MeshBuilder::GetInstance().GenerateOBJ("M4A1 Mesh Low LOD", "OBJ//Game//M4A1//M4A1Low.obj");
 		Mesh* rifleMeshMidLOD = MeshBuilder::GetInstance().GenerateOBJ("M4A1 Mesh Mid LOD", "OBJ//Game//M4A1//M4A1Mid.obj");
@@ -198,17 +182,10 @@ void SceneAsn1::Init() {
 	}
 
 	{
-		for (unsigned int i = 0; i < 0; ++i) {
-			GameObject& platform = GameObjectFactory::CreatePlatform(name);
-			platform.GetComponent<Transform>().SetLocalPosition(20, i * 2 + 1, 20 + (i * 8));
-		}
-	}
-
-	{
 		GameObject& core = GameObjectFactory::CreateEmpty(name, "Core");
 		core.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Core Low", "OBJ//Game//Core//Low.obj"),
-			MeshBuilder::GetInstance().GenerateOBJ("Core Mid", "OBJ//Game//Core//Mid.obj"),
-			MeshBuilder::GetInstance().GenerateOBJ("Core High", "OBJ//Game//Core//High.obj"));
+													  MeshBuilder::GetInstance().GenerateOBJ("Core Mid", "OBJ//Game//Core//Mid.obj"),
+													  MeshBuilder::GetInstance().GenerateOBJ("Core High", "OBJ//Game//Core//High.obj"));
 		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::HIGH_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture Low", "Image//Game//Core//Core.tga");
 		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::MID_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture Mid", "Image//Game/Core//Core.tga");
 		core.GetComponent<LODMeshHolder>().textureList[LODMeshHolder::DETAIL_LEVEL::LOW_DETAILS].textureArray[0] = TextureManager::GetInstance().AddTexture("Core Texture High", "Image//Game//Core//Core.tga");
@@ -252,9 +229,10 @@ void SceneAsn1::Init() {
 			GameObject* cube = &GameObjectFactory::CreateCube(name, "Enemy");
 			cube->GetComponent<Transform>().SetLocalPosition(10 * i, 5, 0);
 			cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-			cube->AddComponent<HealthComponent>();
-			cube->CreateScript<HealthScript>();
 			cube->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
+			cube->AddComponent<HealthComponent>();
+			cube->CreateScript<HealthScript>();			
+			cube->CreateScript<TranslateScript>();
 
 			//Cube 2
 			GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Enemy");
@@ -263,10 +241,7 @@ void SceneAsn1::Init() {
 			cube2->AddComponent<HealthComponent>();
 			cube2->CreateScript<HealthScript>();
 			cube2->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
-			if (i == 0)
-			{
-				cube2->CreateScript<RotateScript>();
-			}
+			cube2->CreateScript<RotateScript>();
 
 			//Cylinder
 			GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Enemy");
@@ -282,9 +257,9 @@ void SceneAsn1::Init() {
 
 void SceneAsn1::Update(double _deltaTime) {
 	SpatialPartitionSystem::GetInstance().Update(name);
+
 	PhysicsSystem::GetInstance().UpdateDeltaTime(name, _deltaTime);
-	GameObjectManager::GetInstance().UpdateScripts(name, _deltaTime);
-		
+	GameObjectManager::GetInstance().UpdateScripts(name, _deltaTime);		
 	PhysicsSystem::GetInstance().Update(name);
 
 	//Close da app
@@ -293,24 +268,13 @@ void SceneAsn1::Update(double _deltaTime) {
 	}
  
 	RenderSystem::GetInstance().Update(name, _deltaTime);
-	debugCountdown -= _deltaTime;
-
-	if (debugCountdown <= 0)
-	{
-		//cout << "FPS: " << 1.0 / _deltaTime << endl;
-	} 
 }
 
 void SceneAsn1::Render() {
-	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();
 	SpatialPartitionSystem::GetInstance().Update(name);
-	RenderSystem::GetInstance().Render(name, &skybox);
 
-	if (debugCountdown <= 0)
-	{
-		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(name)->PrintSelf();
-		debugCountdown = 2.f;
-	}
+	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();	
+	RenderSystem::GetInstance().Render(name, &skybox);
 }
 
 void SceneAsn1::Exit() {	

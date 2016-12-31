@@ -121,7 +121,7 @@ void SceneTest::Init() {
 	GameObject* ground = &GameObjectFactory::CreatePlane(name, "Ground");
 	ground->GetComponent<Transform>().SetLocalPosition(0, 0, 0);
 	ground->GetComponent<Transform>().SetLocalScale(100, 100 ,100);
-	ground->GetComponent<Transform>().IgnoreSpatialPartition(true);
+	ground->useSpatialPartition = false;
 	ground->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Texture", "Image//Default//Test_Texture.tga");
 	ground->AddComponent<ColliderGroup<AABBCollider>>().colliders[0].centre.Set(0, -250.0f, 0);
 	ground->GetComponent<ColliderGroup<AABBCollider>>().colliders[0].size.Set(100, 500, 100);

@@ -4,6 +4,7 @@
 #include "../Others/IDGenerator.h"
 #include "../Component/ComponentManager.h"
 #include "../Component/Physics/Transform.h"
+#include "../Systems/SpatialPartition/GridIndex.h"
 #include "../Script/Script.h"
 #include "../Scene/SceneGraph.h"
 #include "../Scene/SceneNode.h"
@@ -20,6 +21,7 @@ using namespace std;
 typedef std::bitset<MAX_COMPONENTS> ComponentBitset;
 
 class GameObjectManager;
+class Grid;
 
 static const int MAX_SCRIPTS = 8;
 
@@ -27,14 +29,18 @@ class GameObject {
 
 private:
 	//Variable(s)
-	GameObjectID id;
+	GameObjectID id;	
 	string space;
+	bool destroyed;
+
 	ComponentBitset componentBitset;
 	Component* components[MAX_COMPONENTS];
-	SceneNode* node;
-	Script* scripts[MAX_SCRIPTS];
-	bool destroyed;
 	
+	SceneNode* node;
+	Script* scripts[MAX_SCRIPTS];	
+	
+	GridIndex gridIndex;
+
 	//Destructor
 	virtual ~GameObject();
 
@@ -46,7 +52,16 @@ public:
 	//Variable(s)
 	string name;
 	set<string> tags;
-	
+
+	//Spatial Partition
+	bool useSpatialPartition;
+	void SetGridIndex(const GridIndex _gridIndex, PassKey<Grid> _key) {
+		gridIndex = _gridIndex;
+	}
+	GridIndex GetGridIndex() const {
+		return gridIndex;
+	}
+
 	//Name
 	void SetName(const string& name);
 	const string& GetName() const;
@@ -64,7 +79,6 @@ public:
 		if (!HasComponent<Type>()) {
 			return false;
 		}
-
 		return GetComponent<Type>().IsActive();
 	}
 
@@ -73,9 +87,7 @@ public:
 		ComponentTypeID id = IDGenerator::GetInstance().GetComponentTypeID<Type>();
 		Component* componentPtr = nullptr;
 		if (HasComponent<Type>()) {
-			//cout << "This GameObject already has this component." << endl;
 			componentPtr = components[id];
-			//throw std::exception("This GameObject already has this component.");
 		} else {
 			componentBitset[id] = 1;
 			componentPtr = &ComponentManager::GetInstance().CreateComponent<Type>(*this);

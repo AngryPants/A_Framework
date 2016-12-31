@@ -1,8 +1,9 @@
 #include "SpatialPartition.h"
 #include "../../Graphics/GraphicsManager.h"
 
-SpatialPartition::SpatialPartition()
-	: xSize(0), ySize(0), zSize(0)
+SpatialPartition::SpatialPartition(const string& _space)
+	: space(_space)
+	, xSize(0), ySize(0), zSize(0)
 	, xGridSize(0), yGridSize(0), zGridSize(0)
 	, xNumOfGrid(0), yNumOfGrid(0), zNumOfGrid(0)
 	, xPosition(0), yPosition(0), zPosition(0)
@@ -10,15 +11,11 @@ SpatialPartition::SpatialPartition()
 	theGrid = new Grid();
 }
 
-SpatialPartition::~SpatialPartition()
-{
+SpatialPartition::~SpatialPartition() {
 	//Delete our existing grids.
-	if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0)
-	{
+	if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0) {
 		delete[] theGrid;
-	}			
-	else
-	{
+	} else {
 		delete theGrid;
 	}
 }
@@ -28,201 +25,145 @@ bool SpatialPartition::Set(const int _xGridSize, const int _yGridSize, const int
 						   const int _xNumOfGrid, const int _yNumOfGrid, const int _zNumOfGrid,
 						   const int _xPosition, const int _yPosition, const int _zPosition)
 {
-	if ((_xGridSize > 0) && (_yGridSize > 0) && (_zGridSize > 0) &&
-		(_xNumOfGrid > 0) && (_yNumOfGrid > 0) && (_zNumOfGrid > 0))
-	{
-		//Get all the IDs from our existing grids.
-		vector<GameObjectID> ids;		
-		vector<GameObjectID> tempids;
-		for (int i = 0; i < xNumOfGrid; i++)
-		{
-			for (int j = 0; j < yNumOfGrid; j++)
-			{
-				for (int k = 0; k < zNumOfGrid; k++)
-				{
-					tempids = theGrid[i * yNumOfGrid * zNumOfGrid + j * zNumOfGrid + k].GetListOfObjects();
-					ids.insert(std::end(ids), std::begin(tempids), std::end(tempids));
-				}
-			}
-		}
-		//Get the IDs from our extra grid.
-		tempids = theGrid[this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid].GetListOfObjects();
-		ids.insert(std::end(ids), std::begin(tempids), std::end(tempids));
-
-		//Delete our existing grids.
-		if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0)
-		{
-			delete[] theGrid;
-		}
-		else
-		{
-			delete theGrid;
-		}
-		
-		//Update our new thingies.
-		this->xNumOfGrid = _xNumOfGrid;
-		this->yNumOfGrid = _yNumOfGrid;
-		this->zNumOfGrid = _zNumOfGrid;
-
-		this->xGridSize = _xGridSize;
-		this->yGridSize = _yGridSize;
-		this->zGridSize = _zGridSize;
-
-		this->xPosition = _xPosition;
-		this->yPosition = _yPosition;
-		this->zPosition = _zPosition;
-
-		this->xSize = _xGridSize * _xNumOfGrid;
-		this->ySize = _yGridSize * _yNumOfGrid;
-		this->zSize = _zGridSize * _zNumOfGrid;
-
-		//Create an array of grids
-		theGrid = new Grid[this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid + 1];
-
-		//Initialise the new array of grids
-		for (int i = 0; i < xNumOfGrid; ++i)
-		{
-			for (int j = 0; j < yNumOfGrid; ++j)
-			{
-				for (int k = 0; k < zNumOfGrid; ++k)
-				{
-					theGrid[(i * yNumOfGrid * zNumOfGrid) + (j * zNumOfGrid) + k].Set(GridIndex(i, j, k),
-																					  xGridSize, yGridSize, zGridSize,
-																					  xPosition - (xSize >> 1), yPosition - (ySize >> 1), zPosition - (zSize >> 1));
-				}
-			}
-		}
-
-		//Transfering the objects from previous spatial partition to current one
-		for (vector<GameObjectID>::iterator iter = tempids.begin(); iter != tempids.end(); iter++)
-		{
-			Add(*iter);
-		}
-
-		// Create a migration list vector
-		migrationList.clear();
-		return true;
+	if (_xGridSize <= 0 || _yGridSize <= 0 || _zGridSize <= 0 ||
+		_xNumOfGrid <= 0 || _yNumOfGrid <= 0 || _zNumOfGrid <= 0) {
+		return false;
 	}
-	return false;
+	
+	//Delete our existing grids.
+	if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0) {
+		delete[] theGrid;
+	} else {
+		delete theGrid;
+	}	
+
+	//Update our new thingies.
+	this->xNumOfGrid = _xNumOfGrid;
+	this->yNumOfGrid = _yNumOfGrid;
+	this->zNumOfGrid = _zNumOfGrid;
+
+	this->xGridSize = _xGridSize;
+	this->yGridSize = _yGridSize;
+	this->zGridSize = _zGridSize;
+
+	this->xPosition = _xPosition;
+	this->yPosition = _yPosition;
+	this->zPosition = _zPosition;
+
+	this->xSize = _xGridSize * _xNumOfGrid;
+	this->ySize = _yGridSize * _yNumOfGrid;
+	this->zSize = _zGridSize * _zNumOfGrid;
+
+	//Create an array of grids
+	theGrid = new Grid[xNumOfGrid * yNumOfGrid * zNumOfGrid + 1];
+
+	Vector3 gridSize(xGridSize, yGridSize, zGridSize);
+	Vector3 offset(xPosition - (xSize >> 1), yPosition - (ySize >> 1), zPosition - (zSize >> 1));
+	//Initialise the new array of grids.
+	for (int x = 0; x < xNumOfGrid; ++x) {
+		for (int y = 0; y < yNumOfGrid; ++y) {
+			for (int z = 0; z < zNumOfGrid; ++z) {
+				GridIndex gridIndex = (x * yNumOfGrid * zNumOfGrid) + (y * zNumOfGrid) + z;
+				Vector3 gridPosition = offset + Vector3(x * xGridSize, y * yGridSize, z * zGridSize) + (gridSize * 0.5f);
+				theGrid[gridIndex].Set(gridIndex, gridPosition, gridSize);
+			}
+		}
+	}
+	
+	Update();
+
+	return true;
 }
 
-void SpatialPartition::Update()
-{
-	Local_Add();
-	Local_Remove();
-	for (int i = 0; i<xNumOfGrid; i++)
-	{
-		for (int j = 0; j < yNumOfGrid; j++)
-		{
-			for (int k = 0; k<zNumOfGrid; k++)
-			{
-				theGrid[i * yNumOfGrid * zNumOfGrid + j * zNumOfGrid + k].Update(&migrationList);
+void SpatialPartition::Update() {
+	//Clear the goList of every grid.
+	for (int x = 0; x < xNumOfGrid; ++x) {
+		for (int y = 0; y < yNumOfGrid; ++y) {
+			for (int z = 0; z < zNumOfGrid; ++z) {
+				theGrid[(x * yNumOfGrid * zNumOfGrid) + (y * zNumOfGrid) + z].goList.clear();
 			}
 		}
 	}
-	theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid].Update(&migrationList);
+	theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid].goList.clear();
 
-	// If there are objects due for migration, then process them
-	if (!migrationList.empty())
-	{
-		// Check each object to see if they are no longer in this grid
-		for (size_t i = 0; i < migrationList.size(); ++i)
-		{
-			Add(migrationList[i]);
-		}
-
-		migrationList.clear();
+	for (unsigned int i = 0; i < goList.size(); ++i) {
+		Sort(goList[i]);
 	}
-	Local_Add();
-	//Local_Remove();
 }
 
 /********************************************************************************
 Get xSize of the entire spatial partition
 ********************************************************************************/
-int SpatialPartition::GetxSize() const
-{
+int SpatialPartition::GetxSize() const {
 	return xSize;
 }
 /********************************************************************************
 Get ySize of the entire spatial partition
 ********************************************************************************/
-int SpatialPartition::GetySize() const
-{
+int SpatialPartition::GetySize() const {
 	return ySize;
 }
 /********************************************************************************
 Get zSize of the entire spatial partition
 ********************************************************************************/
-int SpatialPartition::GetzSize() const
-{
+int SpatialPartition::GetzSize() const {
 	return zSize;
 }
 
 /********************************************************************************
 Get xSize
 ********************************************************************************/
-int SpatialPartition::GetxGridSize() const
-{
+int SpatialPartition::GetxGridSize() const {
 	return xGridSize;
 }
 /********************************************************************************
 Get ySize
 ********************************************************************************/
-int SpatialPartition::GetyGridSize() const
-{
+int SpatialPartition::GetyGridSize() const {
 	return yGridSize;
 }
 /********************************************************************************
 Get zNumOfGrid
 ********************************************************************************/
-int SpatialPartition::GetzGridSize() const
-{
+int SpatialPartition::GetzGridSize() const {
 	return zGridSize;
 }
 
-int SpatialPartition::GetxPosition() const
-{
+int SpatialPartition::GetxPosition() const {
 	return xPosition;
 }
 
-int SpatialPartition::GetyPosition() const 
-{
+int SpatialPartition::GetyPosition() const {
 	return yPosition;
 }
 
-int SpatialPartition::GetzPosition() const
-{
+int SpatialPartition::GetzPosition() const {
 	return zPosition;
 }
 
 /********************************************************************************
 Get xNumOfGrid
 ********************************************************************************/
-int SpatialPartition::GetxNumOfGrid() const
-{
+int SpatialPartition::GetxNumOfGrid() const {
 	return xNumOfGrid;
 }
 /********************************************************************************
 Get yNumOfGrid
 ********************************************************************************/
-int SpatialPartition::GetyNumOfGrid() const
-{
+int SpatialPartition::GetyNumOfGrid() const {
 	return yNumOfGrid;
 }
 /********************************************************************************
 Get zNumOfGrid
 ********************************************************************************/
-int SpatialPartition::GetzNumOfGrid() const
-{
+int SpatialPartition::GetzNumOfGrid() const {
 	return zNumOfGrid;
 }
 
 /********************************************************************************
 Get a particular grid
 ********************************************************************************/
-Grid& SpatialPartition::GetGrid(const int _xIndex, const int _yIndex , const int _zIndex) const
-{
+Grid& SpatialPartition::GetGrid(const int _xIndex, const int _yIndex , const int _zIndex) const {
 	return theGrid[(_xIndex * yNumOfGrid * zNumOfGrid) + (_yIndex * zNumOfGrid) + _zIndex];
 }
 
@@ -264,25 +205,29 @@ vector<Grid*> SpatialPartition::GetSurroundingGrids(const int _xIndex, const int
 /********************************************************************************
 Get vector of objects from this Spatial Partition (Incomplete)
 ********************************************************************************/
-vector<GameObjectID> SpatialPartition::GetObjects(Vector3 position, const float radius)
-{
+vector<GameObjectID> SpatialPartition::GetObjects(Vector3 position, const float radius) {
 	// Get the indices of the object's position
 	int xIndex = (((int)position.x + xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
 	int yIndex = (((int)position.y + yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
 	int zIndex = (((int)position.z + zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
 
-	return theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].GetListOfObjects();
+	return theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].goList;
 }
 
 /********************************************************************************
 Add a new object model (Must take in account spatial partition position)
 ********************************************************************************/
-void SpatialPartition::Add(GameObjectID theObject)
-{
-	GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(theObject);
+void SpatialPartition::Add(GameObjectID _gameObjectID) {
+	goList.push_back(_gameObjectID);
+	Sort(_gameObjectID);
+}
 
-	if (go == nullptr)
-	{
+void SpatialPartition::Sort(GameObjectID _gameObjectID) {
+	//This function assumes that theObject is always valid.
+	GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(_gameObjectID);
+	//If it doesn't use spatial paritioning, put it in the extra grid.
+	if (go->useSpatialPartition == false) {
+		theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(_gameObjectID);
 		return;
 	}
 
@@ -290,188 +235,71 @@ void SpatialPartition::Add(GameObjectID theObject)
 	int xIndex = -1;
 	int yIndex = -1;
 	int zIndex = -1;
-	if (xNumOfGrid != 0 && yNumOfGrid != 0 && zNumOfGrid != 0)
-	{
+
+	//Handle the special case where 0 to -1 has issues do to float to int conversion.
+	float xIndex_Float = ((go->GetComponent<Transform>().GetPosition().x - xPosition + (xSize >> 1)) / xGridSize);
+	float yIndex_Float = ((go->GetComponent<Transform>().GetPosition().y - yPosition + (ySize >> 1)) / yGridSize);
+	float zIndex_Float = ((go->GetComponent<Transform>().GetPosition().z - zPosition + (zSize >> 1)) / zGridSize);
+	if (xIndex_Float >= 0.0f) {
+		xIndex = static_cast<int>(xIndex_Float);
+	}
+	if (yIndex_Float >= 0.0f) {
+		yIndex = static_cast<int>(yIndex_Float);
+	}
+	if (zIndex_Float >= 0.0f) {
+		zIndex = static_cast<int>(zIndex_Float);
+	}
+
+	if (xNumOfGrid * yNumOfGrid * zNumOfGrid > 0) {
 		xIndex = ((go->GetComponent<Transform>().GetPosition().x - xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
 		yIndex = ((go->GetComponent<Transform>().GetPosition().y - yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
 		zIndex = ((go->GetComponent<Transform>().GetPosition().z - zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
 	}
 
 	// Add them to each grid
-	if (!go->GetComponent<Transform>().IgnoresSpatialPartition() &&
-		((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
+	if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
 		((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
 		((zIndex >= 0) && (zIndex < zNumOfGrid)))
 	{
-		theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Add(theObject);
+		theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Add(_gameObjectID);
+	} else {
+		theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(_gameObjectID);
 	}
-	else
-	{
-		//Check for None initialized Spatial Partition
-		theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(theObject);
-	}
-
-	//addQueue.insert(theObject);
 }
 
-void SpatialPartition::Local_Add()
-{
-	for (set<GameObjectID>::iterator iter = addQueue.begin(); iter != addQueue.end(); iter++)
-	{
-		GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*iter);
-
-		if (go == nullptr)
-		{
-			return;
-		}
-
-		// Get the indices of the object's position
-		int xIndex = -1;
-		int yIndex = -1;
-		int zIndex = -1;
-		if (xNumOfGrid != 0 && yNumOfGrid != 0 && zNumOfGrid != 0)
-		{
-			float xIndex_Float = ((go->GetComponent<Transform>().GetPosition().x - xPosition + (xSize >> 1)) / xGridSize);
-			float yIndex_Float = ((go->GetComponent<Transform>().GetPosition().y - yPosition + (ySize >> 1)) / yGridSize);
-			float zIndex_Float = ((go->GetComponent<Transform>().GetPosition().z - zPosition + (zSize >> 1)) / zGridSize);
-
-			if (xIndex_Float >= 0.0f) {
-				xIndex = static_cast<int>(xIndex_Float);
-			}
-			if (yIndex_Float >= 0.0f) {
-				yIndex = static_cast<int>(yIndex_Float);
-			}
-			if (zIndex_Float >= 0.0f) {
-				zIndex = static_cast<int>(zIndex_Float);
-			}
-		}
-
-		// Add them to each grid
-		if (!go->GetComponent<Transform>().IgnoresSpatialPartition() &&
-			((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
-			((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
-			((zIndex >= 0) && (zIndex < zNumOfGrid)))
-		{
-			theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Add(*iter);
-		}
-		else
-		{
-			//Check for None initialized Spatial Partition
-			theGrid[zNumOfGrid * yNumOfGrid * xNumOfGrid].Add(*iter);
-		}
-		allObjects.insert(*iter);
-	}
-	addQueue.clear();
-}
-
-// Remove but not delete object from this grid
-void SpatialPartition::Remove(GameObjectID theObject)
-{
+//Remove but not delete object from this grid
+void SpatialPartition::Remove(GameObjectID theObject) {
 	GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(theObject);
+	GridIndex gridIndex = go->GetGridIndex();
+	if (gridIndex == -1) {
+		theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid].Remove(theObject);
+	} else {
+		theGrid[gridIndex].Remove(theObject);
+	}	
 
-	if (go == nullptr)
-	{
-		return;
-	}
-
-	// Get the indices of the object's position
-	int xIndex = ((go->GetComponent<Transform>().GetPosition().x - xPosition - (-xSize >> 1)) / (xSize / xNumOfGrid));
-	int yIndex = ((go->GetComponent<Transform>().GetPosition().y - yPosition - (-ySize >> 1)) / (ySize / yNumOfGrid));
-	int zIndex = ((go->GetComponent<Transform>().GetPosition().z - zPosition - (-zSize >> 1)) / (zSize / zNumOfGrid));
-
-	// Add them to each grid
-	if (((xIndex >= 0) && (xIndex <= xNumOfGrid)) &&
-		((yIndex >= 0) && (yIndex <= yNumOfGrid)) &&
-		((zIndex >= 0) && (zIndex <= zNumOfGrid)))
-	{
-		theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Remove(theObject);
-	}
-
-	//removeQueue.insert(theObject);
-}
-
-void SpatialPartition::Local_Remove()
-{
-	for (set<GameObjectID>::iterator iter = removeQueue.begin(); iter != removeQueue.end(); iter++)
-	{
-		for (set<GameObjectID>::iterator iter2 = allObjects.begin(); iter2 != allObjects.end(); iter2++)
-		{
-			if (*iter != *iter2)
-				continue;
-
-			GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*iter);
-
-			if (go == nullptr)
-			{
-				return;
-			}
-
-			// Get the indices of the object's position
-			int xIndex = -1;
-			int yIndex = -1;
-			int zIndex = -1;
-
-			float xIndex_Float = ((go->GetComponent<Transform>().GetPosition().x - xPosition + (xSize >> 1)) / xGridSize);
-			float yIndex_Float = ((go->GetComponent<Transform>().GetPosition().y - yPosition + (ySize >> 1)) / yGridSize);
-			float zIndex_Float = ((go->GetComponent<Transform>().GetPosition().z - zPosition + (zSize >> 1)) / zGridSize);
-
-			if (xIndex_Float >= 0.0f) {
-				xIndex = static_cast<int>(xIndex_Float);
-			}
-			if (yIndex_Float >= 0.0f) {
-				yIndex = static_cast<int>(yIndex_Float);
-			}
-			if (zIndex_Float >= 0.0f) {
-				zIndex = static_cast<int>(zIndex_Float);
-			}
-
-			// Add them to each grid
-			if (((xIndex >= 0) && (xIndex < xNumOfGrid)) &&
-				((yIndex >= 0) && (yIndex < yNumOfGrid)) &&
-				((zIndex >= 0) && (zIndex < zNumOfGrid)))
-			{
-				theGrid[(xIndex * yNumOfGrid * zNumOfGrid) + (yIndex * zNumOfGrid) + zIndex].Remove(*iter);
-				iter2 = allObjects.erase(allObjects.find(*iter2));
-				break;
-			}
+	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
+		if ((*vecIter) == theObject) {
+			goList.erase(vecIter);
+			break;
 		}
 	}
-	removeQueue.clear();
 }
+
 /********************************************************************************
 Calculate the squared distance from camera to a grid's centrepoint
 ********************************************************************************/
-float SpatialPartition::CalculateDistanceSquare(const Vector3& _theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex)
-{
-	/*float xDistance = (xGridSize*_xIndex + (xGridSize >> 1) - (xSize >> 1)) - _theCameraPosition.x;
-	float yDistance = (yGridSize*_xIndex + (yGridSize >> 1) - (ySize >> 1)) - _theCameraPosition.y;
-	float zDistance = (zGridSize*_zIndex + (zGridSize >> 1) - (zSize >> 1)) - _theCameraPosition.z;
-
-	return (float)(xDistance*xDistance + yDistance*yDistance +  zDistance*zDistance);*/
-
+float SpatialPartition::CalculateDistanceSquare(const Vector3& _theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex) {
 	return (GetGrid(_xIndex, _yIndex, _zIndex).GetPosition() - _theCameraPosition).LengthSquared();
 }
 
-float SpatialPartition::CalculateDistance(const Vector3& _theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex)
-{
-	//return sqrt(CalculateDistanceSquare(_theCameraPosition, _xIndex, _yIndex, _zIndex));
+float SpatialPartition::CalculateDistance(const Vector3& _theCameraPosition, const int _xIndex, const int _yIndex, const int _zIndex) {
 	return (GetGrid(_xIndex, _yIndex, _zIndex).GetPosition() - _theCameraPosition).Length();
 }
 
 /********************************************************************************
-Set LOD distances
-********************************************************************************/
-//void SpatialPartition::SetLevelOfDetails(const float distance_High2Mid, const float distance_Mid2Low)
-//{
-//	LevelOfDetails_Distances[0] = distance_High2Mid;
-//	LevelOfDetails_Distances[1] = distance_Mid2Low;
-//}
-
-/********************************************************************************
 Check if a CGrid is visible to the camera
 ********************************************************************************/
-bool SpatialPartition::IsVisible(Vector3 _theCameraPosition, Vector3 _theCameraDirection, const int _xIndex, const int _yIndex, const int _zIndex)
-{
+bool SpatialPartition::IsVisible(Vector3 _theCameraPosition, Vector3 _theCameraDirection, const int _xIndex, const int _yIndex, const int _zIndex) {
 	Grid& grid = GetGrid(_xIndex, _yIndex, _zIndex);
 	Vector3 min = grid.GetMin();
 	Vector3 max = grid.GetMax();
@@ -495,30 +323,23 @@ bool SpatialPartition::IsVisible(Vector3 _theCameraPosition, Vector3 _theCameraD
 /********************************************************************************
 PrintSelf
 ********************************************************************************/
-void SpatialPartition::PrintSelf() const
-{
+void SpatialPartition::PrintSelf() const {
 	cout << endl;
 	cout << "**************** Start of SpatialPartition::PrintSelf() ********************" << endl;
 	cout << "xSize\t:\t" << xSize << "\tySize\t:\t" << ySize << "\tzSize\t:\t" << zSize << endl;
 	cout << "xNumOfGrid\t:\t" << xNumOfGrid << "\tyNumOfGrid\t:\t" << yNumOfGrid << "\tzNumOfGrid\t:\t" << zNumOfGrid << endl;
-	if (theGrid)
-	{
+	if (theGrid) {
 		cout << "theGrid : OK" << endl;
 		cout << "Printing out theGrid below: " << endl;
-		for (int i = 0; i<xNumOfGrid; i++)
-		{
-			for (int j = 0; j < yNumOfGrid; j++)
-			{
-				for (int k = 0; k<zNumOfGrid; k++)
-				{
+		for (int i = 0; i<xNumOfGrid; i++) {
+			for (int j = 0; j < yNumOfGrid; j++) {
+				for (int k = 0; k<zNumOfGrid; k++) {
 					theGrid[(i * yNumOfGrid * zNumOfGrid) + (j * zNumOfGrid) + k].PrintSelf();
 				}
 			}
 		}
 		theGrid[xNumOfGrid * yNumOfGrid * zNumOfGrid].PrintSelf();
-	}
-	else
-	{
+	} else {
 		cout << "theGrid : NULL" << endl;
 	}		
 	cout << "******* End of SpatialPartition::PrintSelf() **********************************" << endl;

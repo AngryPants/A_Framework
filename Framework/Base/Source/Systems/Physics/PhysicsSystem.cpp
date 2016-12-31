@@ -92,7 +92,7 @@ void PhysicsSystem::CheckGrid(Grid& _grid) {
 		return;
 	}
 	//Iterate through the GameObjects.
-	vector<GameObjectID> goList = _grid.GetListOfObjects();
+	vector<GameObjectID> goList = _grid.goList;
 	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
 		for (vector<GameObjectID>::iterator vecIter2 = std::next(vecIter); vecIter2 != goList.end(); ++vecIter2) {
 			//Get the GameObject.
@@ -112,8 +112,8 @@ void PhysicsSystem::CheckGrid(Grid& _grid, Grid& _grid2) {
 		return;
 	}
 
-	const vector<GameObjectID>& goList = _grid.GetListOfObjects();
-	const vector<GameObjectID>& goList2 = _grid2.GetListOfObjects();
+	const vector<GameObjectID>& goList = _grid.goList;
+	const vector<GameObjectID>& goList2 = _grid2.goList;
 	for (vector<GameObjectID>::const_iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
 		for (vector<GameObjectID>::const_iterator vecIter2 = goList2.begin(); vecIter2 != goList2.end(); ++vecIter2) {
 			//Get the GameObject.

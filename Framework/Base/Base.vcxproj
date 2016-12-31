@@ -92,6 +92,7 @@
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\Rendering\RenderSystem.h" />
     <ClInclude Include="Source\Systems\SpatialPartition\Grid.h" />
+    <ClInclude Include="Source\Systems\SpatialPartition\GridIndex.h" />
     <ClInclude Include="Source\Systems\SpatialPartition\SpatialPartition.h" />
     <ClInclude Include="Source\Systems\SpatialPartition\SPSystem.h" />
     <ClInclude Include="Source\Texture\LoadTGA.h" />

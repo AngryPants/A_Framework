@@ -262,6 +262,9 @@
     <ClInclude Include="Source\Script\StickyBullet.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Systems\SpatialPartition\GridIndex.h">
+      <Filter>Files\Systems\SpacialPartition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -287,9 +290,6 @@
     </Filter>
     <Filter Include="Files\Mesh">
       <UniqueIdentifier>{3ffd7100-0ab6-43c4-91f6-bf54be3317ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\GameObject">
-      <UniqueIdentifier>{bd427273-2103-4505-b44d-1b6b8e35a64d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Files\Script">
       <UniqueIdentifier>{c0232fd4-3352-4261-9b99-e82763e152d3}</UniqueIdentifier>
@@ -365,6 +365,9 @@
     </Filter>
     <Filter Include="Files\Component\Others">
       <UniqueIdentifier>{a80a2e6a-f49a-49f7-9aef-3eb1215015d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\GameObject">
+      <UniqueIdentifier>{bd427273-2103-4505-b44d-1b6b8e35a64d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@
 
 using namespace std;
 
-class Mesh;
+struct Mesh;
 class SpatialPartition;
 class Grid;
 

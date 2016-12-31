@@ -15,6 +15,7 @@ GameObject::GameObject(const string& _space, const string& _name, PassKey<GameOb
 	tags.insert("Default");
 	AddComponent<Transform>();
 	node = SceneGraph::GetInstance().CreateSceneNode(*this); //SceneGraph
+	useSpatialPartition = true;
 }
 
 GameObject::~GameObject() 

@@ -158,7 +158,7 @@ void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 
 //Render out a grid.
 void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLevel) {
-	vector<GameObjectID> goList = grid.GetListOfObjects();
+	vector<GameObjectID> goList = grid.goList;
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
 		//Get the GameObject.
@@ -257,7 +257,7 @@ void RenderSystem::RenderGridBoundaries(const string& _space) {
 					if (grid.GetNumObjects() != 0) {
 						RenderHelper::GetInstance().RenderMesh(*gridMesh);
 					} else {
-						RenderHelper::GetInstance().RenderMesh(*gridMeshEmpty);
+						//RenderHelper::GetInstance().RenderMesh(*gridMeshEmpty);
 					}					
 				modelStack.PopMatrix();
 			}

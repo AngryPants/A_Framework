@@ -32,6 +32,6 @@ void main(void) {
 		std::cout << e.what() << std::endl;
 	}
 
-	system("pause");
+	//system("pause");
 	
 }

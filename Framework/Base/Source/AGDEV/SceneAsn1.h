@@ -25,9 +25,6 @@ public:
 	virtual void Update(double _deltaTime);
 	virtual void Render();
 	virtual void Exit();
-
-	//Temporary Stuff
-	float debugCountdown = 3.0f;
 };
 
 #endif

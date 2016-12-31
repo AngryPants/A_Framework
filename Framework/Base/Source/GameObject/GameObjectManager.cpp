@@ -52,10 +52,11 @@ void GameObjectManager::AddGameObjects() {
 void GameObjectManager::RemoveGameObjects() {
 	for (set<GameObject*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ++setIter) {
 		GameObject* goPtr = *setIter;
-		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
-		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+
+		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());		
 		mapIter->second.erase(goPtr);
-		goVector[goPtr->GetID()] = nullptr; 		
+		goVector[goPtr->GetID()] = nullptr;
 		goPtr->Delete({});
 	}
 	removeQueue.clear();
@@ -68,32 +69,7 @@ GameObject* GameObjectManager::GetGameObjectByID(GameObjectID id) {
 	return goVector[id];
 }
 
-void GameObjectManager::Clear(const string& space) {
-	//Remove them from our remove queue, since we're gonna delete it in the main set anyways.
-	/*set<GameObject*>::iterator setIter = removeQueue.begin();
-	while (setIter != removeQueue.end()) {
-		GameObject* goPtr = *setIter;
-		if (goPtr->GetSpace() == space) {
-			setIter = removeQueue.erase(setIter);
-		} else {
-			++setIter;
-		}
-	}
-
-	//Delete those in our add queue.
-	setIter = addQueue.begin();
-	while (setIter != addQueue.end()) {
-		GameObject* goPtr = *setIter;
-		if (goPtr->GetSpace() == space) {
-			//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
-			setIter = addQueue.erase(setIter);
-			goVector[goPtr->GetID()] = nullptr;			
-			goPtr->Delete({});
-		} else {
-			++setIter;
-		}
-	}*/
-
+void GameObjectManager::Clear(const string& space) {	
 	for (set<GameObject*>::iterator setIter = addQueue.begin(); setIter != addQueue.end(); ) {
 		GameObject* goPtr = *setIter;
 		if (goPtr->GetSpace() != space) {
@@ -104,15 +80,13 @@ void GameObjectManager::Clear(const string& space) {
 		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
 		if (mapIter != goMap.end()) {
 			mapIter->second.insert(goPtr);
-		}
-		else {
+		} else {
 			set<GameObject*> goSet;
 			goSet.insert(goPtr);
 			goMap.insert(pair<string, set<GameObject*> >(goPtr->GetSpace(), goSet));
 		}
+		SpatialPartitionSystem::GetInstance().CreateSpatialPartition(goPtr->GetSpace())->Add(goPtr->GetID());
 
-		//SpatialPartition
-		//SpatialPartitionSystem::GetInstance().CreateSpatialPartition(goPtr->GetSpace())->Add(goPtr->GetID());
 		setIter = addQueue.erase(setIter);
 	}
 
@@ -123,8 +97,8 @@ void GameObjectManager::Clear(const string& space) {
 			continue;
 		}
 
-		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());
-		//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+		SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+		map<string, set<GameObject*> >::iterator mapIter = goMap.find(goPtr->GetSpace());		
 		mapIter->second.erase(goPtr);
 		goVector[goPtr->GetID()] = nullptr;
 		goPtr->Delete({});
@@ -137,7 +111,7 @@ void GameObjectManager::Clear(const string& space) {
 		set<GameObject*>::iterator setIter = mapIter->second.begin();
 		while (setIter != mapIter->second.end()) {
 			GameObject* goPtr = *setIter;
-			//SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
+			SpatialPartitionSystem::GetInstance().GetSpatialPartition(goPtr->GetSpace())->Remove(goPtr->GetID());
 			goVector[goPtr->GetID()] = nullptr;
 			goPtr->Delete({});
 			++setIter;
