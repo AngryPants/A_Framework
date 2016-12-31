@@ -95,11 +95,8 @@ bool Grid::Remove(GameObjectID _gameObjectID) {
 	}
 
 	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
-		cout << "vecIter: " << *vecIter << endl;
-		cout << "_gameObjectID: " << _gameObjectID << endl;
 		if ((*vecIter) == _gameObjectID) {
 			goList.erase(vecIter);
-			cout << "Erased" << endl;
 			return true;			
 		}
 	}
