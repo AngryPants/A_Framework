@@ -57,6 +57,7 @@ void SceneAsn1::Init() {
 	//SpatialPartition 
 	int xGridSize = 50; int yGridSize = 50; int zGridSize = 50;
 	int xNumGrid = 50; int yNumGrid = 5; int zNumGrid = 50;
+	//int xNumGrid = 0; int yNumGrid = 0; int zNumGrid = 0;
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 
 	//Player

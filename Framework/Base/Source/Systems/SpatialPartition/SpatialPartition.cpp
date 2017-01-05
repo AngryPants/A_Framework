@@ -8,16 +8,12 @@ SpatialPartition::SpatialPartition(const string& _space)
 	, xNumOfGrid(0), yNumOfGrid(0), zNumOfGrid(0)
 	, xPosition(0), yPosition(0), zPosition(0)
 {
-	theGrid = new Grid();
+	theGrid = new Grid[1];
 }
 
 SpatialPartition::~SpatialPartition() {
 	//Delete our existing grids.
-	if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0) {
-		delete[] theGrid;
-	} else {
-		delete theGrid;
-	}
+	delete[] theGrid;
 }
 
 //initialise the size of the spatial partition and the number of partitions
@@ -25,17 +21,13 @@ bool SpatialPartition::Set(const int _xGridSize, const int _yGridSize, const int
 						   const int _xNumOfGrid, const int _yNumOfGrid, const int _zNumOfGrid,
 						   const int _xPosition, const int _yPosition, const int _zPosition)
 {
-	if (_xGridSize <= 0 || _yGridSize <= 0 || _zGridSize <= 0 ||
-		_xNumOfGrid <= 0 || _yNumOfGrid <= 0 || _zNumOfGrid <= 0) {
+	if (_xGridSize < 0 || _yGridSize < 0 || _zGridSize < 0 ||
+		_xNumOfGrid < 0 || _yNumOfGrid < 0 || _zNumOfGrid < 0) {
 		return false;
 	}
 	
 	//Delete our existing grids.
-	if (this->xNumOfGrid * this->yNumOfGrid * this->zNumOfGrid > 0) {
-		delete[] theGrid;
-	} else {
-		delete theGrid;
-	}	
+	delete[] theGrid;
 
 	//Update our new thingies.
 	this->xNumOfGrid = _xNumOfGrid;

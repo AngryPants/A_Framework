@@ -19,7 +19,10 @@ Default Constructor. Default values are zero
 \return None
 */
 /******************************************************************************/
-Mtx44::Mtx44(float a00, float a10, float a20, float a30, float a01, float a11, float a21, float a31, float a02, float a12, float a22, float a32, float a03, float a13, float a23, float a33) {
+Mtx44::Mtx44(float a00, float a10, float a20, float a30,
+			 float a01, float a11, float a21, float a31,
+			 float a02, float a12, float a22, float a32,
+			 float a03, float a13, float a23, float a33) {
 	a[0] = a00;
 	a[1] = a10;
 	a[2] = a20;
@@ -179,23 +182,10 @@ Mtx44 Mtx44::GetInverse() const throw( DivideByZero ) {
         inverse.a[11] = - a[ 8]*a4 + a[ 9]*a2 - a[11]*a0;
         inverse.a[15] = + a[ 8]*a3 - a[ 9]*a1 + a[10]*a0;
 
-        float invDet = ((float)1)/det;
-        inverse.a[ 0] *= invDet;
-        inverse.a[ 1] *= invDet;
-        inverse.a[ 2] *= invDet;
-        inverse.a[ 3] *= invDet;
-        inverse.a[ 4] *= invDet;
-        inverse.a[ 5] *= invDet;
-        inverse.a[ 6] *= invDet;
-        inverse.a[ 7] *= invDet;
-        inverse.a[ 8] *= invDet;
-        inverse.a[ 9] *= invDet;
-        inverse.a[10] *= invDet;
-        inverse.a[11] *= invDet;
-        inverse.a[12] *= invDet;
-        inverse.a[13] *= invDet;
-        inverse.a[14] *= invDet;
-        inverse.a[15] *= invDet;
+        float invDet = 1.0f/det;
+		for (unsigned int i = 0; i < 16; ++i) {
+			inverse.a[i] *= invDet; //Cheaper to multiply than divide.
+		}        
     }
 	return inverse;
 }
@@ -444,7 +434,8 @@ void Mtx44::SetToFrustum(double left, double right, double bottom, double top, d
 /******************************************************************************/
 void Mtx44::SetToLookAt(double eyeX, double eyeY, double eyeZ,
 				double centerX, double centerY, double centerZ,
-				double upX, double upY, double upZ) {
+				double upX, double upY, double upZ)
+{
 	Vector3 f((float)(centerX - eyeX), (float)(centerY - eyeY), (float)(centerZ - eyeZ));
 	f.Normalize();
 	Vector3 up((float)upX, (float)upY, (float)upZ);
@@ -476,11 +467,20 @@ void Mtx44::SetToLookAt(double eyeX, double eyeY, double eyeZ,
 */
 /******************************************************************************/
 void Mtx44::SetToPerspective(double fovy, double aspect, double zNear, double zFar) {
-	double f = 1.0 / tan(Math::PI / 180 * fovy / 2);
-	*this = Mtx44((float)(f / aspect), 0, 0, 0,
-		0, (float)f, 0, 0,
-		0, 0, (float)((zFar + zNear) / (zNear - zFar)), -1,
-		0, 0, (float)(2 * zFar * zNear / (zNear - zFar)), 0);
+	double f = 1.0 / tan(Math::PI / 180 * fovy / 2); //What is f?
+	*this = Mtx44((float)(f / aspect), 0,       0,											0,
+				  0,				  (float)f, 0,											0,
+				  0,				  0,        (float)((zFar + zNear) / (zNear - zFar)),  -1,
+				  0,				  0,        (float)(2 * zFar * zNear / (zNear - zFar)), 0);
+
+	/*
+		f = distance/height
+
+		f/aspect	0		 0								 0
+		0			f		 0								 0
+		0			0		(near+far) / (near-far)			(2*near*far) / (near-far)
+		0			0		-1								 0
+	*/
 }
 
 /******************************************************************************/
@@ -503,7 +503,7 @@ void Mtx44::SetToPerspective(double fovy, double aspect, double zNear, double zF
 /******************************************************************************/
 void Mtx44::SetToOrtho(double left, double right, double bottom, double top, double nearVal, double farVal) {
 	*this = Mtx44(2 / (float)(right - left), 0, 0, 0,
-		0, 2 / (float)(top - bottom), 0, 0,
-		0, 0, - 2 / (float)(farVal - nearVal), 0,
-		- (float)((right + left) / (right - left)), - (float)((top + bottom) / (top - bottom)), - (float)((farVal + nearVal) / (farVal - nearVal)), 1);
+				  0, 2 / (float)(top - bottom), 0, 0,
+				  0, 0, - 2 / (float)(farVal - nearVal), 0,
+				  -(float)((right + left) / (right - left)), -(float)((top + bottom) / (top - bottom)), -(float)((farVal + nearVal) / (farVal - nearVal)), 1);
 }

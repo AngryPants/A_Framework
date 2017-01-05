@@ -69,9 +69,6 @@
     <ClInclude Include="Source\PassKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GenericUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Vector.h">
       <Filter>Header Files\Vector</Filter>
     </ClInclude>
@@ -80,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vector3.h">
       <Filter>Header Files\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GenericUtility.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,7 +21,7 @@
     <ClCompile Include="Source\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GenericUtility.h" />
+    <ClInclude Include="Source\GenericUtility.h" />
     <ClInclude Include="Source\ItemIndex.h" />
     <ClInclude Include="Source\MathUtility.h" />
     <ClInclude Include="Source\MatrixStack.h" />
