@@ -131,12 +131,7 @@ Mesh* MeshBuilder::GenerateQuad(const std::string &meshName, Color color, float 
 	mesh->vertexSize = vertex_buffer_data.size();
 	mesh->indexSize = index_buffer_data.size();
 	mesh->mode = Mesh::DRAW_TRIANGLE_STRIP;
-
-	//TexCoords
-	/*for (size_t i = 0; i < vertex_buffer_data.size(); ++i) {
-		mesh->texCoords.push_back(vertex_buffer_data[i].texCoord);
-	}*/
-
+	
 	meshMap.insert(pair<string, Mesh*>(meshName, mesh));
 
 	return mesh;

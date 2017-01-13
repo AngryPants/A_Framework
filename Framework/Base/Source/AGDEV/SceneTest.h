@@ -13,18 +13,17 @@ private:
 	GameObject* player;
 	Skybox skybox;
 
+protected:
+	//Virtual Function(s)
+	virtual void Init();
+	virtual void Update(double _deltaTime);
+	virtual void Render();
+	virtual void Exit();
+
 public:
 	//Constructor(s) & Destructor
 	SceneTest(const string& name);
 	virtual ~SceneTest();
-	
-	//Virtual Function(s)
-	virtual void Init();
-	virtual void Save() {}
-	virtual void Load() {}
-	virtual void Update(double _deltaTime);
-	virtual void Render();
-	virtual void Exit();
 
 	//Temporary Stuff
 	float debugCountdown = 3.0f;

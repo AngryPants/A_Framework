@@ -18,10 +18,9 @@ public:
 	SceneAsn1(const string& name);
 	virtual ~SceneAsn1();
 	
+protected:
 	//Virtual Function(s)
 	virtual void Init();
-	virtual void Save() {}
-	virtual void Load() {}
 	virtual void Update(double _deltaTime);
 	virtual void Render();
 	virtual void Exit();

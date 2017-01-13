@@ -25,28 +25,29 @@ private:
 	virtual ~SceneManager();
 
 	//Private Function(s)
-	Scene* GetScene(const string& sceneName);
+	Scene* GetScene(const string& _sceneName);
 
 public:
 	//Interface Function(s)
-	void Update(double deltaTime);
+	void Update(double _deltaTime);
 	void Render();
 
-	bool CheckIfSceneExist(const string& sceneName);
+	bool CheckIfSceneExist(const string& _sceneName);
 	template <class Type>
-	void CreateScene(const string& sceneName) {
+	void CreateScene(const string& _sceneName) {
 		if (!is_base_of<Scene, Type>::value) {
 			cout << "Cannot create scene with a non-scene as type." << endl;
 			throw exception("Cannot create scene with a non-scene as type.");
-		} else if (CheckIfSceneExist(sceneName)) {
-			cout << "Cannot Create Scene" << endl;
-			throw exception("Cannot Create Scene");
+		} else if (CheckIfSceneExist(_sceneName)) {
+			cout << "Cannot create scene as another scene with the same name already exists." << endl;
+			throw exception("Cannot create scene as another scene with the same name already exists.");
 		}
-		Scene* scenePtr = new Type(sceneName);
-		sceneMap.insert(pair<string, Scene*>(sceneName, scenePtr));
+		Scene* scenePtr = new Type(_sceneName);
+		sceneMap.insert(pair<string, Scene*>(_sceneName, scenePtr));
 	}
-	void RemoveScene(const string& sceneName);
-	void SetActiveScene(const string& sceneName);
+	void RemoveScene(const string& _sceneName);
+	void ExitScene(const string& _sceneName);
+	void SetActiveScene(const string& _sceneName);
 	Scene* GetActiveScene();
 	void RemoveAllScenes();
 

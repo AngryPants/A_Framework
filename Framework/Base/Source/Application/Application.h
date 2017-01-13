@@ -8,14 +8,13 @@ class Application : public Singleton<Application> {
 	friend class Singleton<Application>;
 
 private:
-	//Threads
-	enum THREAD {
-		THREAD_UPDATE_WINDOW_SIZE,
-		NUM_THREAD,
+	enum SUB_UPDATES {
+		SU_WINDOW_SIZE,
+		NUM_SUB_UPDATES,
 	};
 	
 	double elapsedTime;
-	double accumulatedTime[NUM_THREAD];
+	double accumulatedTime[NUM_SUB_UPDATES];
 	
 	//Declare the window width and height as constant integer
 	int m_window_width;
@@ -31,7 +30,7 @@ private:
 
 	void ExitSystems();
 	void InitScenes();
-	void RunThreads();
+	void RunSubUpdates();
 
 public:
 	//Interface Function(s)
