@@ -11,10 +11,9 @@ public:
 	SceneEmpty(const string& name) : Scene(name) {}
 	virtual ~SceneEmpty() {}
 
+protected:
 	//Virtual Function(s)
 	virtual void Init() {}
-	virtual void Save() {}
-	virtual void Load() {}
 	virtual void Update(double deltaTime) {
 		if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
 			Application::GetInstance().Quit();

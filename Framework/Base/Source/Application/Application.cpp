@@ -128,7 +128,7 @@ void Application::Init() {
 		
 	//Initialise Threads
 	elapsedTime = 0.0;
-	for (unsigned int t = 0; t < NUM_THREAD; ++t) {
+	for (unsigned int t = 0; t < NUM_SUB_UPDATES; ++t) {
 		accumulatedTime[t] = 0.0;
 	}
 
@@ -166,14 +166,12 @@ void Application::ExitSystems() {
 	IDGenerator::Destroy();
 }
 
-void Application::RunThreads() {
-	
-	if (accumulatedTime[THREAD_UPDATE_WINDOW_SIZE] >= 3.0) {
+void Application::RunSubUpdates() {	
+	if (accumulatedTime[SU_WINDOW_SIZE] >= 3.0) {
 		glfwGetWindowSize(m_window, &m_window_width, &m_window_height);
 		resize_callback(m_window, m_window_width, m_window_height);
-		accumulatedTime[THREAD_UPDATE_WINDOW_SIZE] = 0.0;
+		accumulatedTime[SU_WINDOW_SIZE] = 0.0;
 	}
-
 }
 
 void Application::Run() {
@@ -198,11 +196,12 @@ void Application::Run() {
 		SceneManager::GetInstance().Render();
 		glfwSwapBuffers(m_window); //Swap buffers
 
-		//Threads
-		RunThreads();
-		for (unsigned int t = 0; t < NUM_THREAD; ++t) {
+		//Sub Updates		
+		for (unsigned int t = 0; t < NUM_SUB_UPDATES; ++t) {
 			accumulatedTime[t] += elapsedTime;
 		}
+		RunSubUpdates();
+		
 
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
