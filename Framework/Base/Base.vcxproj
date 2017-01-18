@@ -23,6 +23,8 @@
     <ClInclude Include="Source\AGDEV\SceneTest.h" />
     <ClInclude Include="Source\AGDEV\TranslateScript.h" />
     <ClInclude Include="Source\AGDEV\TriggerTestScript.h" />
+    <ClInclude Include="Source\AI\ObserverMessagingSystem\Message\Message.h" />
+    <ClInclude Include="Source\AI\ObserverMessagingSystem\State\State.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Animation\SpriteAnimation.h" />
     <ClInclude Include="Source\Application\Application.h" />
@@ -32,6 +34,7 @@
     <ClInclude Include="Source\Collider\CollisionInfo.h" />
     <ClInclude Include="Source\Collider\ContactPoint.h" />
     <ClInclude Include="Source\Collider\SphereCollider.h" />
+    <ClInclude Include="Source\Component\AI\CharacterComponent.h" />
     <ClInclude Include="Source\Component\Component.h" />
     <ClInclude Include="Source\Component\ComponentManager.h" />
     <ClInclude Include="Source\Component\Game\Bullet.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="Source\Script\Script.h" />
     <ClInclude Include="Source\Script\ShootingScript.h" />
     <ClInclude Include="Source\Script\StickyBullet.h" />
+    <ClInclude Include="Source\Systems\AI\CharacterSystem.h" />
     <ClInclude Include="Source\Systems\Physics\CollisionUtility.h" />
     <ClInclude Include="Source\Systems\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\Systems\Rendering\RenderSystem.h" />
@@ -115,6 +119,7 @@
     <ClCompile Include="Source\Collider\Collider.cpp" />
     <ClCompile Include="Source\Collider\ContactPoint.cpp" />
     <ClCompile Include="Source\Collider\SphereCollider.cpp" />
+    <ClCompile Include="Source\Component\AI\CharacterComponent.cpp" />
     <ClCompile Include="Source\Component\Component.cpp" />
     <ClCompile Include="Source\Component\ComponentManager.cpp" />
     <ClCompile Include="Source\Component\Game\Bullet.cpp" />
@@ -160,6 +165,7 @@
     <ClCompile Include="Source\Script\Script.cpp" />
     <ClCompile Include="Source\Script\ShootingScript.cpp" />
     <ClCompile Include="Source\Script\StickyBullet.cpp" />
+    <ClCompile Include="Source\Systems\AI\CharacterSystem.cpp" />
     <ClCompile Include="Source\Systems\Physics\CollisionUtility.cpp" />
     <ClCompile Include="Source\Systems\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Source\Systems\Rendering\RenderSystem.cpp" />
