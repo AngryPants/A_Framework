@@ -14,6 +14,9 @@
     <Filter Include="Header Files\Vector">
       <UniqueIdentifier>{8e4553c6-55c7-42ee-b27a-3d67b1fa5565}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{b8a2256c-7492-4278-a770-239220b315b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\MatrixStack.cpp">
@@ -39,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="Source\Vector3.cpp">
       <Filter>Source Files\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LuaInterface.cpp">
+      <Filter>Lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +86,24 @@
     </ClInclude>
     <ClInclude Include="Source\GenericUtility.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lauxlib.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lua.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lua.hpp">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\luaconf.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lualib.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LuaInterface.h">
+      <Filter>Lua</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
