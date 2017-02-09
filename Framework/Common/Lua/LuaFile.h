@@ -9,14 +9,14 @@
 using std::string;
 using std::map;
 
-//class LuaManager;
+class LuaManager;
 
 class LuaFile
 {
 private:
 	lua_State* theLuaState;
 public:
-	LuaFile(/*PassKey<LuaManager> _key*/);
+	LuaFile(PassKey<LuaManager> _key);
 	~LuaFile();
 
 	//Initialization of the Lua Interface Class
@@ -30,32 +30,31 @@ public:
 	void PushVariable(/*different types Can use template here*/);
 	void CallFunction();
 
+	lua_State* GetLuaState(PassKey<LuaManager> _key);
 	//Drop the LuaFile Class
 	void Drop();
 
+	//Custom functions 
+	int GetIntValue(const char* varName);
 
+	float GetFloatValue( const char* varName);
 
-	////Custom functions 
-	//int GetIntValue(const char* varName);
+	//get char value through lua interface class
+	char GetCharValue(const char* varName);
 
-	//float GetFloatValue( const char* varName);
+	//get vector3 values through the lua interface class
+	Vector3 GetVector3Values(const char* varName);
 
-	////get char value through lua interface class
-	//char GetCharValue(const char* varName);
+	//get distance square value through the Lua Interface Class
+	float GetDistanceSquareValue(const char* varName, Vector3 source, Vector3 destination);
 
-	////get vector3 values through the lua interface class
-	//Vector3 GetVector3Values(const char* varName);
+	void GetVariableValues(const char* varName, int &a, int &b, int &c, int &d);
 
-	////get distance square value through the Lua Interface Class
-	//float GetDistanceSquareValue(const char* varName, Vector3 source, Vector3 destination);
+	void SaveIntValue(const char* varName, const int value, const bool bOverwrite = NULL);
 
-	//void GetVariableValues(const char* varName, int &a, int &b, int &c, int &d);
+	void SaveFloatValue(const char* varName, const float value, const bool bOverwrite = NULL);
 
-	//void SaveIntValue(const char* varName, const int value, const bool bOverwrite = NULL);
-
-	//void SaveFloatValue(const char* varName, const float value, const bool bOverwrite = NULL);
-
-	//float GetField(const char *key);
+	float GetField(const char *key);
 
 	//void error(const char *errorCode);
 

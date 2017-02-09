@@ -17,10 +17,19 @@ AIMovementScript::~AIMovementScript()
 
 void AIMovementScript::OnTriggerStay(const Collider& _collider)
 {
-	/*if (&_collider == &GetGameObject().GetComponent<ColliderGroup<SphereCollider>>().colliders[2])
-	{*/
-		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID);
-		if (temp->name == "Waypoint" && temp->GetComponent<Transform>().GetPosition() == current->GetComponent<Transform>().GetPosition())
+	//To Check if its from the correct Collider
+	GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID);
+
+	//float myRadius = GetGameObject().GetComponent<ColliderGroup<SphereCollider>>().colliders[2].GetRadius();
+	//float opposingRadius = temp->GetComponent<ColliderGroup<SphereCollider>>().colliders[0].GetRadius();
+	//
+	//float totalLengthSquared = (myRadius + opposingRadius) * (myRadius + opposingRadius);
+
+	//float totalDistanceSquared = (GetGameObject().GetComponent<Transform>().GetPosition() - temp->GetComponent<Transform>().GetPosition()).LengthSquared();
+
+	//if (totalDistanceSquared <= totalLengthSquared)
+	//{
+		if (temp->name == "Waypoint"  && temp->GetComponent<Transform>().GetPosition() == current->GetComponent<Transform>().GetPosition())
 		{
 			if (current->GetComponent<WayPointComponent>().next != nullptr)
 				current = &current->GetComponent<WayPointComponent>().next->GetGameObject();
@@ -34,7 +43,7 @@ void AIMovementScript::OnTriggerStay(const Collider& _collider)
 void AIMovementScript::Update(double deltaTime)
 {
 	if (!reachedDestination)
-		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext() * 1000);
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext() * 100);
 	if (GetGameObject().GetComponent<Rigidbody>().velocity.LengthSquared() > moveSpeed* moveSpeed)
 	{
 		GetGameObject().GetComponent<Rigidbody>().velocity.Normalize() *= moveSpeed;

@@ -35,7 +35,7 @@ void AIChaseScript::Update(double deltaTime)
 	if (hasPlayer)
 	{
 		Vector3 direction = ((playerPosition - GetGameObject().GetComponent<Transform>().GetPosition()).Normalized());
-		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(direction * 1000);
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(direction * 100);
 	}
 	hasPlayer = false;
 }

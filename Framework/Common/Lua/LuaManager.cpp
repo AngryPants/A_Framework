@@ -13,10 +13,10 @@ LuaManager::LuaManager()
 
 LuaManager::~LuaManager()
 {
-	map<string, LuaFile*>::iterator iter = luaStateMap.begin();
+	unordered_map<string, LuaFile*>::iterator iter = luaStateMap.begin();
 	while (iter != luaStateMap.end())
 	{
-		delete ((*iter).second);
+		delete iter->second;
 		iter = luaStateMap.erase(iter);
 	}
 	luaStateMap.clear();
@@ -26,7 +26,7 @@ LuaFile* LuaManager::CreateLua(string name, string luaFilePath)
 {
 	//1. Create lua state
 	LuaFile * newLuaFile;
-	newLuaFile = new LuaFile(/*{}*/);
+	newLuaFile = new LuaFile(PassKey<LuaManager>());
 
 	if (newLuaFile->Init(luaFilePath))
 	{
