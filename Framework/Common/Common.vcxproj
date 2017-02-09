@@ -11,7 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\LuaInterface.cpp" />
+    <ClCompile Include="Lua\LuaFile.cpp" />
+    <ClCompile Include="Lua\LuaManager.cpp" />
     <ClCompile Include="Source\MathUtility.cpp" />
     <ClCompile Include="Source\MatrixStack.cpp" />
     <ClCompile Include="Source\Mtx44.cpp" />
@@ -26,10 +27,11 @@
     <ClInclude Include="Lua\lua.h" />
     <ClInclude Include="Lua\lua.hpp" />
     <ClInclude Include="Lua\luaconf.h" />
+    <ClInclude Include="Lua\LuaFile.h" />
     <ClInclude Include="Lua\lualib.h" />
+    <ClInclude Include="Lua\LuaManager.h" />
     <ClInclude Include="Source\GenericUtility.h" />
     <ClInclude Include="Source\ItemIndex.h" />
-    <ClInclude Include="Source\LuaInterface.h" />
     <ClInclude Include="Source\MathUtility.h" />
     <ClInclude Include="Source\MatrixStack.h" />
     <ClInclude Include="Source\Mtx44.h" />

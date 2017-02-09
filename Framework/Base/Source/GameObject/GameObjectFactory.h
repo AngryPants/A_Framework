@@ -40,6 +40,7 @@
 #include "../Component/Game/Health.h"
 #include "../Component/Game/Rifle.h"
 #include "../Component/Game/Waypoint.h"
+#include "../AGDEV/AIChaseScript.h"
 
 
 class GameObjectFactory {
@@ -211,7 +212,7 @@ public:
 		go.AddComponent<HealthComponent>();
 		go.AddComponent<ColliderGroup<SphereCollider>>();
 		go.AddComponent<LODMeshHolder>();
-		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(2);
+		go.GetComponent<ColliderGroup<SphereCollider>>().CreateColliders(3);
 		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(2.f);
 		//Health Script
 		go.CreateScript<HealthScript>();
@@ -238,7 +239,6 @@ public:
 
 		GameObject& enemyRifle = CreateEnemyRifle(space);
 		enemyRifle.GetComponent<RifleComponent>().isHeld = true;
-
 		enemyRifle.SetParent(go);
 
 		return go;
@@ -253,14 +253,19 @@ public:
 		go.GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
 		//should be done outside
-		int x = Math::RandInt() % 250;
-		int z = Math::RandInt() % 250;
+		int x = Math::RandInt() % 50;
+		int z = Math::RandInt() % 50;
 
-		waypoint->CreateWayPoint(Vector3(x, 1, z), 10.f);
-		waypoint->CreateWayPoint(Vector3(-x, 1, z), 10.f);
-		waypoint->CreateWayPoint(Vector3(x, 1, -z), 10.f);
-		waypoint->CreateWayPoint(Vector3(-x, 1, -z), 10.f);
+		waypoint->CreateWayPoint(Vector3(x, 1, z), 1.f);
+		waypoint->CreateWayPoint(Vector3(-x, 1, z), 1.f);
+		waypoint->CreateWayPoint(Vector3(x, 1, -z), 1.f);
+		waypoint->CreateWayPoint(Vector3(-x, 1, -z), 1.f);
 		waypoint->LinkWayPoint();
+
+		//Collider 3 is for Enemy Chase Range
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[3].SetRadius(15.f);
+		go.GetComponent<ColliderGroup<SphereCollider>>().colliders[3].isTrigger = true;
+		go.CreateScript<AIChaseScript>();
 		return go;
 	}
 

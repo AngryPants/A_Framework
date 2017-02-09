@@ -9,7 +9,7 @@
 #include "../Systems/Rendering//RenderSystem.h"
 #include "../Systems/SpatialPartition/SPSystem.h"
 #include "../Systems/Physics/PhysicsSystem.h"
-
+#include "../Scene/SceneManager.h"
 //Include Scripts
 #include "RotateScript.h"
 #include "ScaleScript.h"
@@ -224,6 +224,11 @@ void SceneTest::Init() {
 }
 
 void SceneTest::Update(double _deltaTime) {	
+	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_LOOK_ZOOM])
+	{
+		SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
+	}
+
 	PhysicsSystem::GetInstance().UpdateDeltaTime(name, _deltaTime);
 
 	GameObjectManager::GetInstance().UpdateScripts(name, _deltaTime);
@@ -232,9 +237,9 @@ void SceneTest::Update(double _deltaTime) {
 	PhysicsSystem::GetInstance().Update(name);
 
 	//Close da app
-	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
+	/*if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
 		Application::GetInstance().Quit();
-	}
+	}*/
  
 	RenderSystem::GetInstance().Update(name, _deltaTime);
 	debugCountdown -= _deltaTime;

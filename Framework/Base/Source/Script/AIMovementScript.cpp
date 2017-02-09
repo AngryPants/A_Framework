@@ -6,31 +6,35 @@ AIMovementScript::AIMovementScript(GameObject& gameObject) : Script(gameObject)
 {
 	waypoints.clear();
 	current = nullptr;
-	moveSpeed = 1.f;
+	moveSpeed = rand() % 10 + 15.f; // 15 - 25 speed
 	reachedDestination = false;
 }
 
 AIMovementScript::~AIMovementScript()
 {
+	current = nullptr;
 }
 
 void AIMovementScript::OnTriggerStay(const Collider& _collider)
 {
-	GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID);
-	if (temp->name == "Waypoint" && temp->GetComponent<Transform>().GetPosition() == current->GetComponent<Transform>().GetPosition())
-	{
-		if (current->GetComponent<WayPointComponent>().next != nullptr)
-			current = &current->GetComponent<WayPointComponent>().next->GetGameObject();
-		else
-			reachedDestination = true;
-	}
+	/*if (&_collider == &GetGameObject().GetComponent<ColliderGroup<SphereCollider>>().colliders[2])
+	{*/
+		GameObject* temp = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID);
+		if (temp->name == "Waypoint" && temp->GetComponent<Transform>().GetPosition() == current->GetComponent<Transform>().GetPosition())
+		{
+			if (current->GetComponent<WayPointComponent>().next != nullptr)
+				current = &current->GetComponent<WayPointComponent>().next->GetGameObject();
+			else
+				reachedDestination = true;
+		}
+	//}
 }
 
 //Function(s)
 void AIMovementScript::Update(double deltaTime)
 {
 	if (!reachedDestination)
-		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext() * 500);
+		GetGameObject().GetComponent<Rigidbody>().AddRelativeForce(GetDirectionToNext() * 1000);
 	if (GetGameObject().GetComponent<Rigidbody>().velocity.LengthSquared() > moveSpeed* moveSpeed)
 	{
 		GetGameObject().GetComponent<Rigidbody>().velocity.Normalize() *= moveSpeed;

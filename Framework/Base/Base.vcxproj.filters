@@ -277,6 +277,15 @@
     <ClInclude Include="Source\Systems\AI\CharacterSystem.h">
       <Filter>Files\Systems\AI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AI\WayPointSystem\Waypoint.h">
+      <Filter>Files\AI\WayPointSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\WayPointSystem\WaypointManager.h">
+      <Filter>Files\AI\WayPointSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\AIChaseScript.h">
+      <Filter>Files\AGDEV\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -401,6 +410,9 @@
     </Filter>
     <Filter Include="Files\Component\AI">
       <UniqueIdentifier>{6b6c7473-7d44-4446-a36b-38c2666efce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AI\WayPointSystem">
+      <UniqueIdentifier>{4a5f1a3f-f443-4475-aa20-1ec5e42b7c32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -625,6 +637,15 @@
     </ClCompile>
     <ClCompile Include="Source\Systems\AI\CharacterSystem.cpp">
       <Filter>Files\Systems\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI\WayPointSystem\Waypoint.cpp">
+      <Filter>Files\AI\WayPointSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI\WayPointSystem\WaypointManager.cpp">
+      <Filter>Files\AI\WayPointSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\AIChaseScript.cpp">
+      <Filter>Files\AGDEV\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,0 +1,28 @@
+#ifndef LUA_MANAGER_H
+#define LUA_MANAGER_H
+
+#include "../Source/SingletonTemplate.h"
+#include "../Source/PassKey.h"
+#include "LuaFile.h"
+
+class LuaManager : public Singleton<LuaManager>
+{
+	friend Singleton < LuaManager > ;
+public:
+	//Create a Lua File
+	LuaFile* CreateLua(string name, string luaFilePath);
+
+	//Check if Lua file Exist
+	bool HasLuaFile(string name);
+
+	//Get the Specific Lua File
+	LuaFile* GetLuaFile(string name);
+private:
+	LuaManager();
+	virtual ~LuaManager();
+
+	//storing a collection of lua
+	map<string, LuaFile*> luaStateMap;
+};
+
+#endif

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AGDEV\AIChaseScript.h" />
     <ClInclude Include="Source\AGDEV\CutsceneTriggerScript.h" />
     <ClInclude Include="Source\AGDEV\DebugControlsScript.h" />
     <ClInclude Include="Source\AGDEV\PivotScript.h" />
@@ -25,6 +26,8 @@
     <ClInclude Include="Source\AGDEV\TriggerTestScript.h" />
     <ClInclude Include="Source\AI\ObserverMessagingSystem\Message\Message.h" />
     <ClInclude Include="Source\AI\ObserverMessagingSystem\State\State.h" />
+    <ClInclude Include="Source\AI\WayPointSystem\Waypoint.h" />
+    <ClInclude Include="Source\AI\WayPointSystem\WaypointManager.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Animation\SpriteAnimation.h" />
     <ClInclude Include="Source\Application\Application.h" />
@@ -105,11 +108,14 @@
     <ClInclude Include="Source\Texture\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AGDEV\AIChaseScript.cpp" />
     <ClCompile Include="Source\AGDEV\CutsceneTriggerScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp" />
     <ClCompile Include="Source\AGDEV\SceneAsn1.cpp" />
     <ClCompile Include="Source\AGDEV\SceneTest.cpp" />
+    <ClCompile Include="Source\AI\WayPointSystem\Waypoint.cpp" />
+    <ClCompile Include="Source\AI\WayPointSystem\WaypointManager.cpp" />
     <ClCompile Include="Source\Animation\Animation.cpp" />
     <ClCompile Include="Source\Animation\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Application\Application.cpp" />

@@ -43,7 +43,10 @@
     <ClCompile Include="Source\Vector3.cpp">
       <Filter>Source Files\Vector</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LuaInterface.cpp">
+    <ClCompile Include="Lua\LuaManager.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\LuaFile.cpp">
       <Filter>Lua</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,7 +105,10 @@
     <ClInclude Include="Lua\lualib.h">
       <Filter>Lua</Filter>
     </ClInclude>
-    <ClInclude Include="Source\LuaInterface.h">
+    <ClInclude Include="Lua\LuaManager.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\LuaFile.h">
       <Filter>Lua</Filter>
     </ClInclude>
   </ItemGroup>

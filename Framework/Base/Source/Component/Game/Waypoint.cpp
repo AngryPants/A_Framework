@@ -2,9 +2,9 @@
 #include "../ComponentManager.h"
 
 //constructor & destructor
-WayPointComponent::WayPointComponent(GameObject& gameObject, PassKey<ComponentManager> _key)
-	: Component("Waypoint Component", gameObject, _key)
-{
-	prev = next = nullptr;
-	trigger = false;
-}
+//WayPointComponent::WayPointComponent(GameObject& gameObject, PassKey<ComponentManager> _key)
+//	: Component("Waypoint Component", gameObject, _key)
+//{
+//	prev = next = nullptr;
+//	trigger = false;
+//}

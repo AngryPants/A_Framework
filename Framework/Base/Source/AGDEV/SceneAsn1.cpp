@@ -67,6 +67,8 @@ void SceneAsn1::Init() {
 	player->CreateScript<PlayerHealthScript>();
 	player->CreateScript<PlayerActionScript>();
 	player->AddComponent<HealthComponent>();
+	player->GetComponent<HealthComponent>().SetMaxHealth(250);
+	player->GetComponent<HealthComponent>().SetHealth(250);
 	player->AddComponent<Rigidbody>().elasticity = 0.0f;
 	//player->AddComponent<ColliderGroup<AABBCollider>>().colliders[0];
 	player->AddComponent <PlayerDataComponent>();
@@ -143,19 +145,26 @@ void SceneAsn1::Init() {
 
 
 	{
-		for (int i = -6; i <= 6; i++)
-		{
-			if (i > -2 && i < 2)
-				continue;
-			//Create Enemy Here
-			Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
-			Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
-			Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
-			GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
-			enemy->GetComponent<Transform>().SetLocalPosition(50 * i, 1, 50 * i);
-			enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
-		}
+		Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+		Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+		Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+		GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
+		enemy->GetComponent<Transform>().SetLocalPosition(50 , 1, 50 );
+		enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
 
+		//for (int i = -6; i <= 6; i++)
+		//{
+		//	if (i > -2 && i < 2)
+		//		continue;
+		//	//Create Enemy Here
+		//	Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+		//	Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+		//	Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+		//	GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
+		//	enemy->GetComponent<Transform>().SetLocalPosition(50 * i, 1 , 50 * i);
+		//	enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
+		//}
+		/*
 		for (int i = -6; i <= 6; i++)
 		{
 			if (i > -2 && i < 2)
@@ -166,7 +175,7 @@ void SceneAsn1::Init() {
 			GameObject* enemy2 = &GameObjectFactory::CreateDefaultEnemy(name);
 			enemy2->GetComponent<Transform>().SetLocalPosition(30 * i, 1, 30 * i);
 			enemy2->GetComponent<LODMeshHolder>().SetLODMesh(stationaryEnemyMeshLowLOD, stationaryEnemyMeshMidLOD, stationaryEnemyMeshHighLOD);
-		}
+		}*/
 	}
 
 	{
@@ -223,36 +232,36 @@ void SceneAsn1::Init() {
 		ring2.CreateScript<RotateScript>();
 	}
 
-	{
-		for (int i = 0; i < 3; ++i)
-		{
-			//Cube
-			GameObject* cube = &GameObjectFactory::CreateCube(name, "Enemy");
-			cube->GetComponent<Transform>().SetLocalPosition(10 * i, 5, 0);
-			cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
-			cube->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
-			cube->AddComponent<HealthComponent>();
-			cube->CreateScript<HealthScript>();			
-			cube->CreateScript<TranslateScript>();
+	//{
+		//for (int i = 0; i < 3; ++i)
+		//{
+		//	//Cube
+		//	GameObject* cube = &GameObjectFactory::CreateCube(name, "Enemy");
+		//	cube->GetComponent<Transform>().SetLocalPosition(10 * i, 5, 0);
+		//	cube->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Test Cube", "Image//Default//Test_Cube.tga");
+		//	cube->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
+		//	cube->AddComponent<HealthComponent>();
+		//	cube->CreateScript<HealthScript>();			
+		//	cube->CreateScript<TranslateScript>();
 
-			//Cube 2
-			GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Enemy");
-			cube2->SetParent(*cube);
-			cube2->GetComponent<Transform>().SetLocalPosition(0, 2, 1);
-			cube2->AddComponent<HealthComponent>();
-			cube2->CreateScript<HealthScript>();
-			cube2->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
-			cube2->CreateScript<RotateScript>();
+		//	//Cube 2
+		//	GameObject* cube2 = &GameObjectFactory::CreateCube(name, "Enemy");
+		//	cube2->SetParent(*cube);
+		//	cube2->GetComponent<Transform>().SetLocalPosition(0, 2, 1);
+		//	cube2->AddComponent<HealthComponent>();
+		//	cube2->CreateScript<HealthScript>();
+		//	cube2->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
+		//	cube2->CreateScript<RotateScript>();
 
-			//Cylinder
-			GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Enemy");
-			cylinder->SetParent(*cube2);
-			cylinder->GetComponent<Transform>().SetLocalPosition(2, 2, 2);
-			cylinder->AddComponent<HealthComponent>();
-			cylinder->CreateScript<HealthScript>();
-			cylinder->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
-		}
-    }
+		//	//Cylinder
+		//	GameObject* cylinder = &GameObjectFactory::CreateCylinder(name, "Enemy");
+		//	cylinder->SetParent(*cube2);
+		//	cylinder->GetComponent<Transform>().SetLocalPosition(2, 2, 2);
+		//	cylinder->AddComponent<HealthComponent>();
+		//	cylinder->CreateScript<HealthScript>();
+		//	cylinder->AddComponent<ColliderGroup<SphereCollider>>().colliders[0].SetRadius(1.0f);
+		//}
+    //}
 
 }
 

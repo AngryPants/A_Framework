@@ -10,16 +10,18 @@ AIShootingScript::AIShootingScript(GameObject& gameObject) : ShootingScript(game
 
 AIShootingScript::~AIShootingScript()
 {
-
 }
 
 void AIShootingScript::OnTriggerStay(const Collider& _collider)
 {
-	if (GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID)->name == "Player")
-	{
-		toShoot = true;
-		playerPosition = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID)->GetComponent<Transform>().GetPosition();
-	}
+	/*if (&_collider == &GetGameObject().GetComponent<ColliderGroup<SphereCollider>>().colliders[1])
+	{*/
+		if (GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID)->name == "Player")
+		{
+			toShoot = true;
+			playerPosition = GameObjectManager::GetInstance().GetGameObjectByID(_collider.gameObjectID)->GetComponent<Transform>().GetPosition();
+		}
+	//}
 }
 
 void AIShootingScript::ShootBullet()
@@ -47,7 +49,6 @@ void AIShootingScript::Update(double deltaTime)
 {
 	ShootingScript::Update(deltaTime);
 	toShoot = false;
-
 }
 
 bool AIShootingScript::ExtraCondition()
