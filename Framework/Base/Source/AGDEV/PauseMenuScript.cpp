@@ -4,6 +4,7 @@
 #include "../Component/Physics/Transform.h"
 #include "../GameObject/GameObject.h" 
 #include "../Scene/SceneManager.h"
+#include "SceneMainMenu.h"
 
 //Constructor(s) & Destructor
 PauseMenuScript::PauseMenuScript(GameObject& _gameObject) : Script(_gameObject) {
@@ -48,7 +49,14 @@ void PauseMenuScript::Update(double _deltaTime) {
 				break;
 			}
 			case PM_OPTION_MAIN_MENU: {
+				if (SceneManager::GetInstance().CheckIfSceneExist("Main Menu") == false) {
+					SceneManager::GetInstance().CreateScene<SceneMainMenu>("Main Menu");
+				}
 				SceneManager::GetInstance().SetActiveScene("Main Menu");
+
+				if (SceneManager::GetInstance().CheckIfSceneExist("Assignment 1 Scene")) {
+					SceneManager::GetInstance().RemoveScene("Assignment 1 Scene");
+				}
 				break;
 			}
 			case PM_OPTION_QUIT: {

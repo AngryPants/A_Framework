@@ -4,6 +4,7 @@
 #include "../Component/Physics/Transform.h"
 #include "../GameObject/GameObject.h" 
 #include "../Scene/SceneManager.h"
+#include "SceneAsn1.h"
 
 //Constructor(s) & Destructor
 MainMenuScript::MainMenuScript(GameObject& _gameObject) : Script(_gameObject) {
@@ -32,6 +33,9 @@ void MainMenuScript::Update(double _deltaTime) {
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MENU_SELECT]) {
 		switch (currentOption) {
 			case M_OPTION_START: {
+				if (SceneManager::GetInstance().CheckIfSceneExist("Assignment 1 Scene") == false) {
+					SceneManager::GetInstance().CreateScene<SceneAsn1>("Assignment 1 Scene");
+				}
 				SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
 				break;
 			}
