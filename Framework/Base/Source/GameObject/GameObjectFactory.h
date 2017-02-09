@@ -115,6 +115,13 @@ public:
 		return go;
 	}
 
+	static GameObject& CreateText(const string& space,const string& name = "Cylinder") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
+		go.AddComponent<TextRenderer>();
+
+		return go;
+	}
+
 	static GameObject& CreateGrass(const string& space, const string& name = "Grass") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
 		go.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Grass Low", "OBJ//Game//Grass//Low.obj"),

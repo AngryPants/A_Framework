@@ -49,6 +49,15 @@ void SceneSplash::Init() {
 	GameObject* logo = &GameObjectFactory::CreateQuad(name, "Logo");
 	logo->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Logo", "Image//Others//Logo.tga");
 
+	//Text
+	/*GameObject* textObject = &GameObjectFactory::CreateText(name, "Text Object");
+	textObject->GetComponent<TextRenderer>().isUI = false;
+	textObject->GetComponent<TextRenderer>().text = "Text Object";	
+	textObject->GetComponent<TextRenderer>().scale.Set(0.05f, 0.1f, 0.1f);
+	textObject->GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+	textObject->GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+	textObject->CreateScript<RotateScript>(0);*/
+
 	//Camera
 	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Camera");
 	camera->GetComponent<Transform>().SetLocalPosition(0, 0, 1);
@@ -73,8 +82,8 @@ void SceneSplash::Update(double _deltaTime) {
 
 	splashTimer -= _deltaTime;
 	if (splashTimer < 0.0f) {
-		SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
-		SceneManager::GetInstance().RemoveScene(name);
+		//SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
+		//SceneManager::GetInstance().RemoveScene(name);
 		cout << "Switching Scenes" << endl;
 	}
 }
