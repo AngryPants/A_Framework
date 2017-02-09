@@ -35,6 +35,7 @@
 #include "../AGDEV/SceneAsn1.h"
 #include "../AGDEV/SceneSplash.h"
 #include "../AGDEV/SceneMainMenu.h"
+#include "../AGDEV/ScenePauseMenu.h"
 
 GLFWwindow* m_window;
 const unsigned char maxFPS = 60; //Maximum FPS of this game.
@@ -91,7 +92,9 @@ void Application::InitScenes() {
 	SceneManager::GetInstance().CreateScene<SceneSplash>("Splash Screen");
 	SceneManager::GetInstance().CreateScene<SceneMainMenu>("Main Menu");
 	SceneManager::GetInstance().CreateScene<SceneAsn1>("Assignment 1 Scene");
+	SceneManager::GetInstance().CreateScene<ScenePauseMenu>("Pause Menu");
 
+	//SceneManager::GetInstance().SetActiveScene("Pause Menu");
 	SceneManager::GetInstance().SetActiveScene("Splash Screen");
 	//SceneManager::GetInstance().CreateScene<SceneAsn1>("Assignment 1 Scene");
 	//SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
