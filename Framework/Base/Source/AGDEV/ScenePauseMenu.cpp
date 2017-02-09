@@ -1,4 +1,4 @@
-#include "SceneMainMenu.h"
+#include "ScenePauseMenu.h"
 #include "../Graphics/GraphicsManager.h"
 #include "../Graphics/RenderHelper.h"
 #include "../Application/Application.h"
@@ -12,16 +12,17 @@
 #include "../Systems/Physics/PhysicsSystem.h"
 
 //Include Scripts
-#include "MainMenuScript.h"
+#include "PauseMenuScript.h"
 
-SceneMainMenu::SceneMainMenu(const string& _name) : Scene(_name) {	
+//Constructor(s) & Destructor
+ScenePauseMenu::ScenePauseMenu(const string& _name) : Scene(_name) {
 }
 
-SceneMainMenu::~SceneMainMenu() {
+ScenePauseMenu::~ScenePauseMenu() {
 }
 
 //Virtual Function(s)
-void SceneMainMenu::Init() {
+void ScenePauseMenu::Init() {
 	//Initialise some GraphicsManager stuff.
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::BLENDING>();
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::CULLING>();
@@ -29,11 +30,11 @@ void SceneMainMenu::Init() {
 	GraphicsManager::GetInstance().SetBackgroundColor(0.0f, 0.0f, 0.4f, 1.0f);
 
 	//Initialise the Shader.
-	RenderHelper::GetInstance().LoadShader(SHADERS::PHONG);
+	/*RenderHelper::GetInstance().LoadShader(SHADERS::PHONG);
 	RenderHelper::GetInstance().EnableLight(true);
 	RenderHelper::GetInstance().SetNumLights(8);
 	RenderHelper::GetInstance().EnableFog(false);
-	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
+	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);*/
 
 	//Set Skybox Textures
 	skybox.textureLists[Skybox::TEXTURES::SKYBOX_TOP].textureArray[0] = TextureManager::GetInstance().AddTexture("Skybox Top", "Image//Skybox//Mountains//Top.tga");
@@ -56,21 +57,49 @@ void SceneMainMenu::Init() {
 	light->GetComponent<Transform>().SetLocalPosition(0, 10, 0);
 
 	{
-		GameObject& startGame = GameObjectFactory::CreateCube(name);
-		startGame.GetComponent<Transform>().SetLocalScale(1, 1, 1);
-		startGame.GetComponent<Transform>().SetLocalPosition(-1, 0, 0);
+		GameObject& resumeGame = GameObjectFactory::CreateCube(name);
+		resumeGame.GetComponent<Transform>().SetLocalScale(1, 1, 1);
+		resumeGame.GetComponent<Transform>().SetLocalPosition(0, 1, 0);
 
-		GameObject& startGameText = GameObjectFactory::CreateText(name);	
-		startGameText.SetParent(startGame);
-		startGameText.GetComponent<Transform>().Translate(0, 0, 0.6f);
-		startGameText.GetComponent<Transform>().SetLocalScale(0.15f, 0.15f, 0.15f);
-		startGameText.GetComponent<TextRenderer>().text = "Start";
-		startGameText.GetComponent<TextRenderer>().isUI = false;
-		startGameText.GetComponent<TextRenderer>().centralise = true;
-		startGameText.GetComponent<TextRenderer>().lightEnabled = false;		
-		startGameText.GetComponent<TextRenderer>().textColor.Set(0, 0, 0);	
-		startGameText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
-		startGameText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+		GameObject& resumeGameText = GameObjectFactory::CreateText(name);	
+		resumeGameText.SetParent(resumeGame);
+		resumeGameText.GetComponent<Transform>().Translate(0, 0, 0.6f);
+		resumeGameText.GetComponent<Transform>().SetLocalScale(0.15f, 0.15f, 0.15f);
+		resumeGameText.GetComponent<TextRenderer>().text = "Resume";
+		resumeGameText.GetComponent<TextRenderer>().isUI = false;
+		resumeGameText.GetComponent<TextRenderer>().centralise = true;
+		resumeGameText.GetComponent<TextRenderer>().lightEnabled = false;		
+		resumeGameText.GetComponent<TextRenderer>().textColor.Set(0, 0, 0);	
+		resumeGameText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		resumeGameText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+
+		GameObject& mainMenu = GameObjectFactory::CreateCube(name);
+		mainMenu.GetComponent<Transform>().SetLocalScale(1, 1, 1);
+		mainMenu.GetComponent<Transform>().SetLocalPosition(-1, 0, 0);
+
+		GameObject& mainText = GameObjectFactory::CreateText(name);	
+		mainText.SetParent(mainMenu);
+		mainText.GetComponent<Transform>().Translate(0, 0.1, 0.6f);
+		mainText.GetComponent<Transform>().SetLocalScale(0.15f, 0.15f, 0.15f);
+		mainText.GetComponent<TextRenderer>().text = "Main";
+		mainText.GetComponent<TextRenderer>().isUI = false;
+		mainText.GetComponent<TextRenderer>().centralise = true;
+		mainText.GetComponent<TextRenderer>().lightEnabled = false;		
+		mainText.GetComponent<TextRenderer>().textColor.Set(0, 0, 0);	
+		mainText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		mainText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+
+		GameObject& menuText = GameObjectFactory::CreateText(name);	
+		menuText.SetParent(mainMenu);
+		menuText.GetComponent<Transform>().Translate(0, -0.1f, 0.6f);
+		menuText.GetComponent<Transform>().SetLocalScale(0.15f, 0.15f, 0.15f);
+		menuText.GetComponent<TextRenderer>().text = "Menu";
+		menuText.GetComponent<TextRenderer>().isUI = false;
+		menuText.GetComponent<TextRenderer>().centralise = true;
+		menuText.GetComponent<TextRenderer>().lightEnabled = false;		
+		menuText.GetComponent<TextRenderer>().textColor.Set(0, 0, 0);	
+		menuText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		menuText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
 
 		GameObject& quitGame = GameObjectFactory::CreateCube(name);
 		quitGame.GetComponent<Transform>().SetLocalScale(1, 1, 1);
@@ -89,10 +118,11 @@ void SceneMainMenu::Init() {
 		quitGameText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
 
 		GameObject& optionsHandler = GameObjectFactory::CreateEmpty(name);
-		optionsHandler.CreateScript<MainMenuScript>();
-		MainMenuScript* script = static_cast<MainMenuScript*>(optionsHandler.GetScript(0));
-		script->optionObjects[MainMenuScript::M_OPTION_START] = &startGame;
-		script->optionObjects[MainMenuScript::M_OPTION_QUIT] = &quitGame;
+		optionsHandler.CreateScript<PauseMenuScript>();
+		PauseMenuScript* script = static_cast<PauseMenuScript*>(optionsHandler.GetScript(0));
+		script->optionObjects[PauseMenuScript::PM_OPTION_RESUME] = &resumeGame;
+		script->optionObjects[PauseMenuScript::PM_OPTION_MAIN_MENU] = &mainMenu;
+		script->optionObjects[PauseMenuScript::PM_OPTION_QUIT] = &quitGame;
 	}
 
 	//Ground
@@ -106,7 +136,7 @@ void SceneMainMenu::Init() {
 	camera.GetComponent<Transform>().SetLocalRotation(0, 180, 0);
 }
 
-void SceneMainMenu::Update(double _deltaTime) {
+void ScenePauseMenu::Update(double _deltaTime) {
 	SpatialPartitionSystem::GetInstance().Update(name);
 
 	PhysicsSystem::GetInstance().UpdateDeltaTime(name, _deltaTime);
@@ -121,13 +151,13 @@ void SceneMainMenu::Update(double _deltaTime) {
 	}*/
 }
 
-void SceneMainMenu::Render() {
+void ScenePauseMenu::Render() {
 	SpatialPartitionSystem::GetInstance().Update(name);
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();	
 	RenderSystem::GetInstance().Render(name, &skybox);
 }
 
-void SceneMainMenu::Exit() {
-	RenderHelper::GetInstance().DeleteShader(SHADERS::PHONG);
+void ScenePauseMenu::Exit() {
+	//RenderHelper::GetInstance().DeleteShader(SHADERS::PHONG);
 	GameObjectManager::GetInstance().Clear(name);
 }

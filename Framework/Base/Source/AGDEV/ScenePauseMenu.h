@@ -1,12 +1,12 @@
-#ifndef SCENE_MAIN_MENU_H
-#define SCENE_MAIN_MENU_H
+#ifndef SCENE_PAUSE_MENU_H
+#define SCENE_PAUSE_MENU_H
 
 #include "../Scene/Scene.h"
 #include "../Graphics/RenderHelper.h"
 #include "../GameObject/GameObjectFactory.h"
 #include "../Others/Skybox.h"
 
-class SceneMainMenu : public Scene {
+class ScenePauseMenu : public Scene {
 
 private:
 	Skybox skybox;
@@ -20,8 +20,8 @@ protected:
 
 public:
 	//Constructor(s) & Destructor
-	SceneMainMenu(const string& _name);
-	virtual ~SceneMainMenu();
+	ScenePauseMenu(const string& _name);
+	virtual ~ScenePauseMenu();
 
 };
 

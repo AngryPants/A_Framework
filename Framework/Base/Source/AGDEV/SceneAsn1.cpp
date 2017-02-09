@@ -9,6 +9,7 @@
 #include "../Systems/Rendering//RenderSystem.h"
 #include "../Systems/SpatialPartition/SPSystem.h"
 #include "../Systems/Physics/PhysicsSystem.h"
+#include "../Scene/SceneManager.h"
 
 //Include Scripts
 #include "RotateScript.h"
@@ -276,7 +277,8 @@ void SceneAsn1::Update(double _deltaTime) {
 
 	//Close da app
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
-		Application::GetInstance().Quit();
+		//Application::GetInstance().Quit();
+		SceneManager::GetInstance().SetActiveScene("Pause Menu");
 	}	
 }
 

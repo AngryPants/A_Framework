@@ -334,6 +334,12 @@
     <ClInclude Include="..\Common\Source\Vector3.h">
       <Filter>Files\Systems\AI\Header Files\Vector</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\ScenePauseMenu.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\PauseMenuScript.h">
+      <Filter>Files\AGDEV\Script\PauseMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -470,6 +476,9 @@
     </Filter>
     <Filter Include="Files\Systems\AI\Header Files\Vector">
       <UniqueIdentifier>{099c2dcb-991b-41e8-b77f-c912919d0a18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Script\PauseMenu">
+      <UniqueIdentifier>{61eb5773-a71f-4058-bcf5-48971227b6b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -712,6 +721,12 @@
     </ClCompile>
     <ClCompile Include="Source\AGDEV\MainMenuScript.cpp">
       <Filter>Files\AGDEV\Script\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\ScenePauseMenu.cpp">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\PauseMenuScript.cpp">
+      <Filter>Files\AGDEV\Script\PauseMenu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
