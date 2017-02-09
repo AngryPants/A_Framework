@@ -14,6 +14,7 @@ public:
 	float rotation; //Only used if isUI is true.
 	Vector3 scale; //Only used if isUI is true.
 	bool isUI;
+	bool centralise;
 
 	Mesh* mesh;
 	TextureList textureList;

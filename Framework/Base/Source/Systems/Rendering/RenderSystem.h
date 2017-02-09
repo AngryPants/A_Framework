@@ -43,7 +43,6 @@ private:
 	//Debuging Stuff
 	void RenderGridBoundaries(const string& _space);	
 	void RenderColliders(const string& _space);
-	void RenderUI(TextRenderer& textRenderer);
 
 	//Skybox
 	void RenderSkybox(const Vector3& position, const Skybox* _skybox);	

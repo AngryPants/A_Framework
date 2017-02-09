@@ -160,7 +160,7 @@ void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 				modelStack.Translate(textRendererPtr->position.x, textRendererPtr->position.y, textRendererPtr->position.z);
 				modelStack.Rotate(textRendererPtr->rotation, 0, 0, 1);
 				modelStack.Scale(textRendererPtr->scale.x, textRendererPtr->scale.y, textRendererPtr->scale.z);
-				RenderHelper::GetInstance().RenderText(*textRendererPtr->mesh, textRendererPtr->textureList, textRendererPtr->text, textRendererPtr->textColor, textRendererPtr->lightEnabled);
+				RenderHelper::GetInstance().RenderText(*textRendererPtr->mesh, textRendererPtr->textureList, textRendererPtr->text, textRendererPtr->textColor, textRendererPtr->lightEnabled, textRendererPtr->centralise);
 			modelStack.PopMatrix();
 		}		
 	}
@@ -226,7 +226,7 @@ void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLeve
 		if (mesh != nullptr && textureList != nullptr) {
 			modelStack.PushMatrix();
 				modelStack.MultMatrix(go->GetComponent<Transform>().GetTransformationMatrix());
-				RenderHelper::GetInstance().RenderText(*mesh, *textureList, go->GetComponent<TextRenderer>().text, go->GetComponent<TextRenderer>().textColor, go->GetComponent<TextRenderer>().lightEnabled);
+				RenderHelper::GetInstance().RenderText(*mesh, *textureList, go->GetComponent<TextRenderer>().text, go->GetComponent<TextRenderer>().textColor, go->GetComponent<TextRenderer>().lightEnabled, go->GetComponent<TextRenderer>().centralise);
 			modelStack.PopMatrix();
 		}
 	}

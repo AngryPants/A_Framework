@@ -47,7 +47,7 @@ public:
 	//Rendering
 	void RenderMesh(Mesh& mesh, const bool enableLight = false);
 	void RenderMesh(Mesh& mesh, const TextureList& textureList, const bool enableLight = false);	
-	void RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color, bool lightEnabled);
+	void RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color, bool lightEnabled, bool centralise);
 
 };
 

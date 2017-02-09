@@ -91,6 +91,11 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 		}
 		case KEYS::ENTER: {
 			SetInput(inputInfo,INPUT_SELECT,input.GetState());
+			SetInput(inputInfo,INPUT_MENU_SELECT,input.GetState());
+			break;
+		}
+		case KEYS::BACKSPACE: {
+			SetInput(inputInfo,INPUT_MENU_BACK,input.GetState());
 			break;
 		}
 
@@ -123,18 +128,22 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 		//Looking
 		case KEYS::LEFT: {
 			SetInput(inputInfo,INPUT_LOOK_LEFT,input.GetState());
+			SetInput(inputInfo,INPUT_MENU_LEFT,input.GetState());
 			break;
 		}
 		case KEYS::RIGHT: {
 			SetInput(inputInfo,INPUT_LOOK_RIGHT,input.GetState());
+			SetInput(inputInfo,INPUT_MENU_RIGHT,input.GetState());
 			break;
 		}
 		case KEYS::UP: {
 			SetInput(inputInfo,INPUT_LOOK_UP,input.GetState());
+			SetInput(inputInfo,INPUT_MENU_UP,input.GetState());
 			break;
 		}
 		case KEYS::DOWN: {
 			SetInput(inputInfo,INPUT_LOOK_DOWN,input.GetState());
+			SetInput(inputInfo,INPUT_MENU_DOWN,input.GetState());
 			break;
 		}
 		case KEYS::Z: {
@@ -158,34 +167,27 @@ void ProcessInput(InputInfo& inputInfo, const Key& input) {
 			break;
 		}
 		// reloading
-		case KEYS::R:
-		{
+		case KEYS::R: {
 			SetInput(inputInfo, INPUT_PLAYERRELOAD, input.GetState());
 			break;
 		}
 		//Pickup
-		case KEYS::F :
-		{
+		case KEYS::F : {
 			SetInput(inputInfo, INPUT_PLAYERPICKUP, input.GetState());
 			break;
 		}
-		case KEYS::V:
-		{
+		case KEYS::V: {
 			SetInput(inputInfo, INPUT_PLAYERDISCARD, input.GetState());
 			break;
 		}
-		case KEYS::ONE:
-		{
+		case KEYS::ONE: {
 			SetInput(inputInfo, INPUT_BULLET_STANDARD, input.GetState());
 			break;
 		}
-		case KEYS::TWO:
-		{
+		case KEYS::TWO: {
 			SetInput(inputInfo, INPUT_BULLET_STICKY, input.GetState());
 			break;
 		}
-
-
 	}
 }
 

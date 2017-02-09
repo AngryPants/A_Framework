@@ -143,40 +143,41 @@ namespace PhongShader {
 		shaderProgram->Update(uniforms.textEnabled, false);
 	}*/
 	
-	void RenderMesh(Mesh& mesh, const TextureList& textureList, const bool& enableLight, const PhongShader::Uniforms& shadowUniforms) {
+	void RenderMesh(Mesh& mesh, const TextureList& textureList, const bool& enableLight, const PhongShader::Uniforms& uniforms) {
 		ShaderProgram* shaderProgram = GetShader();	
 		Mtx44 MVP, modelView, modelView_inverse_transpose;
 		MVP = GraphicsManager::GetInstance().projectionStack.Top() * GraphicsManager::GetInstance().viewStack.Top() * GraphicsManager::GetInstance().modelStack.Top();
 	
-		shaderProgram->Update(shadowUniforms.modelViewProjection, false, ToOpenglStruct(MVP));
+		shaderProgram->Update(uniforms.textEnabled, false);
+		shaderProgram->Update(uniforms.lightEnabled, enableLight);
+
+		shaderProgram->Update(uniforms.modelViewProjection, false, ToOpenglStruct(MVP));
 		modelView = GraphicsManager::GetInstance().viewStack.Top() * GraphicsManager::GetInstance().modelStack.Top();
-		shaderProgram->Update(shadowUniforms.modelView, false, ToOpenglStruct(modelView));
+		shaderProgram->Update(uniforms.modelView, false, ToOpenglStruct(modelView));
 		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
-		shaderProgram->Update(shadowUniforms.modelViewInverseTranspose, false, ToOpenglStruct(modelView_inverse_transpose));
-		shaderProgram->Update(shadowUniforms.lightEnabled, enableLight);
-	
+		shaderProgram->Update(uniforms.modelViewInverseTranspose, false, ToOpenglStruct(modelView_inverse_transpose));
+			
 		//Update Texture Coordinates
 		ShaderProgram::FloatVec2 textureOffset;
 		textureOffset.vec[0] = mesh.textureOffset[0];
 		textureOffset.vec[1] = mesh.textureOffset[1];
-		shaderProgram->Update(shadowUniforms.textureOffset, textureOffset);
+		shaderProgram->Update(uniforms.textureOffset, textureOffset);
 	
 		ShaderProgram::FloatVec2 textureScale;
 		textureScale.vec[0] = mesh.textureScale[0];
 		textureScale.vec[1] = mesh.textureScale[1];
-		shaderProgram->Update(shadowUniforms.textureScale, textureScale);
+		shaderProgram->Update(uniforms.textureScale, textureScale);
 	
 		if (enableLight) {
 			//Load Material
-			shaderProgram->Update(shadowUniforms.ambient, ToOpenglStruct(mesh.material.kAmbient));
-			shaderProgram->Update(shadowUniforms.diffuse, ToOpenglStruct(mesh.material.kDiffuse));
-			shaderProgram->Update(shadowUniforms.specular, ToOpenglStruct(mesh.material.kSpecular));
-			shaderProgram->Update(shadowUniforms.shininess, mesh.material.kShininess);
+			shaderProgram->Update(uniforms.ambient, ToOpenglStruct(mesh.material.kAmbient));
+			shaderProgram->Update(uniforms.diffuse, ToOpenglStruct(mesh.material.kDiffuse));
+			shaderProgram->Update(uniforms.specular, ToOpenglStruct(mesh.material.kSpecular));
+			shaderProgram->Update(uniforms.shininess, mesh.material.kShininess);
 		}
 	
 		int booleans[MAX_TEXTURES];
-		unsigned ids[MAX_TEXTURES] = {0, 1, 2, 3, 4, 5, 6, 7};
-	
+		unsigned ids[MAX_TEXTURES] = {0, 1, 2, 3, 4, 5, 6, 7};	
 		for (unsigned int i = 0; i < MAX_TEXTURES; ++i) {
 			if (textureList.textureArray[i] > 0) {
 				shaderProgram->SetActiveTexture(i);
@@ -185,8 +186,8 @@ namespace PhongShader {
 			} else {
 				booleans[i] = false;
 			}
-			shaderProgram->Update(shadowUniforms.colorTexture, ids, MAX_TEXTURES);
-			shaderProgram->Update(shadowUniforms.colorTextureEnabled, booleans, MAX_TEXTURES);
+			shaderProgram->Update(uniforms.colorTexture, ids, MAX_TEXTURES);
+			shaderProgram->Update(uniforms.colorTextureEnabled, booleans, MAX_TEXTURES);
 		}
 	
 		mesh.Render();
@@ -198,7 +199,7 @@ namespace PhongShader {
 		}
 	}
 
-	void RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color, bool _lightEnabled, const PhongShader::Uniforms& uniforms) {
+	void RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color, bool _lightEnabled, bool centralise, const PhongShader::Uniforms& uniforms) {
 		ShaderProgram* shaderProgram = GetShader();	
 		shaderProgram->Update(uniforms.textEnabled, true);
 		shaderProgram->Update(uniforms.textColor, ToOpenglStruct(color), 1);
@@ -234,8 +235,7 @@ namespace PhongShader {
 		}
 	
 		int booleans[MAX_TEXTURES];
-		unsigned ids[MAX_TEXTURES] = {0, 1, 2, 3, 4, 5, 6, 7};
-	
+		unsigned ids[MAX_TEXTURES] = {0, 1, 2, 3, 4, 5, 6, 7};	
 		for (unsigned int i = 0; i < MAX_TEXTURES; ++i) {
 			if (textureList.textureArray[i] > 0) {
 				shaderProgram->SetActiveTexture(i);
@@ -248,9 +248,16 @@ namespace PhongShader {
 			shaderProgram->Update(uniforms.colorTextureEnabled, booleans, MAX_TEXTURES);
 		}
 	
-		for (unsigned i = 0; i < text.length(); ++i) {
+		float spacingDistance = 1.0f;
+		for (unsigned int i = 0; i < text.length(); ++i) {			
 			Mtx44 characterSpacing;
-			characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+			float offset;
+			if (centralise) {
+				offset = (i * spacingDistance) - (static_cast<float>(text.length() - 1) * 0.5f);
+			} else {
+				offset = static_cast<float>(i) * spacingDistance; //1.0f is the spacing of each character, you may change this value
+			}
+			characterSpacing.SetToTranslation(offset, 0, 0);
 			Mtx44 MVP = GraphicsManager::GetInstance().projectionStack.Top() * GraphicsManager::GetInstance().viewStack.Top() * GraphicsManager::GetInstance().modelStack.Top() * characterSpacing;
 			shaderProgram->Update(uniforms.modelViewProjection, false, ToOpenglStruct(MVP));
 			mesh.Render((unsigned)text[i] * 6, 6);

@@ -289,6 +289,51 @@
     <ClInclude Include="Source\AGDEV\SceneSplash.h">
       <Filter>Files\AGDEV\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\SceneMainMenu.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AGDEV\MainMenuScript.h">
+      <Filter>Files\AGDEV\Script\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\GenericUtility.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\ItemIndex.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\MathUtility.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\MatrixStack.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\Mtx44.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\MyMath.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\PassKey.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\Physics.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\SingletonTemplate.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\timer.h">
+      <Filter>Files\Systems\AI\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\Vector.h">
+      <Filter>Files\Systems\AI\Header Files\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\Vector2.h">
+      <Filter>Files\Systems\AI\Header Files\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Source\Vector3.h">
+      <Filter>Files\Systems\AI\Header Files\Vector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -416,6 +461,15 @@
     </Filter>
     <Filter Include="Files\AI\WayPointSystem">
       <UniqueIdentifier>{4a5f1a3f-f443-4475-aa20-1ec5e42b7c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\AGDEV\Script\MainMenu">
+      <UniqueIdentifier>{2cd59b65-adf3-4d25-bfad-afb91d12fcb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\AI\Header Files">
+      <UniqueIdentifier>{edc748b4-37c1-458b-8f4f-8675ab5b2a50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Systems\AI\Header Files\Vector">
+      <UniqueIdentifier>{099c2dcb-991b-41e8-b77f-c912919d0a18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -652,6 +706,12 @@
     </ClCompile>
     <ClCompile Include="Source\AGDEV\SceneSplash.cpp">
       <Filter>Files\AGDEV\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\SceneMainMenu.cpp">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\MainMenuScript.cpp">
+      <Filter>Files\AGDEV\Script\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,12 +8,6 @@
     <Filter Include="Source Files\Vector">
       <UniqueIdentifier>{e69915ce-dbd2-48be-a6e4-5303092977ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{d766b814-f82a-4083-a6ba-b390713db91f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Vector">
-      <UniqueIdentifier>{8e4553c6-55c7-42ee-b27a-3d67b1fa5565}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Lua">
       <UniqueIdentifier>{b8a2256c-7492-4278-a770-239220b315b5}</UniqueIdentifier>
     </Filter>
@@ -51,45 +45,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ItemIndex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MatrixStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mtx44.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Physics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SingletonTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PassKey.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vector.h">
-      <Filter>Header Files\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vector2.h">
-      <Filter>Header Files\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vector3.h">
-      <Filter>Header Files\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GenericUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lua\lauxlib.h">
       <Filter>Lua</Filter>
     </ClInclude>

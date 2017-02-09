@@ -7,6 +7,7 @@ TextRenderer::TextRenderer(GameObject& _gameObject, PassKey<ComponentManager> _k
 	lightEnabled = false;
 	textColor.Set(1, 1, 1);
 	isUI = true;
+	centralise = false;
 	rotation = 0;
 	scale.Set(0.1f, 0.1f, 0.1f);
 }
