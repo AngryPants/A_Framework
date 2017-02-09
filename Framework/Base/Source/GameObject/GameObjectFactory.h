@@ -41,7 +41,7 @@
 #include "../Component/Game/Rifle.h"
 #include "../Component/Game/Waypoint.h"
 #include "../AGDEV/AIChaseScript.h"
-
+#include "../../Common/Lua/LuaManager.h"
 
 class GameObjectFactory {
 
@@ -254,12 +254,21 @@ public:
 		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
 
 		//should be done outside
-		int x = Math::RandInt() % 150;
-		int z = Math::RandInt() % 150;
-		waypoint->CreateWayPoint(Vector3(x, 1, z), 1.f);
-		waypoint->CreateWayPoint(Vector3(-x, 1, z), 1.f);
-		waypoint->CreateWayPoint(Vector3(x, 1, -z), 1.f);
-		waypoint->CreateWayPoint(Vector3(-x, 1, -z), 1.f);
+		/*Vector3 waypoint1 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 50);
+		Vector3 waypoint2 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 100);
+		Vector3 waypoint3 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 150);
+		Vector3 waypoint4 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 200);
+		*/
+
+		Vector3 waypoint1 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(1);
+		Vector3 waypoint2 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(2);
+		Vector3 waypoint3 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(3);
+		Vector3 waypoint4 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(4);
+
+		waypoint->CreateWayPoint(waypoint1, 5.f);
+		waypoint->CreateWayPoint(waypoint2, 5.f);
+		waypoint->CreateWayPoint(waypoint3, 5.f);
+		waypoint->CreateWayPoint(waypoint4, 5.f);
 		waypoint->LinkWayPoint();
 
 		//Collider 3 is for Enemy Chase Range

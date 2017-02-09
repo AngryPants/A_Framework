@@ -69,7 +69,8 @@ Application::Application() {
 	m_window_width = 1600;
 
 	//Initialize the Lua System
-	LuaManager::GetInstance().CreateLua("example","LuaScripts//DM2240.Lua");
+	LuaManager::GetInstance().CreateLua("example", "LuaScripts//DM2240.lua");
+	LuaManager::GetInstance().CreateLua("Waypoint", "LuaScripts//Waypoints.lua");
 
 	////Get the OpenGL resolution
 	m_window_width = LuaManager::GetInstance().GetLuaFile("example")->GetIntValue("width");
