@@ -33,8 +33,8 @@ void SceneSplash::Init() {
 	RenderHelper::GetInstance().SetAlphaDiscardValue(0.1f);
 
 	//SpatialPartition 
-	int xGridSize = 5; int yGridSize = 5; int zGridSize = 5;
-	int xNumGrid = 5; int yNumGrid = 5; int zNumGrid = 5;
+	int xGridSize = 1; int yGridSize = 1; int zGridSize = 1;
+	int xNumGrid = 1; int yNumGrid = 1; int zNumGrid = 1;
 	//int xNumGrid = 0; int yNumGrid = 0; int zNumGrid = 0;
 	SpatialPartitionSystem::GetInstance().CreateSpatialPartition(name)->Set(xGridSize, yGridSize, zGridSize, xNumGrid, yNumGrid, zNumGrid, 0, ((yNumGrid >> 1) - 1) * yGridSize, 0);
 
@@ -48,6 +48,15 @@ void SceneSplash::Init() {
 	//Logo
 	GameObject* logo = &GameObjectFactory::CreateQuad(name, "Logo");
 	logo->GetComponent<MeshHolder>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Logo", "Image//Others//Logo.tga");
+
+	//Text
+	/*GameObject* textObject = &GameObjectFactory::CreateText(name, "Text Object");
+	textObject->GetComponent<TextRenderer>().isUI = false;
+	textObject->GetComponent<TextRenderer>().text = "Text Object";	
+	textObject->GetComponent<TextRenderer>().scale.Set(0.05f, 0.1f, 0.1f);
+	textObject->GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+	textObject->GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+	textObject->CreateScript<RotateScript>(0);*/
 
 	//Camera
 	GameObject* camera = &GameObjectFactory::CreateCamera(name,"Camera");
@@ -66,14 +75,9 @@ void SceneSplash::Update(double _deltaTime) {
 
 	RenderSystem::GetInstance().Update(name, _deltaTime);
 
-	//Close da app
-	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
-		Application::GetInstance().Quit();
-	}
-
 	splashTimer -= _deltaTime;
 	if (splashTimer < 0.0f) {
-		SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
+		SceneManager::GetInstance().SetActiveScene("Main Menu");
 		SceneManager::GetInstance().RemoveScene(name);
 		cout << "Switching Scenes" << endl;
 	}

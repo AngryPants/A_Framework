@@ -10,10 +10,12 @@ class TextRenderer : public Component {
 
 public:
 	//Variable(s)
-	Vector3 position;
+	Vector3 position; //Only used if isUI is true.	
+	float rotation; //Only used if isUI is true.
+	Vector3 scale; //Only used if isUI is true.
 	bool isUI;
-	float rotation;
-	Vector3 scale;
+	bool centralise;
+
 	Mesh* mesh;
 	TextureList textureList;
 	bool lightEnabled;

@@ -5,10 +5,11 @@
 TextRenderer::TextRenderer(GameObject& _gameObject, PassKey<ComponentManager> _key) : Component("Text Renderer", _gameObject, _key) {
 	mesh = nullptr;
 	lightEnabled = false;
-	textColor.Set(0, 0, 0);
+	textColor.Set(1, 1, 1);
 	isUI = true;
+	centralise = false;
 	rotation = 0;
-	scale.Set(1, 1, 1);
+	scale.Set(0.1f, 0.1f, 0.1f);
 }
 
 TextRenderer::~TextRenderer() {

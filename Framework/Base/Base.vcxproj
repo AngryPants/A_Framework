@@ -11,9 +11,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common\Source\GenericUtility.h" />
+    <ClInclude Include="..\Common\Source\ItemIndex.h" />
+    <ClInclude Include="..\Common\Source\MathUtility.h" />
+    <ClInclude Include="..\Common\Source\MatrixStack.h" />
+    <ClInclude Include="..\Common\Source\Mtx44.h" />
+    <ClInclude Include="..\Common\Source\MyMath.h" />
+    <ClInclude Include="..\Common\Source\PassKey.h" />
+    <ClInclude Include="..\Common\Source\Physics.h" />
+    <ClInclude Include="..\Common\Source\SingletonTemplate.h" />
+    <ClInclude Include="..\Common\Source\timer.h" />
+    <ClInclude Include="..\Common\Source\Vector.h" />
+    <ClInclude Include="..\Common\Source\Vector2.h" />
+    <ClInclude Include="..\Common\Source\Vector3.h" />
     <ClInclude Include="Source\AGDEV\AIChaseScript.h" />
     <ClInclude Include="Source\AGDEV\CutsceneTriggerScript.h" />
     <ClInclude Include="Source\AGDEV\DebugControlsScript.h" />
+    <ClInclude Include="Source\AGDEV\MainMenuScript.h" />
+    <ClInclude Include="Source\AGDEV\SceneMainMenu.h" />
     <ClInclude Include="Source\AGDEV\PivotScript.h" />
     <ClInclude Include="Source\AGDEV\PlayerCameraScript.h" />
     <ClInclude Include="Source\AGDEV\PlayerMovementScript.h" />
@@ -111,11 +126,13 @@
   <ItemGroup>
     <ClCompile Include="Source\AGDEV\AIChaseScript.cpp" />
     <ClCompile Include="Source\AGDEV\CutsceneTriggerScript.cpp" />
+    <ClCompile Include="Source\AGDEV\MainMenuScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp" />
     <ClCompile Include="Source\AGDEV\SceneAsn1.cpp" />
     <ClCompile Include="Source\AGDEV\SceneSplash.cpp" />
     <ClCompile Include="Source\AGDEV\SceneTest.cpp" />
+    <ClCompile Include="Source\AGDEV\SceneMainMenu.cpp" />
     <ClCompile Include="Source\AI\WayPointSystem\Waypoint.cpp" />
     <ClCompile Include="Source\AI\WayPointSystem\WaypointManager.cpp" />
     <ClCompile Include="Source\Animation\Animation.cpp" />

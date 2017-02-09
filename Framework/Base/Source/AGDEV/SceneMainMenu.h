@@ -1,14 +1,15 @@
-#ifndef SCENE_SPLASH_H
-#define SCENE_SPLASH_H
+#ifndef SCENE_MAIN_MENU_H
+#define SCENE_MAIN_MENU_H
 
 #include "../Scene/Scene.h"
 #include "../Graphics/RenderHelper.h"
 #include "../GameObject/GameObjectFactory.h"
+#include "../Others/Skybox.h"
 
-class SceneSplash : public Scene {
+class SceneMainMenu : public Scene {
 
 private:
-	float splashTimer;
+	Skybox skybox;
 
 protected:
 	//Virtual Function(s)
@@ -18,12 +19,9 @@ protected:
 	virtual void Exit();
 
 public:
-	//Constructor(s) & Destructor
-	SceneSplash(const string& _name);
-	virtual ~SceneSplash();
+	SceneMainMenu(const string& _name);
+	virtual ~SceneMainMenu();
 
-	//Temporary Stuff
-	float debugCountdown = 3.0f;
 };
 
 #endif

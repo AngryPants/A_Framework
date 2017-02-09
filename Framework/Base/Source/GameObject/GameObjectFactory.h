@@ -115,6 +115,13 @@ public:
 		return go;
 	}
 
+	static GameObject& CreateText(const string& space,const string& name = "Cylinder") {
+		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
+		go.AddComponent<TextRenderer>();
+
+		return go;
+	}
+
 	static GameObject& CreateGrass(const string& space, const string& name = "Grass") {
 		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space,name);
 		go.AddComponent<LODMeshHolder>().SetLODMesh(MeshBuilder::GetInstance().GenerateOBJ("Grass Low", "OBJ//Game//Grass//Low.obj"),
@@ -284,47 +291,6 @@ public:
 		go.AddComponent<ColliderGroup<SphereCollider>>().colliders[0].isTrigger = true;
 		go.CreateScript<CutsceneTriggerScript>();
 
-		return go;
-	}
-
-	//Doesnt work yet
-	static GameObject& CreateTextIn2D(const string& space, const GameObject& camera , const string& name = "TextIn2D", const Vector3 position = Vector3(0, 0, 0), const string& text = "", const string&textureFilepath = "Image//Fonts//Consolas.tga")
-	{
-		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
-		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", textureFilepath);
-		go.GetComponent<TextRenderer>().text = text;
-		go.GetComponent<TextRenderer>().position = position;
-		return go;
-	}
-	//Doesnt work yet
-	static GameObject& CreateTextIn3D(const string& space, const string& name = "TextIn3D", const Vector3 position = Vector3(0, 0, 0), const string& text = "", const string&textureFilepath = "Image//Fonts//Consolas.tga")
-	{
-		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
-		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", textureFilepath);
-		go.GetComponent<TextRenderer>().isUI = false;
-		go.GetComponent<TextRenderer>().text = text;
-		go.GetComponent<TextRenderer>().position = position;
-		return go;
-	}
-	//Doesnt work yet
-	static GameObject& CreateImageIn2D(const string& space, const string& name = "ImageIn2D", const string& filepath = "", const Vector3 position = Vector3(0, 0, 0), const string& text = "")
-	{
-		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateQuad(name);
-		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture(name, filepath);
-		go.GetComponent<TextRenderer>().position = position;
-		return go;
-	}
-	//Doesnt work yet
-	static GameObject& CreateImageIn3D(const string& space, const string& name = "ImageIn3D", const string& filepath = "", const Vector3 position = Vector3(0, 0, 0), const string& text = "")
-	{
-		GameObject& go = GameObjectManager::GetInstance().CreateGameObject(space, name);
-		go.AddComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateQuad(name);
-		go.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture(name, filepath);
-		go.GetComponent<TextRenderer>().isUI = false;
-		go.GetComponent<TextRenderer>().position = position;
 		return go;
 	}
 	

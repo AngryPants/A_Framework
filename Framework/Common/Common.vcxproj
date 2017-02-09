@@ -30,19 +30,6 @@
     <ClInclude Include="Lua\LuaFile.h" />
     <ClInclude Include="Lua\lualib.h" />
     <ClInclude Include="Lua\LuaManager.h" />
-    <ClInclude Include="Source\GenericUtility.h" />
-    <ClInclude Include="Source\ItemIndex.h" />
-    <ClInclude Include="Source\MathUtility.h" />
-    <ClInclude Include="Source\MatrixStack.h" />
-    <ClInclude Include="Source\Mtx44.h" />
-    <ClInclude Include="Source\MyMath.h" />
-    <ClInclude Include="Source\PassKey.h" />
-    <ClInclude Include="Source\Physics.h" />
-    <ClInclude Include="Source\SingletonTemplate.h" />
-    <ClInclude Include="Source\timer.h" />
-    <ClInclude Include="Source\Vector.h" />
-    <ClInclude Include="Source\Vector2.h" />
-    <ClInclude Include="Source\Vector3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B594FE34-E00B-4E94-AD04-D1FF100AA5DC}</ProjectGuid>

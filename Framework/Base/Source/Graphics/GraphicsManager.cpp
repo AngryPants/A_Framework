@@ -105,7 +105,7 @@ void GraphicsManager::SetToUI() {
 	modelStack.LoadIdentity();
 	viewStack.LoadIdentity();
 	Mtx44 orthoMatrix;
-	orthoMatrix.SetToOrtho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
+	orthoMatrix.SetToOrtho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 	projectionStack.LoadMatrix(orthoMatrix);
 
 }

@@ -149,11 +149,21 @@ void RenderSystem::Render(const string& _space, const Skybox* _skybox) {
 
 	//Render UI here(should be last to render) current camera
 	GraphicsManager::GetInstance().ClearDepth();
-	if (camPtr->GetGameObject().HasActiveComponent<TextRenderer>())
-	{
-		RenderUI(camPtr->GetGameObject().GetComponent<TextRenderer>());
+	GraphicsManager::GetInstance().SetToUI();
+	
+	MS& modelStack = GraphicsManager::GetInstance().modelStack;
+	set<Component*>& textRenderers = ComponentManager::GetInstance().GetComponents<TextRenderer>(_space);
+	for (set<Component*>::iterator setIter = textRenderers.begin(); setIter != textRenderers.end(); ++setIter) {
+		TextRenderer* textRendererPtr = static_cast<TextRenderer*>(*setIter);
+		if (textRendererPtr->IsActive() && textRendererPtr->isUI) {
+			modelStack.PushMatrix();
+				modelStack.Translate(textRendererPtr->position.x, textRendererPtr->position.y, textRendererPtr->position.z);
+				modelStack.Rotate(textRendererPtr->rotation, 0, 0, 1);
+				modelStack.Scale(textRendererPtr->scale.x, textRendererPtr->scale.y, textRendererPtr->scale.z);
+				RenderHelper::GetInstance().RenderText(*textRendererPtr->mesh, textRendererPtr->textureList, textRendererPtr->text, textRendererPtr->textColor, textRendererPtr->lightEnabled, textRendererPtr->centralise);
+			modelStack.PopMatrix();
+		}		
 	}
-
 }
 
 //Render out a grid.
@@ -192,22 +202,34 @@ void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLeve
 				modelStack.MultMatrix(go->GetComponent<Transform>().GetTransformationMatrix());
 				RenderHelper::GetInstance().RenderMesh(*mesh, *textureList, go->GetComponent<MeshRenderer>().lightEnabled);
 			modelStack.PopMatrix();
-		}		
+		}
 	}
-}
 
-void RenderSystem::RenderUI(TextRenderer& textRenderer) {
-	if (textRenderer.mesh == nullptr || !textRenderer.IsActive())
-		return;
+	for (vector<GameObjectID>::iterator vecIter = goList.begin(); vecIter != goList.end(); ++vecIter) {
+		//Get the GameObject.
+		GameObject* go = GameObjectManager::GetInstance().GetGameObjectByID(*vecIter);
+		if (go == nullptr) {
+			cout << "RenderSystem has found invalid ID." << endl;
+			continue;
+		}
 
-	GraphicsManager::GetInstance().SetToUI();
-	MS& modelStack = GraphicsManager::GetInstance().modelStack;
-	modelStack.PushMatrix();
-		modelStack.Translate(textRenderer.position.x, textRenderer.position.y, textRenderer.position.z);
-		modelStack.Rotate(textRenderer.rotation, 0, 0, 1);
-		modelStack.Scale(textRenderer.scale.x, textRenderer.scale.y, textRenderer.scale.z);
-		RenderHelper::GetInstance().RenderText(*textRenderer.mesh, textRenderer.textureList, textRenderer.text, textRenderer.textColor);
-	modelStack.PopMatrix();
+		//Check for Mesh Renderer.
+		if (!go->HasActiveComponent<TextRenderer>() || go->GetComponent<TextRenderer>().isUI) {
+			continue;
+		}
+
+		//Initialise the mesh & textures we need to render.
+		Mesh* mesh = go->GetComponent<TextRenderer>().mesh;
+		TextureList* textureList = &go->GetComponent<TextRenderer>().textureList;
+
+		//Check if we have anything to render.
+		if (mesh != nullptr && textureList != nullptr) {
+			modelStack.PushMatrix();
+				modelStack.MultMatrix(go->GetComponent<Transform>().GetTransformationMatrix());
+				RenderHelper::GetInstance().RenderText(*mesh, *textureList, go->GetComponent<TextRenderer>().text, go->GetComponent<TextRenderer>().textColor, go->GetComponent<TextRenderer>().lightEnabled, go->GetComponent<TextRenderer>().centralise);
+			modelStack.PopMatrix();
+		}
+	}
 }
 
 void RenderSystem::RenderSkybox(const Vector3& position, const Skybox* _skybox) {

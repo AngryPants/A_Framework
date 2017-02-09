@@ -108,10 +108,10 @@ void RenderHelper::RenderMesh(Mesh& mesh, const TextureList& textureList, const 
 	}
 }
 
-void RenderHelper::RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color) {
+void RenderHelper::RenderText(Mesh& mesh, const TextureList& textureList, const string& text, Color color, bool lightEnabled, bool centralise) {
 	switch (currentShader) {
 		case SHADERS::PHONG:
-			PhongShader::RenderText(mesh, textureList, text, color, phongUniforms);
+			PhongShader::RenderText(mesh, textureList, text, color, lightEnabled, centralise, phongUniforms);
 			break;
 	}
 }

@@ -15,8 +15,8 @@ end
  
 
 title = "DM2240 - Week 14 Scripting"
-width = 1920
-height = 1080
+width = 900
+height = 1600
 
 math.randomseed(os.time())
 function GenerateWayPoint(center, range)
