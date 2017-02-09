@@ -24,7 +24,7 @@
 #include "../Script/PlayerHealthScript.h"
 
 //Constructor(s) & Destructor
-SceneTest::SceneTest(const string& name) : Scene(name) {
+SceneTest::SceneTest(const string& _name) : Scene(_name) {
 }
 
 SceneTest::~SceneTest() {

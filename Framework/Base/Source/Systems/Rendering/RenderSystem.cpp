@@ -197,17 +197,16 @@ void RenderSystem::RenderGrid(Grid& grid, LODMeshHolder::DETAIL_LEVEL detailLeve
 }
 
 void RenderSystem::RenderUI(TextRenderer& textRenderer) {
-
 	if (textRenderer.mesh == nullptr || !textRenderer.IsActive())
 		return;
 
 	GraphicsManager::GetInstance().SetToUI();
 	MS& modelStack = GraphicsManager::GetInstance().modelStack;
 	modelStack.PushMatrix();
-	modelStack.Translate(textRenderer.position.x, textRenderer.position.y, textRenderer.position.z);
-	modelStack.Rotate(textRenderer.rotation, 0, 0, 1);
-	modelStack.Scale(textRenderer.scale.x, textRenderer.scale.y, textRenderer.scale.z);
-	RenderHelper::GetInstance().RenderText(*textRenderer.mesh, textRenderer.textureList, textRenderer.text, textRenderer.textColor);
+		modelStack.Translate(textRenderer.position.x, textRenderer.position.y, textRenderer.position.z);
+		modelStack.Rotate(textRenderer.rotation, 0, 0, 1);
+		modelStack.Scale(textRenderer.scale.x, textRenderer.scale.y, textRenderer.scale.z);
+		RenderHelper::GetInstance().RenderText(*textRenderer.mesh, textRenderer.textureList, textRenderer.text, textRenderer.textColor);
 	modelStack.PopMatrix();
 }
 

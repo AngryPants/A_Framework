@@ -21,6 +21,7 @@
     <ClInclude Include="Source\AGDEV\ScaleScript.h" />
     <ClInclude Include="Source\AGDEV\SceneAsn1.h" />
     <ClInclude Include="Source\AGDEV\SceneEmpty.h" />
+    <ClInclude Include="Source\AGDEV\SceneSplash.h" />
     <ClInclude Include="Source\AGDEV\SceneTest.h" />
     <ClInclude Include="Source\AGDEV\TranslateScript.h" />
     <ClInclude Include="Source\AGDEV\TriggerTestScript.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="Source\AGDEV\PlayerCameraScript.cpp" />
     <ClCompile Include="Source\AGDEV\PlayerMovementScript.cpp" />
     <ClCompile Include="Source\AGDEV\SceneAsn1.cpp" />
+    <ClCompile Include="Source\AGDEV\SceneSplash.cpp" />
     <ClCompile Include="Source\AGDEV\SceneTest.cpp" />
     <ClCompile Include="Source\AI\WayPointSystem\Waypoint.cpp" />
     <ClCompile Include="Source\AI\WayPointSystem\WaypointManager.cpp" />

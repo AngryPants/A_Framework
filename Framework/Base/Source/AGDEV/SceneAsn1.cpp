@@ -272,17 +272,16 @@ void SceneAsn1::Update(double _deltaTime) {
 	GameObjectManager::GetInstance().UpdateScripts(name, _deltaTime);		
 	PhysicsSystem::GetInstance().Update(name);
 
+	RenderSystem::GetInstance().Update(name, _deltaTime);
+
 	//Close da app
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_QUIT]) {
 		Application::GetInstance().Quit();
-	}
- 
-	RenderSystem::GetInstance().Update(name, _deltaTime);
+	}	
 }
 
 void SceneAsn1::Render() {
 	SpatialPartitionSystem::GetInstance().Update(name);
-
 	GraphicsManager::GetInstance().Enable<GraphicsManager::MODE::DEPTH_TEST>();	
 	RenderSystem::GetInstance().Render(name, &skybox);
 }

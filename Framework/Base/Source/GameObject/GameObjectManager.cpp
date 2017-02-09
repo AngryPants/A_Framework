@@ -116,7 +116,8 @@ void GameObjectManager::Clear(const string& space) {
 		setIter = removeQueue.erase(setIter);
 	}
 
-	//Delete the main set.
+	//Delete the main set. 
+	mapIter = goMap.find(space);
 	if (mapIter != goMap.end()) {
 		set<GameObject*>::iterator setIter = mapIter->second.begin();
 		while (setIter != mapIter->second.end()) {

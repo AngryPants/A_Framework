@@ -5,6 +5,9 @@
 #include "../Source/SingletonTemplate.h"
 #include "../Source/PassKey.h"
 #include "LuaFile.h"
+#include <unordered_map>
+
+using std::unordered_map;
 
 using std::unordered_map;
 class LuaManager : public Singleton<LuaManager>

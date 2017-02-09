@@ -1,4 +1,5 @@
 #include "LuaFile.h"
+#include "LuaManager.h"
 #include <iostream>
 
 using namespace std;

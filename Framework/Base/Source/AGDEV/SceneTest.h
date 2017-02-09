@@ -22,7 +22,7 @@ protected:
 
 public:
 	//Constructor(s) & Destructor
-	SceneTest(const string& name);
+	SceneTest(const string& _name);
 	virtual ~SceneTest();
 
 	//Temporary Stuff

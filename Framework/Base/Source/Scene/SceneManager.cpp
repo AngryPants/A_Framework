@@ -46,11 +46,10 @@ void SceneManager::Update(double _deltaTime) {
 		sceneMap.erase(*setIter);
 	}
 	removeQueue.clear();
-
-	if (activeScene != nullptr)
-	{
+	
+	if (activeScene != nullptr) {
 		activeScene->Init({});
-	}
+	} 
 	//Update the activeScene if it isn't a nullptr.
 	if (activeScene != nullptr) {
 		activeScene->Update(_deltaTime, {});
