@@ -18,12 +18,3 @@ title = "DM2240 - Week 14 Scripting"
 width = 900
 height = 1600
 
-math.randomseed(os.time())
-function GenerateWayPoint(center, range)
-   print("randomizing Waypoint Vector")
-   local x = math.random()%(range*2) + 1 - range + center
-   local y = 1
-   local z = math.random()%(range*2) + 1 - range + center
-   print("results of position " + x + y + z)
-   return x, y, z
-end
