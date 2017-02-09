@@ -261,17 +261,11 @@ public:
 		AIMovementScript * waypoint = go.CreateScript<AIMovementScript>();
 
 		//should be done outside
-		/*Vector3 waypoint1 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 50);
-		Vector3 waypoint2 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 100);
-		Vector3 waypoint3 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 150);
-		Vector3 waypoint4 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0, 200);
-		*/
-
-		Vector3 waypoint1 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(1);
-		Vector3 waypoint2 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(2);
-		Vector3 waypoint3 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(3);
-		Vector3 waypoint4 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GetWayPoint(4);
-
+		Vector3 waypoint1 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0.f, 150.f);
+		Vector3 waypoint2 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0.f, 150.f);
+		Vector3 waypoint3 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0.f, 150.f);
+		Vector3 waypoint4 = LuaManager::GetInstance().GetLuaFile("Waypoint")->GenerateWayPoints(0.f, 150.f);
+		
 		waypoint->CreateWayPoint(waypoint1, 5.f);
 		waypoint->CreateWayPoint(waypoint2, 5.f);
 		waypoint->CreateWayPoint(waypoint3, 5.f);
