@@ -4,6 +4,9 @@
 #include "../Source/SingletonTemplate.h"
 #include "../Source/PassKey.h"
 #include "LuaFile.h"
+#include <unordered_map>
+
+using std::unordered_map;
 
 class LuaManager : public Singleton<LuaManager>
 {
@@ -22,7 +25,7 @@ private:
 	virtual ~LuaManager();
 
 	//storing a collection of lua
-	map<string, LuaFile*> luaStateMap;
+	unordered_map<string, LuaFile*> luaStateMap;
 };
 
 #endif

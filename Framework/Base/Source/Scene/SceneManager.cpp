@@ -33,9 +33,7 @@ void SceneManager::Update(double _deltaTime) {
 		activeScene = nextScene;
 		nextScene = nullptr;
 	}
-
-	activeScene->Init({});
-
+	
 	//Now let's remove all of the scenes we need to remove.
 	for (set<string>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ++setIter) {
 		//We need to make sure that the activeScene is not going to be removed as well.
@@ -48,6 +46,10 @@ void SceneManager::Update(double _deltaTime) {
 		sceneMap.erase(*setIter);
 	}
 	removeQueue.clear();
+
+	if (activeScene != nullptr) {
+		activeScene->Init({});
+	}
 
 	//Update the activeScene if it isn't a nullptr.
 	if (activeScene != nullptr) {

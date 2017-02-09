@@ -90,6 +90,17 @@ void GameObjectManager::Clear(const string& space) {
 		setIter = addQueue.erase(setIter);
 	}
 
+	//Destroy them all. (Not Delete) (This is a work around as a SceneNode called GameObject::Destroy() when deleted).
+	//This makes the GameObject called RemoveGameobject(). This will cause the GameObject to add itself to the removeQueue,
+	//and since it is already deleted, it will crash.
+	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
+	if (mapIter != goMap.end()) {
+		for (set<GameObject*>::iterator setIter = mapIter->second.begin(); setIter != mapIter->second.end(); ++setIter) {
+			GameObject* goPtr = *setIter;
+			goPtr->Destroy();
+		}
+	}
+
 	for (set<GameObject*>::iterator setIter = removeQueue.begin(); setIter != removeQueue.end(); ) {
 		GameObject* goPtr = *setIter;
 		if (goPtr->GetSpace() != space) {
@@ -106,7 +117,7 @@ void GameObjectManager::Clear(const string& space) {
 	}
 
 	//Delete the main set.
-	map<string, set<GameObject*> >::iterator mapIter = goMap.find(space);
+	mapIter = goMap.find(space);
 	if (mapIter != goMap.end()) {
 		set<GameObject*>::iterator setIter = mapIter->second.begin();
 		while (setIter != mapIter->second.end()) {

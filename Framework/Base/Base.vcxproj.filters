@@ -286,6 +286,9 @@
     <ClInclude Include="Source\AGDEV\AIChaseScript.h">
       <Filter>Files\AGDEV\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\SceneSplash.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -646,6 +649,9 @@
     </ClCompile>
     <ClCompile Include="Source\AGDEV\AIChaseScript.cpp">
       <Filter>Files\AGDEV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\SceneSplash.cpp">
+      <Filter>Files\AGDEV\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

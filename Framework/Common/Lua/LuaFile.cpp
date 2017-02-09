@@ -1,4 +1,5 @@
 #include "LuaFile.h"
+#include "LuaManager.h"
 #include <iostream>
 
 using namespace std;
@@ -6,7 +7,7 @@ using namespace std;
 //Allocating and initializing luaInterface's static data member.
 //The pointer is allocated but not the object's constructor
 
-LuaFile::LuaFile(/*PassKey<LuaManager> _key*/)
+LuaFile::LuaFile(PassKey<LuaManager> _key)
 	: theLuaState(nullptr)
 {
 }

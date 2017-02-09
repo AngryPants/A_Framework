@@ -9,14 +9,14 @@
 using std::string;
 using std::map;
 
-//class LuaManager;
+class LuaManager;
 
 class LuaFile
 {
 private:
 	lua_State* theLuaState;
 public:
-	LuaFile(/*PassKey<LuaManager> _key*/);
+	LuaFile(PassKey<LuaManager> _key);
 	~LuaFile();
 
 	//Initialization of the Lua Interface Class

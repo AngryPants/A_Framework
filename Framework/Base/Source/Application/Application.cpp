@@ -33,6 +33,7 @@
 #include "../AGDEV/SceneTest.h"
 #include "../AGDEV/SceneEmpty.h"
 #include "../AGDEV/SceneAsn1.h"
+#include "../AGDEV/SceneSplash.h"
 
 GLFWwindow* m_window;
 const unsigned char maxFPS = 60; //Maximum FPS of this game.
@@ -84,10 +85,12 @@ Application::~Application() {
 
 void Application::InitScenes() {
 	//Add Scenes Here!
-	SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
-	SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
+	//SceneManager::GetInstance().CreateScene<SceneEmpty>("Empty Scene");
+	//SceneManager::GetInstance().CreateScene<SceneTest>("Test Scene");
 	SceneManager::GetInstance().CreateScene<SceneAsn1>("Assignment 1 Scene");
-	SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
+	SceneManager::GetInstance().CreateScene<SceneSplash>("Splash Scene");
+	SceneManager::GetInstance().SetActiveScene("Splash Scene");
+	//SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
 }
 
 void Application::Init() {
@@ -216,7 +219,6 @@ void Application::Run() {
 		}
 		RunSubUpdates();
 		
-
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         m_timer.waitUntil(frameTime); // Frame rate limiter. Limits each frame to a specified time in ms.   
