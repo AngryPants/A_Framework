@@ -63,7 +63,7 @@ void SceneManager::Render() {
 	}
 }
 
-bool SceneManager::CheckIfSceneExist(const string& _sceneName) {	
+bool SceneManager::CheckIfSceneExist(const string& _sceneName) {
 	return sceneMap.count(_sceneName) != 0;
 }
 

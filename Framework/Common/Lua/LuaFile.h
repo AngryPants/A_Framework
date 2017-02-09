@@ -58,6 +58,9 @@ public:
 
 	//void error(const char *errorCode);
 
+	Vector3 GenerateWayPoints(float center, float range);
+
+	Vector3 GetWayPoint(int waypointNumber);
 };
 
 #endif

@@ -24,7 +24,6 @@ bool LuaFile::Init(string filePath)
 
 	//1. Create lua state
 	theLuaState = lua_open();
-
 	if (theLuaState)
 	{
 		//2. Load lua auxiliary libraries
@@ -144,11 +143,11 @@ void LuaFile::SaveIntValue(const char* varName, const int value, const bool bOve
 {
 	lua_getglobal(theLuaState, "SaveToLuaFile");
 	char outputString[80];
-	sprintf(outputString, "%s = %d\n", varName, value);
+	//sprintf(outputString, "%s = %d\n", varName, value);
 	lua_pushstring(theLuaState, outputString);
 	lua_pushinteger(theLuaState, bOverwrite);
 	lua_call(theLuaState, 2, 0);
-	cout << "....................." << endl;
+	//cout << "....................." << endl;
 }
 
 //Save a float value through the Lua Interface Class
@@ -156,7 +155,7 @@ void LuaFile::SaveFloatValue(const char* varName, const float value, const bool 
 {
 	lua_getglobal(theLuaState, "SaveToLuaFile");
 	char outputString[80];
-	sprintf(outputString, "%s = %6.4f\n", varName, value);
+	//sprintf(outputString, "%s = %6.4f\n", varName, value);
 	lua_pushstring(theLuaState, outputString);
 	lua_pushinteger(theLuaState, bOverwrite);
 	lua_call(theLuaState, 2, 0);
@@ -188,6 +187,45 @@ float LuaFile::GetField(const char *key)
 	result = (int)lua_tonumber(theLuaState, -1);
 	lua_pop(theLuaState, 1); /*remove number*/
 	return result;
+}
+
+Vector3 LuaFile::GetWayPoint(int waypointNumber)
+{
+	string waypoint = "Point" + std::to_string(waypointNumber);
+	lua_getglobal(theLuaState, waypoint.c_str());
+
+	return Vector3(GetField("x"), GetField("y"), GetField("z"));
+}
+
+Vector3 LuaFile::GenerateWayPoints(float center, float range)
+{
+	lua_getglobal(theLuaState, "GenerateWayPoint");
+	if (lua_isfunction(theLuaState, lua_gettop(theLuaState)))
+	{
+		lua_pushnumber(theLuaState, center);
+		lua_pushnumber(theLuaState, range);
+		lua_call(theLuaState, 2, 3);
+
+		float x, y, z;
+		if (lua_isnumber(theLuaState, lua_gettop(theLuaState)))
+		{
+			x = lua_tonumber(theLuaState, -1);
+			lua_pop(theLuaState, 1);
+		}
+		if (lua_isnumber(theLuaState, lua_gettop(theLuaState)))
+		{
+			y = lua_tonumber(theLuaState, -1);
+			lua_pop(theLuaState, 1);
+		}
+		if (lua_isnumber(theLuaState, lua_gettop(theLuaState)))
+		{
+			z = lua_tonumber(theLuaState, -1);
+			lua_pop(theLuaState, 1);
+		}
+		return Vector3(x, y, z);
+	}
+
+	return Vector3(0, 0, 0);
 }
 
 //float LuaFile::GetField(const char *key)
