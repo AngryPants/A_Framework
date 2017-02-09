@@ -340,6 +340,9 @@
     <ClInclude Include="Source\AGDEV\PauseMenuScript.h">
       <Filter>Files\AGDEV\Script\PauseMenu</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AGDEV\SceneOptions.h">
+      <Filter>Files\AGDEV\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">
@@ -727,6 +730,9 @@
     </ClCompile>
     <ClCompile Include="Source\AGDEV\PauseMenuScript.cpp">
       <Filter>Files\AGDEV\Script\PauseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AGDEV\SceneOptions.cpp">
+      <Filter>Files\AGDEV\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

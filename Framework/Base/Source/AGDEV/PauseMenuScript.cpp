@@ -4,10 +4,11 @@
 #include "../Component/Physics/Transform.h"
 #include "../GameObject/GameObject.h" 
 #include "../Scene/SceneManager.h"
+#include "SceneMainMenu.h"
 
 //Constructor(s) & Destructor
 PauseMenuScript::PauseMenuScript(GameObject& _gameObject) : Script(_gameObject) {
-	for (unsigned int i = 0 ; i < static_cast<unsigned int>(NUM_PAUSE_MENU_OPTION); ++i) {
+	for (unsigned int i = 0; i < static_cast<unsigned int>(NUM_PAUSE_MENU_OPTION); ++i) {
 		optionObjects[i] = nullptr;
 	}
 	currentOption = 0;
@@ -32,7 +33,7 @@ void PauseMenuScript::Update(double _deltaTime) {
 	}
 
 	if ((InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MENU_DOWN] || InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MENU_RIGHT]) && keydown[1] == false) {
-		if (currentOption < static_cast<unsigned int>(NUM_PAUSE_MENU_OPTION) - 1) {
+		if (currentOption < static_cast<unsigned int>(NUM_PAUSE_MENU_OPTION)-1) {
 			++currentOption;
 		}
 		keydown[1] = true;
@@ -43,24 +44,31 @@ void PauseMenuScript::Update(double _deltaTime) {
 
 	if (InputManager::GetInstance().GetInputInfo().keyDown[INPUT_MENU_SELECT]) {
 		switch (currentOption) {
-			case PM_OPTION_RESUME: {
-				SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
-				break;
+		case PM_OPTION_RESUME: {
+			SceneManager::GetInstance().SetActiveScene("Assignment 1 Scene");
+			break;
+		}
+		case PM_OPTION_MAIN_MENU: {
+			if (SceneManager::GetInstance().CheckIfSceneExist("Main Menu") == false) {
+				SceneManager::GetInstance().CreateScene<SceneMainMenu>("Main Menu");
 			}
-			case PM_OPTION_MAIN_MENU: {
-				SceneManager::GetInstance().SetActiveScene("Main Menu");
-				break;
+			SceneManager::GetInstance().SetActiveScene("Main Menu");
+
+			if (SceneManager::GetInstance().CheckIfSceneExist("Assignment 1 Scene")) {
+				SceneManager::GetInstance().RemoveScene("Assignment 1 Scene");
 			}
-			case PM_OPTION_QUIT: {
-				Application::GetInstance().Quit();
-				break;
-			}
-			default:
-				break;
+			break;
+		}
+		case PM_OPTION_QUIT: {
+			Application::GetInstance().Quit();
+			break;
+		}
+		default:
+			break;
 		}
 	}
 
-	for (unsigned int i = 0 ; i < static_cast<unsigned int>(NUM_PAUSE_MENU_OPTION); ++i) {
+	for (unsigned int i = 0; i < static_cast<unsigned int>(NUM_PAUSE_MENU_OPTION); ++i) {
 		if (optionObjects[i] != nullptr) {
 			if (i == currentOption) {
 				if (optionObjects[i]->GetComponent<Transform>().GetLocalRotation().x < 0.0f) {
@@ -69,7 +77,8 @@ void PauseMenuScript::Update(double _deltaTime) {
 				if (optionObjects[i]->GetComponent<Transform>().GetLocalRotation().x > 0.0f) {
 					optionObjects[i]->GetComponent<Transform>().SetLocalRotation(0, 0, 0);
 				}
-			} else {
+			}
+			else {
 				if (optionObjects[i]->GetComponent<Transform>().GetLocalRotation().x > -90.0f) {
 					optionObjects[i]->GetComponent<Transform>().Rotate(-360 * _deltaTime, 0, 0);
 				}

@@ -146,27 +146,27 @@ void SceneAsn1::Init() {
 
 
 	{
-		Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+		/*Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
 		Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
 		Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
 		GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
 		enemy->GetComponent<Transform>().SetLocalPosition(50 , 1, 50 );
 		enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
-
-		//for (int i = -6; i <= 6; i++)
-		//{
-		//	if (i > -2 && i < 2)
-		//		continue;
-		//	//Create Enemy Here
-		//	Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
-		//	Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
-		//	Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
-		//	GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
-		//	enemy->GetComponent<Transform>().SetLocalPosition(50 * i, 1 , 50 * i);
-		//	enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
-		//}
-		/*
+*/
 		for (int i = -6; i <= 6; i++)
+		{
+			if (i > -2 && i < 2)
+				continue;
+			//Create Enemy Here
+			Mesh* enemyMeshLowLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Low LOD", Color(1, 1, 0));
+			Mesh* enemyMeshMidLOD = MeshBuilder::GetInstance().GenerateCube(" Enemy Mesh Mid LOD", Color(0, 1, 1));
+			Mesh* enemyMeshHighLOD = MeshBuilder::GetInstance().GenerateCube("Enemy Mesh High LOD", Color(1, 1, 1));
+			GameObject* enemy = &GameObjectFactory::CreateDefaultMovingEnemy(name);
+			enemy->GetComponent<Transform>().SetLocalPosition(50 * i, 1 , 50 * i);
+			enemy->GetComponent<LODMeshHolder>().SetLODMesh(enemyMeshLowLOD, enemyMeshMidLOD, enemyMeshHighLOD);
+		}
+		
+		/*for (int i = -6; i <= 6; i++)
 		{
 			if (i > -2 && i < 2)
 				continue;

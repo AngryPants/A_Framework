@@ -8,7 +8,7 @@ class PauseMenuScript : public Script {
 public:
 	enum PAUSE_MENU_OPTION {
 		PM_OPTION_MAIN_MENU,
-		PM_OPTION_RESUME,		
+		PM_OPTION_RESUME,
 		PM_OPTION_QUIT,
 
 		NUM_PAUSE_MENU_OPTION,

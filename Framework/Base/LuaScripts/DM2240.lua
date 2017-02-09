@@ -17,4 +17,3 @@ end
 title = "DM2240 - Week 14 Scripting"
 width = 900
 height = 1600
-

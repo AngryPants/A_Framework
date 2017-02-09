@@ -58,7 +58,7 @@ void SceneMainMenu::Init() {
 	{
 		GameObject& startGame = GameObjectFactory::CreateCube(name);
 		startGame.GetComponent<Transform>().SetLocalScale(1, 1, 1);
-		startGame.GetComponent<Transform>().SetLocalPosition(-1, 0, 0);
+		startGame.GetComponent<Transform>().SetLocalPosition(-2.5f, 0, 0);
 
 		GameObject& startGameText = GameObjectFactory::CreateText(name);	
 		startGameText.SetParent(startGame);
@@ -72,9 +72,47 @@ void SceneMainMenu::Init() {
 		startGameText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
 		startGameText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
 
+
+
+		////Options
+		//GameObject& options = GameObjectFactory::CreateCube(name);
+		//options.GetComponent<Transform>().SetLocalScale(1, 1, 1);
+		//options.GetComponent<Transform>().SetLocalPosition(-1, 0, 0);
+
+		//GameObject& optionsText = GameObjectFactory::CreateText(name);
+		//optionsText.SetParent(options);
+		//optionsText.GetComponent<Transform>().Translate(0, 0, 0.6f);
+		//optionsText.GetComponent<Transform>().SetLocalScale(0.15f, 0.15f, 0.15f);
+		//optionsText.GetComponent<TextRenderer>().text = "Option";
+		//optionsText.GetComponent<TextRenderer>().isUI = false;
+		//optionsText.GetComponent<TextRenderer>().centralise = true;
+		//optionsText.GetComponent<TextRenderer>().lightEnabled = false;
+		//optionsText.GetComponent<TextRenderer>().textColor.Set(0, 0, 0);
+		//optionsText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		//optionsText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+
+
+		////Leaderboards
+		//GameObject& leaderboards = GameObjectFactory::CreateCube(name);
+		//leaderboards.GetComponent<Transform>().SetLocalScale(1, 1, 1);
+		//leaderboards.GetComponent<Transform>().SetLocalPosition(0.5f, 0, 0);
+
+		//GameObject& leaderboardsText = GameObjectFactory::CreateText(name);
+		//leaderboardsText.SetParent(leaderboards);
+		//leaderboardsText.GetComponent<Transform>().Translate(0, 0, 0.6f);
+		//leaderboardsText.GetComponent<Transform>().SetLocalScale(0.12f, 0.12f, 0.12f);
+		//leaderboardsText.GetComponent<TextRenderer>().text = "Ranking";
+		//leaderboardsText.GetComponent<TextRenderer>().isUI = false;
+		//leaderboardsText.GetComponent<TextRenderer>().centralise = true;
+		//leaderboardsText.GetComponent<TextRenderer>().lightEnabled = false;
+		//leaderboardsText.GetComponent<TextRenderer>().textColor.Set(0, 0, 0);
+		//leaderboardsText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
+		//leaderboardsText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
+
+
 		GameObject& quitGame = GameObjectFactory::CreateCube(name);
 		quitGame.GetComponent<Transform>().SetLocalScale(1, 1, 1);
-		quitGame.GetComponent<Transform>().SetLocalPosition(1, 0, 0);
+		quitGame.GetComponent<Transform>().SetLocalPosition(2, 0, 0);
 
 		GameObject& quitGameText = GameObjectFactory::CreateText(name);	
 		quitGameText.SetParent(quitGame);
@@ -88,10 +126,13 @@ void SceneMainMenu::Init() {
 		quitGameText.GetComponent<TextRenderer>().mesh = MeshBuilder::GetInstance().GenerateText("Text", 16, 16);
 		quitGameText.GetComponent<TextRenderer>().textureList.textureArray[0] = TextureManager::GetInstance().AddTexture("Text", "Image//Fonts//Consolas.tga");
 
+
 		GameObject& optionsHandler = GameObjectFactory::CreateEmpty(name);
 		optionsHandler.CreateScript<MainMenuScript>();
 		MainMenuScript* script = static_cast<MainMenuScript*>(optionsHandler.GetScript(0));
 		script->optionObjects[MainMenuScript::M_OPTION_START] = &startGame;
+		//script->optionObjects[MainMenuScript::M_OPTION_OPTIONS] = &options;
+		//script->optionObjects[MainMenuScript::M_OPTION_LEADERBOARD] = &leaderboards;
 		script->optionObjects[MainMenuScript::M_OPTION_QUIT] = &quitGame;
 	}
 
